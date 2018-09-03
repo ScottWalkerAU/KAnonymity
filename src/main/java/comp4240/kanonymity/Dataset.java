@@ -6,55 +6,58 @@ import comp4240.kanonymity.attribute.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Dataset
-{
+public class Dataset {
+
     private String[] headers;
     private AttributeType[] attributeTypes;
     private ArrayList<Record> records = new ArrayList<>();
 
-    Dataset() {
+    public Dataset() {
         loadData("data.txt");
     }
 
     public void loadData(String path) {
         System.out.println("[INFO]   loadData   Loading data");
-        File file = new File(path);
+        Scanner scanner;
+        String line;
 
         try {
-            Scanner sc = new Scanner(file);
-            String line;
-
-            // Check the files not blank
-            if (!sc.hasNext()) { return; }
-
-            // Attribute Type
-            System.out.println("[INFO]   loadData   Loading Attribute Types");
-            line = sc.nextLine();
-            setAttributeTypes(line.split(","));
-
-            // Headers
-            System.out.println("[INFO]   loadData   Loading Headers");
-            line = sc.nextLine();
-            setHeaders(line.split(","));
-
-            // Data
-            System.out.println("[INFO]   loadData   Loading Data");
-            while (sc.hasNextLine()) {
-                line = sc.nextLine();
-                addRecord(line.split(","));
-            }
-            sc.close();
+            File file = new File(path);
+            scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return;
         }
+
+        // Check the files not blank
+        if (!scanner.hasNext()) {
+            return;
+        }
+
+        // Attribute Type
+        System.out.println("[INFO]   loadData   Loading Attribute Types");
+        line = scanner.nextLine();
+        setAttributeTypes(line.split(","));
+
+        // Headers
+        System.out.println("[INFO]   loadData   Loading Headers");
+        line = scanner.nextLine();
+        setHeaders(line.split(","));
+
+        // Data
+        System.out.println("[INFO]   loadData   Loading Data");
+        while (scanner.hasNextLine()) {
+            line = scanner.nextLine();
+            addRecord(line.split(","));
+        }
+        scanner.close();
     }
 
     /**
-     * <p>
-     *     Takes an array of Strings and converts the values to an enum value to set the attribute types of each column.
-     * </p>
+     * Takes an array of Strings and converts the values to an enum value to set the attribute types of each column.
      * @param values the array containing all the attribute types for each column.
      */
     public void setAttributeTypes(String[] values) {
@@ -64,7 +67,7 @@ public class Dataset
         for (int i = 0; i < values.length; i++) {
             String attributeType = values[i].toLowerCase();
 
-            switch(attributeType) {
+            switch (attributeType) {
                 case "string":
                     attributeTypes[i] = AttributeType.STRING;
                     break;
@@ -85,9 +88,7 @@ public class Dataset
     }
 
     /**
-     * <p>
-     *     Takes an array of Strings and sets the headers to the corresponding values
-     * </p>
+     * Takes an array of Strings and sets the headers to the corresponding values
      * @param values the array containing the header values.
      */
     public void setHeaders(String[] values) {
