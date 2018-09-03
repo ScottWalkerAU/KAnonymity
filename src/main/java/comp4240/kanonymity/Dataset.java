@@ -7,16 +7,18 @@ import comp4240.kanonymity.attribute.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Dataset {
 
     private String[] headers;
+    private IdentifierType[] identifiers;
     private AttributeType[] attributeTypes;
-    private ArrayList<Record> records = new ArrayList<>();
+    private List<Record> records = new ArrayList<>();
 
-    public Dataset() {
-        loadData("data.txt");
+    public Dataset(String fileName) {
+        loadData(fileName);
     }
 
     public void loadData(String path) {
@@ -37,6 +39,12 @@ public class Dataset {
             return;
         }
 
+
+        // Identifier Type
+        System.out.println("[INFO]   loadData   Loading Identifier Types");
+        line = scanner.nextLine();
+        setIdentifierType(line.split(","));
+
         // Attribute Type
         System.out.println("[INFO]   loadData   Loading Attribute Types");
         line = scanner.nextLine();
@@ -54,6 +62,30 @@ public class Dataset {
             addRecord(line.split(","));
         }
         scanner.close();
+    }
+
+    public void setIdentifierType(String[] values) {
+        System.out.println("[INFO]   setIdentifierType");
+        identifiers = new IdentifierType[values.length];
+
+        for (int i = 0; i < values.length; i++) {
+            String identifierType = values[i].toLowerCase();
+
+            switch (identifierType) {
+                case "id":
+                    identifiers[i] = IdentifierType.ID;
+                    break;
+                case "qid":
+                    identifiers[i] = IdentifierType.QID;
+                    break;
+                case "sensitive":
+                    identifiers[i] = IdentifierType.SENSITIVE;
+                    break;
+                default:
+                    System.out.println("{WARNING]   setIdentifierType   The Identifier Type: '" + identifierType + "' is not recognised.");
+                    break;
+            }
+        }
     }
 
     /**
@@ -108,17 +140,17 @@ public class Dataset {
 
             switch (attributeTypes[i]) {
                 case STRING:
-                    attribute = new StringAttribute(value);
+                    attribute = new StringAttribute(value, identifiers[i]);
                     break;
                 case NOMINAL:
                     double v = Double.parseDouble(value);
-                    attribute = new NominalAttribute(v);
+                    attribute = new NominalAttribute(v, identifiers[i]);
                     break;
                 case BINARY:
-                    attribute = new BinaryAttribute(value);
+                    attribute = new BinaryAttribute(value, identifiers[i]);
                     break;
                 case DATE:
-                    attribute = new DateAttribute(value);
+                    attribute = new DateAttribute(value, identifiers[i]);
                     break;
                 default:
                     System.out.println("{WARNING]   addRecord   The Attribute Type: '" + attributeTypes[i] + "' is not recognised.");
@@ -140,5 +172,68 @@ public class Dataset {
         for (Record r : records) {
             System.out.println(r);
         }
+    }
+
+    /**
+     * Giving a size k, the method will return whether of not the dataset is k-anonymized.
+     * @param k the size of k.
+     * @return true of false if the dataset is k-anonymized
+     */
+    public boolean isKAnonimity(int k) {
+        int minKanonimity = records.size();
+
+        // For each record check if there are at least k matches
+        for (int i = 0; i < records.size(); i++) {
+            int matches = 0;
+            Record r1 = records.get(i);
+
+            // Check all other records for a match
+            for (int j = 0; j < records.size(); j++) {
+                Record r2 = records.get(j);
+
+                if (r1.equivalentTo(r2)) {
+                    matches++;
+                }
+            }
+
+            if (k < minKanonimity) {
+                minKanonimity = k;
+            }
+
+            if (matches < k) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Calculates the size of k from the current dataset.
+     * @return the size of k.
+     */
+    public int getK() {
+        int minKanonimity = records.size();
+
+        // For each record check if there are at least k matches
+        for (int i = 0; i < records.size(); i++) {
+            int matches = 0;
+            Record r1 = records.get(i);
+
+            // Check all other records for a match
+            for (int j = 0; j < records.size(); j++) {
+                Record r2 = records.get(j);
+
+                if (r1.equivalentTo(r2)) {
+                    matches++;
+                }
+            }
+
+            if (matches < minKanonimity) {
+                minKanonimity = matches;
+            }
+        }
+
+        return minKanonimity;
     }
 }

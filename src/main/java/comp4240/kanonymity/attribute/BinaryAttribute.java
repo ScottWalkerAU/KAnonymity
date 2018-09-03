@@ -5,14 +5,16 @@ import static comp4240.kanonymity.attribute.AttributeType.BINARY;
 public class BinaryAttribute extends Attribute {
     private boolean value;
 
-    public BinaryAttribute(boolean value) {
+    public BinaryAttribute(boolean value, IdentifierType identifierType) {
         setValue(value);
         setAttributeType(BINARY);
+        setIdentifierType(identifierType);
     }
 
-    public BinaryAttribute(String value) {
+    public BinaryAttribute(String value, IdentifierType identifierType) {
         setValue(value);
         setAttributeType(BINARY);
+        setIdentifierType(identifierType);
     }
 
     public boolean getValue() { return this.value; }
@@ -27,4 +29,12 @@ public class BinaryAttribute extends Attribute {
         }
     }
     public String toString() { return value + ""; }
+
+    public boolean equivalentTo(Attribute other) {
+        if (other instanceof BinaryAttribute) {
+            return value == ((BinaryAttribute) other).getValue();
+        } else {
+            return false;
+        }
+    }
 }

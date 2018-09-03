@@ -1,3 +1,4 @@
+ID,QID,QID,QID,QID,SENSITIVE
 String,nominal,Binary,String,String,String
 Name,Age,Gender,State of Domicile,Religion,Disease
 Ramsha,29,Female,Tamil Nadu,Hindu,Cancer
