@@ -6,9 +6,8 @@ public class NominalAttribute extends Attribute {
     private double value;
 
     public NominalAttribute(double value, IdentifierType identifierType) {
+        super(NOMINAL, identifierType);
         setValue(value);
-        setAttributeType(NOMINAL);
-        setIdentifierType(identifierType);
     }
 
     public double getValue() { return this.value; }

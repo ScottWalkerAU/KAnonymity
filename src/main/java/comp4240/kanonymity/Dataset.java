@@ -178,12 +178,12 @@ public class Dataset {
     }
 
     /**
-     * Giving a size k, the method will return whether of not the dataset is k-anonymized.
-     * @param k the size of k.
-     * @return true of false if the dataset is k-anonymized
+     * Giving a size k, the method will return whether of not the dataset is k-anonymised
+     * @param k the size of k
+     * @return true of false if the dataset is k-anonymised
      */
-    public boolean isKAnonimity(int k) {
-        int minKanonimity = records.size();
+    public boolean isKAnonymous(int k) {
+        int minK = records.size();
 
         // For each record check if there are at least k matches
         for (int i = 0; i < records.size(); i++) {
@@ -199,8 +199,8 @@ public class Dataset {
                 }
             }
 
-            if (k < minKanonimity) {
-                minKanonimity = k;
+            if (k < minK) {
+                minK = k;
             }
 
             if (matches < k) {
@@ -216,7 +216,7 @@ public class Dataset {
      * @return the size of k.
      */
     public int getK() {
-        int minKanonimity = records.size();
+        int minK = records.size();
 
         // For each record check if there are at least k matches
         for (int i = 0; i < records.size(); i++) {
@@ -232,12 +232,17 @@ public class Dataset {
                 }
             }
 
-            if (matches < minKanonimity) {
-                minKanonimity = matches;
+            // Can't get any worse than 1, not reason to keep looking
+            if (matches == 1) {
+                return 1;
+            }
+
+            if (matches < minK) {
+                minK = matches;
             }
         }
 
-        return minKanonimity;
+        return minK;
     }
 
     public void AttributeDivergence() {

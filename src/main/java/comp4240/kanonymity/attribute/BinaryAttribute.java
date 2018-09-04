@@ -3,18 +3,17 @@ package comp4240.kanonymity.attribute;
 import static comp4240.kanonymity.attribute.AttributeType.BINARY;
 
 public class BinaryAttribute extends Attribute {
+
     private boolean value;
 
     public BinaryAttribute(boolean value, IdentifierType identifierType) {
+        super(BINARY, identifierType);
         setValue(value);
-        setAttributeType(BINARY);
-        setIdentifierType(identifierType);
     }
 
     public BinaryAttribute(String value, IdentifierType identifierType) {
+        super(BINARY, identifierType);
         setValue(value);
-        setAttributeType(BINARY);
-        setIdentifierType(identifierType);
     }
 
     public boolean getValue() { return this.value; }

@@ -27,14 +27,14 @@ public class Record {
         return this.attributes;
     }
 
-    public boolean equivalentTo(Record record) {
-        List<Attribute> recordAttributes = record.getAttributes();
+    public boolean equivalentTo(Record other) {
+        List<Attribute> otherAttributes = other.getAttributes();
 
         for (int i = 0; i < attributes.size(); i++) {
             Attribute a1 = attributes.get(i);
-            Attribute a2 = recordAttributes.get(i);
+            Attribute a2 = otherAttributes.get(i);
 
-            // Ensure we are only comparing the QID's and not ID's or Sensitive Identifiers
+            // Ensure we are only comparing the QIDs and not IDs or Sensitive Identifiers
             if (a1.geIdentifierType() != IdentifierType.QID) {
                 continue;
             }
