@@ -3,7 +3,7 @@ package comp4240.kanonymity;
 public class Main {
 
     private int k;
-    private String fileName = "dataK4.txt";
+    private String fileName = "dataK2.txt";
 
     public static void main(String[] args) {
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
@@ -18,6 +18,6 @@ public class Main {
         System.out.println("K-Anonymity k: " + k + " = " + valid);
         int currentK = dataset.getK();
         System.out.println("K-Anonymity dataset current k is: " + currentK);
-
+        dataset.AttributeDivergence();
     }
 }

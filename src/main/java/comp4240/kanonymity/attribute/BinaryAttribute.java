@@ -22,7 +22,7 @@ public class BinaryAttribute extends Attribute {
     public void setValue(String value) {
         String defaults = "male, m, y, yes, true, t, 1";
 
-        if (defaults.contains(value)) {
+        if (defaults.contains(value.toLowerCase())) {
             this.value = true;
         } else {
             this.value = false;

@@ -41,22 +41,18 @@ public class Dataset {
 
 
         // Identifier Type
-        System.out.println("[INFO]   loadData   Loading Identifier Types");
         line = scanner.nextLine();
         setIdentifierType(line.split(","));
 
         // Attribute Type
-        System.out.println("[INFO]   loadData   Loading Attribute Types");
         line = scanner.nextLine();
         setAttributeTypes(line.split(","));
 
         // Headers
-        System.out.println("[INFO]   loadData   Loading Headers");
         line = scanner.nextLine();
         setHeaders(line.split(","));
 
         // Data
-        System.out.println("[INFO]   loadData   Loading Data");
         while (scanner.hasNextLine()) {
             line = scanner.nextLine();
             addRecord(line.split(","));
@@ -164,8 +160,15 @@ public class Dataset {
     }
 
     public void displayDataset() {
+
+        System.out.println("The Dataset");
         for (AttributeType attributeType : attributeTypes) {
             System.out.print(attributeType + "\t");
+        }
+        System.out.println();
+
+        for (String header : headers) {
+            System.out.print(header + "\t");
         }
         System.out.println();
 
@@ -235,5 +238,26 @@ public class Dataset {
         }
 
         return minKanonimity;
+    }
+
+    public void AttributeDivergence() {
+        System.out.println("\nAttribute Divergence");
+        // Loop through all records one Attribute column at a time
+        for (int i = 0; i < headers.length; i++) {
+            List<String> values = new ArrayList<>();
+
+            // Record all the different variable types
+            for (Record r : records) {
+                List<Attribute> recordAttributes = r.getAttributes();
+                Attribute a = recordAttributes.get(i);
+                String value = a.toString();
+
+                if (!values.contains(value)) {
+                    values.add(value);
+                }
+            }
+            // Calculate how many different results are found
+            System.out.println(headers[i] + ": Unique values: " + values.size() + ", percentage of data is " + (100 * records.size() / values.size() / records.size()) + "%");
+        }
     }
 }
