@@ -2,7 +2,7 @@ package comp4240.kanonymity.attribute;
 
 public enum AttributeType {
     STRING,
-    NOMINAL,
+    NUMERIC,
     BINARY,
     DATE
 }

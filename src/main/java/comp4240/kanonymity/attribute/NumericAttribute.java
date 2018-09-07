@@ -1,12 +1,12 @@
 package comp4240.kanonymity.attribute;
 
-import static comp4240.kanonymity.attribute.AttributeType.NOMINAL;
+import static comp4240.kanonymity.attribute.AttributeType.NUMERIC;
 
-public class NominalAttribute extends Attribute {
+public class NumericAttribute extends Attribute {
     private double value;
 
-    public NominalAttribute(double value, IdentifierType identifierType) {
-        super(NOMINAL, identifierType);
+    public NumericAttribute(double value, IdentifierType identifierType) {
+        super(NUMERIC, identifierType);
         setValue(value);
     }
 
@@ -15,8 +15,8 @@ public class NominalAttribute extends Attribute {
     public String toString() { return value + ""; }
 
     public boolean equivalentTo(Attribute other) {
-        if (other instanceof NominalAttribute) {
-            return value == ((NominalAttribute) other).getValue();
+        if (other instanceof NumericAttribute) {
+            return value == ((NumericAttribute) other).getValue();
         } else {
             return false;
         }

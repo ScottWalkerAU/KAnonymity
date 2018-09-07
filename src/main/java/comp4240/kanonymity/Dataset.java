@@ -100,7 +100,7 @@ public class Dataset {
                     attributeTypes[i] = AttributeType.STRING;
                     break;
                 case "nominal":
-                    attributeTypes[i] = AttributeType.NOMINAL;
+                    attributeTypes[i] = AttributeType.NUMERIC;
                     break;
                 case "binary":
                     attributeTypes[i] = AttributeType.BINARY;
@@ -138,9 +138,9 @@ public class Dataset {
                 case STRING:
                     attribute = new StringAttribute(value, identifiers[i]);
                     break;
-                case NOMINAL:
+                case NUMERIC:
                     double v = Double.parseDouble(value);
-                    attribute = new NominalAttribute(v, identifiers[i]);
+                    attribute = new NumericAttribute(v, identifiers[i]);
                     break;
                 case BINARY:
                     attribute = new BinaryAttribute(value, identifiers[i]);
