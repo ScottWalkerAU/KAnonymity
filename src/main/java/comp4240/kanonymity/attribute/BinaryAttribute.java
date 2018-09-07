@@ -16,9 +16,21 @@ public class BinaryAttribute extends Attribute {
         setValue(value);
     }
 
-    public boolean getValue() { return this.value; }
-    public void setValue(boolean value) { this.value = value; }
+    public boolean equivalentTo(Attribute other) {
+        if (!(other instanceof BinaryAttribute)) {
+            return false;
+        }
+
+        boolean otherValue = ((BinaryAttribute) other).getValue();
+        return value == otherValue;
+    }
+
+    public boolean getValue() {
+        return this.value;
+    }
+
     public void setValue(String value) {
+        // TODO This is broken
         String defaults = "male, m, y, yes, true, t, 1";
 
         if (defaults.contains(value.toLowerCase())) {
@@ -27,13 +39,12 @@ public class BinaryAttribute extends Attribute {
             this.value = false;
         }
     }
-    public String toString() { return value + ""; }
 
-    public boolean equivalentTo(Attribute other) {
-        if (other instanceof BinaryAttribute) {
-            return value == ((BinaryAttribute) other).getValue();
-        } else {
-            return false;
-        }
+    public void setValue(boolean value) {
+        this.value = value;
+    }
+
+    public String toString() {
+        return Boolean.toString(value);
     }
 }

@@ -2,12 +2,12 @@ package comp4240.kanonymity.attribute;
 
 public abstract class Attribute {
 
-    private IdentifierType identifierType;
     private AttributeType attributeType;
+    private IdentifierType identifierType;
 
     public Attribute(AttributeType attributeType, IdentifierType identifierType) {
-        this.identifierType = identifierType;
-        this.attributeType = attributeType;
+        setAttributeType(attributeType);
+        setIdentifierType(identifierType);
     }
 
     // -- Abstract methods --
@@ -20,15 +20,15 @@ public abstract class Attribute {
         return this.attributeType;
     }
 
-    public void setAttributeType(AttributeType attributeType) {
+    private void setAttributeType(AttributeType attributeType) {
         this.attributeType = attributeType;
-    }
-
-    public void setIdentifierType(IdentifierType identifierType) {
-        this.identifierType = identifierType;
     }
 
     public IdentifierType geIdentifierType() {
         return this.identifierType;
+    }
+
+    private void setIdentifierType(IdentifierType identifierType) {
+        this.identifierType = identifierType;
     }
 }
