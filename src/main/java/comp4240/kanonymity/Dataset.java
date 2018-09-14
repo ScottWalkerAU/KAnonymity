@@ -3,10 +3,12 @@
 package comp4240.kanonymity;
 
 import comp4240.kanonymity.attribute.*;
+import comp4240.kanonymity.tree.Tree;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,6 +18,7 @@ public class Dataset {
     private IdentifierType[] identifiers;
     private AttributeType[] attributeTypes;
     private List<Record> records = new ArrayList<>();
+    private HashMap<String, Tree> generalisations = new HashMap<>();
 
     public Dataset(String fileName) {
         loadData(fileName);
@@ -275,5 +278,26 @@ public class Dataset {
             // Calculate how many different results are found
             System.out.println(headers[i] + ": Unique values: " + values.size() + ", percentage of data is " + (100 * records.size() / values.size() / records.size()) + "%");
         }
+    }
+
+    public void addGeneralisation(Tree tree) {
+        String attributeHeader = tree.getAttributeHeader();
+        generalisations.put(attributeHeader, tree);
+    }
+
+    public List<Record> getRecords() {
+        return records;
+    }
+
+    public int getAttributeSize() {
+        return headers.length;
+    }
+
+    public String[] getHeaders() {
+        return headers;
+    }
+
+    public Tree getGeneralisationTree(String key) {
+        return generalisations.get(key);
     }
 }

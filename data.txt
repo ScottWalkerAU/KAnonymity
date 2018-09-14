@@ -1,13 +1,8 @@
-ID,QID,QID,QID,QID,SENSITIVE
-String,nominal,Binary,String,String,String
-Name,Age,Gender,State of Domicile,Religion,Disease
-Ramsha,29,Female,Tamil Nadu,Hindu,Cancer
-Yadu,24,Female,Kerala,Hindu,Viral infection
-Salima,28,Female,Tamil Nadu,Muslim,TB
-Sunny,27,Male,Karnataka,Parsi,No illness
-Joan,24,Female,Kerala,Christian,Heart-related
-Bahuksana,23,Male,Karnataka,Buddhist,TB
-Rambha,19,Male,Kerala,Hindu,Cancer
-Kishor,29,Male,Karnataka,Hindu,Heart-related
-Johnson,17,Male,Kerala,Christian,Heart-related
-John,19,Male,Kerala,Christian,Viral infection
+ID,QID,QID,QID,SENSITIVE
+String,nominal,Binary,String,String
+Name,Age,Gender,Occupation,Disease
+Harry,22,Male,Software,N/A
+Scott,22,Male,Software,N/A
+Ana,25,Female,Physics,N/A
+Bell,23,Female,Chemistry,N/A
+Clarance,27,Male,Chemical,N/A

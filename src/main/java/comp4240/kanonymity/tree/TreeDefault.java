@@ -6,6 +6,10 @@ import java.util.List;
 public class TreeDefault extends Tree {
     private List<Node> nodes = new LinkedList<>();
 
+    public TreeDefault(String attributeHeader) {
+        super(attributeHeader);
+    }
+
     /**
      * Add the children to the parent node. If any of the Nodes already exsist use those, otherwise create new nodes.
      * @param parent
@@ -71,7 +75,9 @@ public class TreeDefault extends Tree {
      */
     public String getGeneralised(String value, int suppressionLevel) {
         // Ensure the suppression level is positive
-        assert(suppressionLevel > 0);
+        if (suppressionLevel < 0) {
+            return value;
+        }
 
         // Get the current node from the value
         Node n = findNode(value);

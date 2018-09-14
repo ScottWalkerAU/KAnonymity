@@ -6,39 +6,42 @@ import comp4240.kanonymity.tree.TreeDefault;
 import java.util.List;
 
 public class Main {
-
-    private int k;
     private String fileName;
 
     public static void main(String[] args) {
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        new Main("dataNameGenderAgeStudyDisease.txt");
+        new Main("data.txt");
     }
 
     Main(String fileName) {
-        this.k = 2;
         this.fileName = fileName;
 
         Dataset dataset = new Dataset(fileName);
         dataset.displayDataset();
-        boolean valid = dataset.isKAnonymous(k);
-        System.out.println("K-Anonymity k: " + k + " = " + valid);
-        int currentK = dataset.getK();
-        System.out.println("K-Anonymity dataset current k is: " + currentK);
-        // dataset.AttributeDivergence();
-
-        List<Attribute> attributes = dataset.getAttributes(1);
 
         // Define the Occupation hierarchy
-        TreeDefault occupation = new TreeDefault();
+        TreeDefault occupation = new TreeDefault("Occupation");
 
         // Add the different levels of generalisation
         occupation.add("ANY", "Engineer", "Science");
         occupation.add("Engineer", "Software", "Chemical");
         occupation.add("Science", "Physics", "Chemistry");
 
+        // Show the tree contents
+        System.out.println("\nOccupation Tree printout:");
         occupation.getRoot().printAsArray();
 
-        System.out.println("Software generalised = " + occupation.getGeneralised("Software", 3));
+        // Add the generalisations to the dataset
+        dataset.addGeneralisation(occupation);
+
+        // Create the K-Anonymity class
+        KAnonymity kAnonymity = new KAnonymity(2);
+
+        // Set the suppression level for the tree
+        kAnonymity.setSuppressionLevel(5);
+
+        // Print the results
+        System.out.println("\nGeneralised values:");
+        kAnonymity.anonymise(dataset);
     }
 }
