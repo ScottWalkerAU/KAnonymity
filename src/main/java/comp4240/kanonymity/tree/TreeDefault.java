@@ -1,7 +1,5 @@
 package comp4240.kanonymity.tree;
 
-import comp4240.kanonymity.attribute.Attribute;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,5 +58,39 @@ public class TreeDefault extends Tree {
         }
 
         return null;
+    }
+
+    // ----- Getters -----
+
+    /**
+     * Returns the generalised value of an attribute by getting the nodes parent 'suppressionLevel' times.
+     *
+     * @param value
+     * @param suppressionLevel
+     * @return
+     */
+    public String getGeneralised(String value, int suppressionLevel) {
+        // Ensure the suppression level is positive
+        assert(suppressionLevel > 0);
+
+        // Get the current node from the value
+        Node n = findNode(value);
+
+        // If it doesnt exist return null
+        if (n == null) {
+            return null;
+        }
+
+        // Otherwise get the parent of the node 'suppressionLevel' times
+        for (int i = 0; i < suppressionLevel; i++) {
+            n = n.getParent();
+
+            // If the node is reached return the root value
+            if (n == root) {
+                return root.getValue();
+            }
+        }
+
+        return n.getValue();
     }
 }

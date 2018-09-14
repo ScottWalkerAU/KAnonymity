@@ -13,6 +13,8 @@ public abstract class Tree {
         return root.getHeight();
     }
 
+    public abstract String getGeneralised(String value, int suppressionLevel);
+
     // ----- Setters -----
     public void setRoot(Node root) {
         this.root = root;

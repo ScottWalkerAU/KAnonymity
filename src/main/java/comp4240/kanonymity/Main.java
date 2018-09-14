@@ -38,5 +38,7 @@ public class Main {
         occupation.add("Science", "Physics", "Chemistry");
 
         occupation.getRoot().printAsArray();
+
+        System.out.println("Software generalised = " + occupation.getGeneralised("Software", 3));
     }
 }
