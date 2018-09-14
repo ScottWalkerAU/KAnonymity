@@ -1,9 +1,6 @@
 package comp4240.kanonymity;
 
-import comp4240.kanonymity.attribute.Attribute;
 import comp4240.kanonymity.tree.TreeDefault;
-
-import java.util.List;
 
 public class Main {
     private String fileName;
@@ -35,13 +32,13 @@ public class Main {
         dataset.addGeneralisation(occupation);
 
         // Create the K-Anonymity class
-        KAnonymity kAnonymity = new KAnonymity(2);
+        KAnonymity kAnonymity = new KAnonymity(dataset, 2);
 
         // Set the suppression level for the tree
-        kAnonymity.setSuppressionLevel(5);
+        kAnonymity.setSuppressionLevel(0);
 
         // Print the results
         System.out.println("\nGeneralised values:");
-        kAnonymity.anonymise(dataset);
+        kAnonymity.anonymise();
     }
 }
