@@ -24,7 +24,7 @@ public abstract class Attribute {
         this.attributeType = attributeType;
     }
 
-    public IdentifierType geIdentifierType() {
+    public IdentifierType getIdentifierType() {
         return this.identifierType;
     }
 

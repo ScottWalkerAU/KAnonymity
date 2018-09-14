@@ -35,7 +35,7 @@ public class Record {
             Attribute a2 = otherAttributes.get(i);
 
             // Ensure we are only comparing the QIDs and not IDs or Sensitive Identifiers
-            if (a1.geIdentifierType() != IdentifierType.QID) {
+            if (a1.getIdentifierType() != IdentifierType.QID) {
                 continue;
             }
 

@@ -159,6 +159,17 @@ public class Dataset {
         records.add(record);
     }
 
+    public List<Attribute> getAttributes(int column) {
+        List<Attribute> attributes = new ArrayList<>();
+
+        for (Record r : records) {
+            List<Attribute> recordAttributes = r.getAttributes();
+            attributes.add(recordAttributes.get(column));
+        }
+
+        return attributes;
+    }
+
     public void displayDataset() {
 
         System.out.println("The Dataset");
