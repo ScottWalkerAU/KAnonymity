@@ -1,61 +1,49 @@
 package comp4240.kanonymity.tree;
 
-import comp4240.kanonymity.attribute.Attribute;
-
 import java.util.*;
 
 public class Node {
 
     private Node parent;
-    private List<Node> children = new ArrayList<>();
-    private Attribute attribute;
+    private List<Node> children;
     private String value;
+    private int level;
 
-    public Node(Attribute attribute) {
-        this(attribute, attribute.toString());
+    public Node(String value) {
+        this(null, value);
     }
 
-    public Node(Attribute attribute, String value) {
-        this.attribute = attribute;
+    public Node(Node parent, String value) {
+        this.parent = parent;
         this.value = value;
-    }
-
-    public Node(String... values) {
-        this(null, values[0]);
-
-        for (int i = 1; i < values.length; i++) {
-            String value = values[i];
-            addChild(new Node(value));
-        }
+        this.children = new ArrayList<>();
+        this.level = parent == null ? 0 : parent.getLevel() + 1;
     }
 
     /**
      * Add one or more children to the node.
-     * @param children
+     * @param nodes Children to be added
      */
-    public void addChild(Node... children) {
-        for (Node n : children) {
-            this.children.add(n);
-            n.setParent(this);
-        }
+    public void addChild(Node... nodes) {
+        Collections.addAll(children, nodes);
     }
 
     // -- Getters --
-
-    public String getValue() {
-        return this.value;
-    }
-
-    public Attribute getAttribute() {
-        return this.attribute;
-    }
 
     public Node getParent() {
         return parent;
     }
 
     public List<Node> getChildren() {
-        return this.children;
+        return children;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     /*
@@ -69,20 +57,6 @@ public class Node {
         }
 
         return height;
-    }
-
-    // -- Setters --
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public void setAttribute(Attribute attribute) {
-        this.attribute = attribute;
-    }
-
-    public void setParent(Node parent) {
-        this.parent = parent;
     }
 
     // -- Misc --

@@ -1,11 +1,12 @@
 package comp4240.kanonymity.tree;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TreeDefault extends Tree {
 
-    private List<Node> nodes = new LinkedList<>();
+    private HashMap<String, Node> nodes = new HashMap<>();
 
     public TreeDefault(String attributeHeader) {
         super(attributeHeader);
@@ -17,52 +18,42 @@ public class TreeDefault extends Tree {
      * @param children
      */
     public void add(String parent, String... children) {
-        // If the node already exists collect it
-        Node attribute = findNode(parent);
+        Node node;
+
+        // First time set the root node
+        if (root == null) {
+            node = new Node(parent);
+            root = node;
+            addNode(root);
+        } else {
+            node = findNode(parent);
+        }
 
         // Otherwise create a new node and add it to the list of nodes.
-        if (attribute == null) {
-            attribute = new Node(parent);
-            nodes.add(attribute);
+        if (node == null) {
+            throw new IllegalArgumentException("The parent must already be defined in the taxonomy tree");
         }
 
         // For all children passed in
         for (String c : children) {
-            // If the node already exists collect it
-            Node n = findNode(c);
-
-            // Otherwise create a new node and add it to the list of nodes.
-            if (n == null) {
-                n = new Node(c);
-                nodes.add(n);
-            }
-
-            // Add the child to the parent node
-            attribute.addChild(n);
-            // Set the parent node for the child
-            n.setParent(attribute);
+            Node child = new Node(node, c);
+            node.addChild(child);
+            addNode(child);
         }
 
-        // First time set the root node.
-        if (root == null) {
-            root = attribute;
-        }
     }
 
     /**
      * Look for the node within the current array of recorded nodes.
-     *
      * @param value
      * @return
      */
     private Node findNode(String value) {
-        for (Node n : nodes) {
-            if (n.getValue().equals(value)) {
-                return n;
-            }
-        }
+        return nodes.get(value);
+    }
 
-        return null;
+    public void addNode(Node node) {
+        nodes.put(node.getValue(), node);
     }
 
     // -- Getters --
