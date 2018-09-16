@@ -44,7 +44,7 @@ public class FullDomainModel extends GeneralisationModel {
                 String generalisedValue = generalisationTree.getGeneralised(originalValue, generalisationLevel);
 
                 // Output the new generalised value
-                System.out.printf("%s is generalised to %s when using a suppression level of %d\n", originalValue, generalisedValue, generalisationLevel);
+                System.out.printf("%s is generalised to %s when using a generalisation level of %d\n", originalValue, generalisedValue, generalisationLevel);
             }
         }
     }

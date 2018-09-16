@@ -70,24 +70,12 @@ public class TreeDefault extends Tree {
             return value;
         }
 
-        // Get the current node from the value
-        Node n = findNode(value);
-
-        // If it doesnt exist return null
-        if (n == null) {
-            return null;
+        // If the node doesn't exist, throw an error
+        Node node = findNode(value);
+        if (node == null) {
+            throw new IllegalArgumentException("Cannot find node with value " + value + " in the taxonomy tree");
         }
 
-        // Otherwise get the parent of the node 'suppressionLevel' times
-        for (int i = 0; i < generalisationLevel; i++) {
-            n = n.getParent();
-
-            // If the node is reached return the root value
-            if (n == root) {
-                return root.getValue();
-            }
-        }
-
-        return n.getValue();
+        return getGeneralisedNode(node, generalisationLevel).getValue();
     }
 }

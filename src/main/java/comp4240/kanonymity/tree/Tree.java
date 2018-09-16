@@ -13,6 +13,24 @@ public abstract class Tree {
 
     public abstract String getGeneralised(String value, int generalisationLevel);
 
+    // -- Main methods --
+
+    protected Node getGeneralisedNode(Node node, int generalisationLevel) {
+        // How many times we want to go up in the tree to get to the generalisation level
+        int ascensions = node.getLevel() - generalisationLevel;
+
+        // Perform the ascensions
+        for (int i = 0; i < ascensions; i++) {
+            node = node.getParent();
+
+            // If the node is reached return the root value
+            if (node == root) {
+                break;
+            }
+        }
+        return node;
+    }
+
     // -- Getters --
 
     public Node getRoot() {
