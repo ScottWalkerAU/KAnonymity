@@ -1,6 +1,7 @@
 package comp4240.kanonymity.tree;
 
 public abstract class Tree {
+
     protected Node root = null;
     protected String attributeHeader;
 
@@ -8,7 +9,11 @@ public abstract class Tree {
         this.attributeHeader = attributeHeader;
     }
 
-    // ----- Getters -----
+    // -- Abstract methods --
+
+    public abstract String getGeneralised(String value, int generalisationLevel);
+
+    // -- Getters --
 
     public Node getRoot() {
         return root;
@@ -18,13 +23,11 @@ public abstract class Tree {
         return root.getHeight();
     }
 
-    public abstract String getGeneralised(String value, int suppressionLevel);
-
     public String getAttributeHeader() {
         return attributeHeader;
     }
 
-    // ----- Setters -----
+    // -- Setters --
     public void setRoot(Node root) {
         this.root = root;
     }

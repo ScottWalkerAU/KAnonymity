@@ -5,6 +5,7 @@ import comp4240.kanonymity.attribute.Attribute;
 import java.util.*;
 
 public class Node {
+
     private Node parent;
     private List<Node> children = new ArrayList<>();
     private Attribute attribute;
@@ -30,7 +31,6 @@ public class Node {
 
     /**
      * Add one or more children to the node.
-     *
      * @param children
      */
     public void addChild(Node... children) {
@@ -40,7 +40,7 @@ public class Node {
         }
     }
 
-    // ----- Getters and Setters -----
+    // -- Getters --
 
     public String getValue() {
         return this.value;
@@ -71,7 +71,7 @@ public class Node {
         return height;
     }
 
-    // ----- Setters -----
+    // -- Setters --
 
     public void setValue(String value) {
         this.value = value;
@@ -85,8 +85,9 @@ public class Node {
         this.parent = parent;
     }
 
-    // ----- Misc -----
+    // -- Misc --
 
+    @Override
     public String toString() {
         return value;
     }

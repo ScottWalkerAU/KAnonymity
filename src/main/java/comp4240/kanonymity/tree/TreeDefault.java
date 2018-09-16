@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TreeDefault extends Tree {
+
     private List<Node> nodes = new LinkedList<>();
 
     public TreeDefault(String attributeHeader) {
@@ -64,18 +65,17 @@ public class TreeDefault extends Tree {
         return null;
     }
 
-    // ----- Getters -----
+    // -- Getters --
 
     /**
      * Returns the generalised value of an attribute by getting the nodes parent 'suppressionLevel' times.
-     *
      * @param value
-     * @param suppressionLevel
+     * @param generalisationLevel
      * @return
      */
-    public String getGeneralised(String value, int suppressionLevel) {
+    public String getGeneralised(String value, int generalisationLevel) {
         // Ensure the suppression level is positive
-        if (suppressionLevel < 0) {
+        if (generalisationLevel < 0) {
             return value;
         }
 
@@ -88,7 +88,7 @@ public class TreeDefault extends Tree {
         }
 
         // Otherwise get the parent of the node 'suppressionLevel' times
-        for (int i = 0; i < suppressionLevel; i++) {
+        for (int i = 0; i < generalisationLevel; i++) {
             n = n.getParent();
 
             // If the node is reached return the root value

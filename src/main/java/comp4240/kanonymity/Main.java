@@ -1,5 +1,6 @@
 package comp4240.kanonymity;
 
+import comp4240.kanonymity.kanonymity.KAnonymity;
 import comp4240.kanonymity.tree.TreeDefault;
 
 public class Main {
@@ -34,9 +35,6 @@ public class Main {
 
         // Create the K-Anonymity class
         KAnonymity kAnonymity = new KAnonymity(dataset, 2);
-
-        // Set the suppression level for the tree
-        kAnonymity.setSuppressionLevel(0);
 
         // Print the results
         System.out.println("\nGeneralised values:");
