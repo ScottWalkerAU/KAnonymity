@@ -1,5 +1,5 @@
 ID,     QID,     QID,    QID,        SENSITIVE
-String, nominal, Binary, String,     String
+String, Numeric, Binary, String,     String
 Name,   Age,     Gender, Occupation, Disease
 Harry,  22,      Male,   Software,   N/A
 Scott,  21,      Male,   Software,   N/A

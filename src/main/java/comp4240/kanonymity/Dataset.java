@@ -12,12 +12,14 @@ import java.util.*;
 public class Dataset {
 
     private List<String> headers;
-    private IdentifierType[] identifiers;
-    private AttributeType[] attributeTypes;
-    private List<Record> records = new ArrayList<>();
-    private HashMap<String, Tree> generalisations = new HashMap<>();
+    private List<IdentifierType> identifiers;
+    private List<AttributeType> attributeTypes;
+    private List<Record> records;
+    private HashMap<String, Tree> generalisations;
 
     public Dataset(String fileName) {
+        records = new ArrayList<>();
+        generalisations = new HashMap<>();
         loadData(fileName);
     }
 
@@ -39,7 +41,6 @@ public class Dataset {
             return;
         }
 
-
         // Identifier Type
         line = scanner.nextLine();
         setIdentifierType(line.split(","));
@@ -60,27 +61,13 @@ public class Dataset {
         scanner.close();
     }
 
-    public void setIdentifierType(String[] values) {
-        System.out.println("[INFO]   setIdentifierType");
-        identifiers = new IdentifierType[values.length];
+    private void setIdentifierType(String[] values) {
+        identifiers = new ArrayList<>(values.length);
 
-        for (int i = 0; i < values.length; i++) {
-            String identifierType = values[i].toLowerCase().trim();
-
-            switch (identifierType) {
-                case "id":
-                    identifiers[i] = IdentifierType.ID;
-                    break;
-                case "qid":
-                    identifiers[i] = IdentifierType.QID;
-                    break;
-                case "sensitive":
-                    identifiers[i] = IdentifierType.SENSITIVE;
-                    break;
-                default:
-                    System.out.println("{WARNING]   setIdentifierType   The Identifier Type: '" + identifierType + "' is not recognised.");
-                    break;
-            }
+        for (String value : values) {
+            value = value.trim();
+            IdentifierType type = IdentifierType.getType(value);
+            identifiers.add(type);
         }
     }
 
@@ -88,30 +75,13 @@ public class Dataset {
      * Takes an array of Strings and converts the values to an enum value to set the attribute types of each column.
      * @param values the array containing all the attribute types for each column.
      */
-    public void setAttributeTypes(String[] values) {
-        System.out.println("[INFO]   setAttributeTypes");
-        attributeTypes = new AttributeType[values.length];
+    private void setAttributeTypes(String[] values) {
+        attributeTypes = new ArrayList<>(values.length);
 
-        for (int i = 0; i < values.length; i++) {
-            String attributeType = values[i].toLowerCase().trim();
-
-            switch (attributeType) {
-                case "string":
-                    attributeTypes[i] = AttributeType.STRING;
-                    break;
-                case "nominal":
-                    attributeTypes[i] = AttributeType.NUMERIC;
-                    break;
-                case "binary":
-                    attributeTypes[i] = AttributeType.BINARY;
-                    break;
-                case "date":
-                    attributeTypes[i] = AttributeType.DATE;
-                    break;
-                default:
-                    System.out.println("{WARNING]   setAttributeTypes   The Attribute Type: '" + attributeType + "' is not recognised.");
-                    break;
-            }
+        for (String value : values) {
+            value = value.trim();
+            AttributeType type = AttributeType.getType(value);
+            attributeTypes.add(type);
         }
     }
 
@@ -132,22 +102,22 @@ public class Dataset {
             String value = values[i].trim();
             Attribute attribute = null;
 
-            switch (attributeTypes[i]) {
+            switch (attributeTypes.get(i)) {
                 case STRING:
-                    attribute = new StringAttribute(value, identifiers[i]);
+                    attribute = new StringAttribute(value, identifiers.get(i));
                     break;
                 case NUMERIC:
                     double v = Double.parseDouble(value);
-                    attribute = new NumericAttribute(v, identifiers[i]);
+                    attribute = new NumericAttribute(v, identifiers.get(i));
                     break;
                 case BINARY:
-                    attribute = new BinaryAttribute(value, identifiers[i]);
+                    attribute = new BinaryAttribute(value, identifiers.get(i));
                     break;
                 case DATE:
-                    attribute = new DateAttribute(value, identifiers[i]);
+                    attribute = new DateAttribute(value, identifiers.get(i));
                     break;
                 default:
-                    System.out.println("{WARNING]   addRecord   The Attribute Type: '" + attributeTypes[i] + "' is not recognised.");
+                    System.out.println("{WARNING]   addRecord   The Attribute Type: '" + attributeTypes.get(i) + "' is not recognised.");
                     break;
             }
 

@@ -1,5 +1,5 @@
 ID,QID,QID,SENSITIVE
-String,nominal,Binary,String
+String,Numeric,Binary,String
 Name,Age,Gender,Nothing
 A,12,Male,Yes
 B,12,Male,Yes
