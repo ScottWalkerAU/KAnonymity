@@ -7,14 +7,11 @@ import comp4240.kanonymity.tree.Tree;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Dataset {
 
-    private String[] headers;
+    private List<String> headers;
     private IdentifierType[] identifiers;
     private AttributeType[] attributeTypes;
     private List<Record> records = new ArrayList<>();
@@ -123,12 +120,7 @@ public class Dataset {
      * @param values the array containing the header values.
      */
     public void setHeaders(String[] values) {
-        System.out.println("[INFO]   setHeaders");
-        headers = new String[values.length];
-
-        for (int i = 0; i < values.length; i++) {
-            headers[i] = values[i];
-        }
+        headers = Arrays.asList(values);
     }
 
     public void addRecord(String[] values) {
@@ -201,10 +193,10 @@ public class Dataset {
     }
 
     public int getAttributeSize() {
-        return headers.length;
+        return headers.size();
     }
 
-    public String[] getHeaders() {
+    public List<String> getHeaders() {
         return headers;
     }
 

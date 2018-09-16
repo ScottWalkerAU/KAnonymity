@@ -20,12 +20,12 @@ public abstract class Attribute {
         return this.attributeType;
     }
 
-    private void setAttributeType(AttributeType attributeType) {
-        this.attributeType = attributeType;
-    }
-
     public IdentifierType getIdentifierType() {
         return this.identifierType;
+    }
+
+    private void setAttributeType(AttributeType attributeType) {
+        this.attributeType = attributeType;
     }
 
     private void setIdentifierType(IdentifierType identifierType) {

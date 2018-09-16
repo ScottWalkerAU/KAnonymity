@@ -8,16 +8,7 @@ import java.util.List;
 
 public class Record {
 
-    private String header;
     private List<Attribute> attributes = new ArrayList<>();
-
-    public String getHeader() {
-        return this.header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
 
     public void addAttribute(Attribute att) {
         this.attributes.add(att);

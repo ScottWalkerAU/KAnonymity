@@ -3,6 +3,7 @@ package comp4240.kanonymity;
 import comp4240.kanonymity.tree.TreeDefault;
 
 public class Main {
+
     private String fileName;
 
     public static void main(String[] args) {

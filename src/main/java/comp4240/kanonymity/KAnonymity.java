@@ -15,12 +15,12 @@ public class KAnonymity {
 
     KAnonymity(Dataset dataset, int k) {
         this.dataset = dataset;
-        this.k = 2;
+        this.k = k;
     }
 
     public void anonymise() {
         // Get the headers from the dataset
-        String[] headers = dataset.getHeaders();
+        List<String> headers = dataset.getHeaders();
 
         // Loop through all records
         for (Record r : dataset.getRecords()) {
@@ -29,14 +29,9 @@ public class KAnonymity {
 
             // Loop through all attributes
             for (int i = 0; i < dataset.getAttributeSize(); i++) {
-                // Get the current attribute
                 Attribute attribute = attributes.get(i);
-
-                // Get the identifier type (ID, QID, SENSITIVE)
                 IdentifierType identifierType = attribute.getIdentifierType();
-
-                // Get the current header name for the attribute
-                String header = headers[i];
+                String header = headers.get(i);
 
                 // Get the generalisation tree for that header if it exists
                 Tree generalisationTree = dataset.getGeneralisationTree(header);
@@ -46,14 +41,12 @@ public class KAnonymity {
                     continue;
                 }
 
-                // Otherwise get the attributes value
-                String value = attribute.toString();
-
-                // Generalise the value to the certain suppression level
-                String generalisedValue = generalisationTree.getGeneralised(value, suppressionLevel);
+                // Calculate the generalised value
+                String originalValue = attribute.toString();
+                String generalisedValue = generalisationTree.getGeneralised(originalValue, suppressionLevel);
 
                 // Output the new generalised value
-                System.out.println(value + " is generalised to " + generalisedValue + " when using a suppression level of " + suppressionLevel);
+                System.out.printf("%s is generalised to %s when using a suppression level of %d\n", originalValue, generalisedValue, suppressionLevel);
             }
         }
     }
@@ -72,28 +65,24 @@ public class KAnonymity {
         int minK = records.size();
 
         // For each record check if there are at least k matches
-        for (int i = 0; i < records.size(); i++) {
+        for (Record r1 : records) {
+            // Count the number of matches for this record
             int matches = 0;
-            Record r1 = records.get(i);
-
-            // Check all other records for a match
-            for (int j = 0; j < records.size(); j++) {
-                Record r2 = records.get(j);
-
+            for (Record r2 : records) {
                 if (r1.equivalentTo(r2)) {
                     matches++;
                 }
             }
 
-            if (k < minK) {
-                minK = k;
-            }
-
+            // If we've found a worse value than what we're looking for, return false
             if (matches < k) {
                 return false;
             }
+            // If we've found a worse k value, update it
+            else if (k < minK) {
+                minK = k;
+            }
         }
-
         return true;
     }
 
@@ -106,14 +95,10 @@ public class KAnonymity {
         int minK = records.size();
 
         // For each record check if there are at least k matches
-        for (int i = 0; i < records.size(); i++) {
+        for (Record r1 : records) {
+            // Count the number of matches for this record
             int matches = 0;
-            Record r1 = records.get(i);
-
-            // Check all other records for a match
-            for (int j = 0; j < records.size(); j++) {
-                Record r2 = records.get(j);
-
+            for (Record r2 : records) {
                 if (r1.equivalentTo(r2)) {
                     matches++;
                 }
@@ -123,22 +108,21 @@ public class KAnonymity {
             if (matches == 1) {
                 return 1;
             }
-
-            if (matches < minK) {
+            // If we've found a worse k value, update it
+            else if (matches < minK) {
                 minK = matches;
             }
         }
-
         return minK;
     }
 
     public void AttributeDivergence() {
         System.out.println("\nAttribute Divergence");
-        String[] headers = dataset.getHeaders();
+        List<String> headers = dataset.getHeaders();
         List<Record> records = dataset.getRecords();
 
         // Loop through all records one Attribute column at a time
-        for (int i = 0; i < headers.length; i++) {
+        for (int i = 0; i < headers.size(); i++) {
             List<String> values = new ArrayList<>();
 
             // Record all the different variable types
@@ -152,7 +136,7 @@ public class KAnonymity {
                 }
             }
             // Calculate how many different results are found
-            System.out.println(headers[i] + ": Unique values: " + values.size() + ", percentage of data is " + (100 * records.size() / values.size() / records.size()) + "%");
+            System.out.println(headers.get(i) + ": Unique values: " + values.size() + ", percentage of data is " + (100 * records.size() / values.size() / records.size()) + "%");
         }
     }
 }
