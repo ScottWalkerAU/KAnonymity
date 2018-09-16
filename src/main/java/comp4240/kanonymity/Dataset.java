@@ -65,7 +65,7 @@ public class Dataset {
         identifiers = new IdentifierType[values.length];
 
         for (int i = 0; i < values.length; i++) {
-            String identifierType = values[i].toLowerCase();
+            String identifierType = values[i].toLowerCase().trim();
 
             switch (identifierType) {
                 case "id":
@@ -93,7 +93,7 @@ public class Dataset {
         attributeTypes = new AttributeType[values.length];
 
         for (int i = 0; i < values.length; i++) {
-            String attributeType = values[i].toLowerCase();
+            String attributeType = values[i].toLowerCase().trim();
 
             switch (attributeType) {
                 case "string":
@@ -120,13 +120,16 @@ public class Dataset {
      * @param values the array containing the header values.
      */
     public void setHeaders(String[] values) {
-        headers = Arrays.asList(values);
+        headers = new ArrayList<>(values.length);
+        for (String value : values) {
+            headers.add(value.trim());
+        }
     }
 
     public void addRecord(String[] values) {
         Record record = new Record();
         for (int i = 0; i < values.length; i++) {
-            String value = values[i];
+            String value = values[i].trim();
             Attribute attribute = null;
 
             switch (attributeTypes[i]) {

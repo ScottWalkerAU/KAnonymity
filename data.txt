@@ -1,8 +1,8 @@
-ID,QID,QID,QID,SENSITIVE
-String,nominal,Binary,String,String
-Name,Age,Gender,Occupation,Disease
-Harry,22,Male,Software,N/A
-Scott,22,Male,Software,N/A
-Ana,25,Female,Physics,N/A
-Bell,23,Female,Chemistry,N/A
-Clarance,27,Male,Chemical,N/A
+ID,     QID,     QID,    QID,        SENSITIVE
+String, nominal, Binary, String,     String
+Name,   Age,     Gender, Occupation, Disease
+Harry,  22,      Male,   Software,   N/A
+Scott,  21,      Male,   Software,   N/A
+Ana,    30,      Female, Physics,    N/A
+Bell,   25,      Female, Chemistry,  N/A
+Jim,    10,      Male,   Chemical,   N/A

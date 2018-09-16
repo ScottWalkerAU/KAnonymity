@@ -1,12 +1,10 @@
 package comp4240.kanonymity.tree;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class TreeDefault extends Tree {
 
-    private HashMap<String, Node> nodes = new HashMap<>();
+    private HashMap<String, NodeString> nodes = new HashMap<>();
 
     public TreeDefault(String attributeHeader) {
         super(attributeHeader);
@@ -18,13 +16,13 @@ public class TreeDefault extends Tree {
      * @param children
      */
     public void add(String parent, String... children) {
-        Node node;
+        NodeString node;
 
         // First time set the root node
         if (root == null) {
-            node = new Node(parent);
+            node = new NodeString(parent);
             root = node;
-            addNode(root);
+            addNode(node);
         } else {
             node = findNode(parent);
         }
@@ -36,7 +34,7 @@ public class TreeDefault extends Tree {
 
         // For all children passed in
         for (String c : children) {
-            Node child = new Node(node, c);
+            NodeString child = new NodeString(node, c);
             node.addChild(child);
             addNode(child);
         }
@@ -48,11 +46,11 @@ public class TreeDefault extends Tree {
      * @param value
      * @return
      */
-    private Node findNode(String value) {
+    private NodeString findNode(String value) {
         return nodes.get(value);
     }
 
-    public void addNode(Node node) {
+    public void addNode(NodeString node) {
         nodes.put(node.getValue(), node);
     }
 
@@ -65,11 +63,6 @@ public class TreeDefault extends Tree {
      * @return
      */
     public String getGeneralised(String value, int generalisationLevel) {
-        // Ensure the suppression level is positive
-        if (generalisationLevel < 0) {
-            return value;
-        }
-
         // If the node doesn't exist, throw an error
         Node node = findNode(value);
         if (node == null) {

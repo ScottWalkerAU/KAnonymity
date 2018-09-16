@@ -2,20 +2,14 @@ package comp4240.kanonymity.tree;
 
 import java.util.*;
 
-public class Node {
+public abstract class Node {
 
     private Node parent;
     private List<Node> children;
-    private String value;
     private int level;
 
-    public Node(String value) {
-        this(null, value);
-    }
-
-    public Node(Node parent, String value) {
+    public Node(Node parent) {
         this.parent = parent;
-        this.value = value;
         this.children = new ArrayList<>();
         this.level = parent == null ? 0 : parent.getLevel() + 1;
     }
@@ -28,6 +22,10 @@ public class Node {
         Collections.addAll(children, nodes);
     }
 
+    // -- Abstract methods --
+
+    public abstract String getValue();
+
     // -- Getters --
 
     public Node getParent() {
@@ -36,10 +34,6 @@ public class Node {
 
     public List<Node> getChildren() {
         return children;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public int getLevel() {
@@ -63,7 +57,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return value;
+        return getValue();
     }
 
     public void printAsArray() {

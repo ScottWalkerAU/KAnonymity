@@ -16,6 +16,11 @@ public abstract class Tree {
     // -- Main methods --
 
     protected Node getGeneralisedNode(Node node, int generalisationLevel) {
+        // Ensure the suppression level is positive
+        if (generalisationLevel < 0) {
+            generalisationLevel = 0;
+        }
+
         // How many times we want to go up in the tree to get to the generalisation level
         int ascensions = node.getLevel() - generalisationLevel;
 
