@@ -3,6 +3,6 @@ String, Numeric, Binary, String,     String
 Name,   Age,     Gender, Occupation, Disease
 Harry,  22,      Male,   Software,   N/A
 Scott,  21,      Male,   Software,   N/A
-Ana,    30,      Female, Physics,    N/A
+Anna,   30,      Female, Physics,    N/A
 Bell,   25,      Female, Chemistry,  N/A
-Jim,    10,      Male,   Chemical,   N/A
+John,   10,      Male,   Chemical,   N/A

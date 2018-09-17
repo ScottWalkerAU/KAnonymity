@@ -9,7 +9,6 @@ public class StringAttribute extends Attribute {
     public StringAttribute(String value, IdentifierType identifierType) {
         super(STRING, identifierType);
         setValue(value);
-        setModifiedValue(value);
     }
 
     public boolean equivalentTo(Attribute other) {
@@ -27,6 +26,7 @@ public class StringAttribute extends Attribute {
 
     public void setValue(String value) {
         this.value = value;
+        setModifiedValue(value);
     }
 
     public String toString() {

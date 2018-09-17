@@ -32,16 +32,12 @@ public class BinaryAttribute extends Attribute {
     public void setValue(String value) {
         // TODO This is broken
         String defaults = "male, m, y, yes, true, t, 1";
-
-        if (defaults.contains(value.toLowerCase())) {
-            this.value = true;
-        } else {
-            this.value = false;
-        }
+        setValue(defaults.contains(value.toLowerCase()));
     }
 
     public void setValue(boolean value) {
         this.value = value;
+        setModifiedValue(Boolean.toString(value));
     }
 
     public String toString() {

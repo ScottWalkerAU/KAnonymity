@@ -27,6 +27,7 @@ public class NumericAttribute extends Attribute {
 
     public void setValue(double value) {
         this.value = value;
+        setModifiedValue(Double.toString(value));
     }
 
     public String toString() {
