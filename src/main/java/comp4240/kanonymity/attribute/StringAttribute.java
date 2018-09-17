@@ -9,6 +9,7 @@ public class StringAttribute extends Attribute {
     public StringAttribute(String value, IdentifierType identifierType) {
         super(STRING, identifierType);
         setValue(value);
+        setModifiedValue(value);
     }
 
     public boolean equivalentTo(Attribute other) {

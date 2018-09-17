@@ -38,6 +38,14 @@ public class Record {
         return true;
     }
 
+    public String getModifiedValues() {
+        StringBuilder output = new StringBuilder();
+        for (Attribute a : attributes) {
+            output.append(a.getModifiedValue()).append('\t');
+        }
+        return output.toString();
+    }
+
     public String toString() {
         StringBuilder output = new StringBuilder();
         for (Attribute a : attributes) {

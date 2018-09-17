@@ -1,6 +1,7 @@
 package comp4240.kanonymity.kanonymity;
 
 import comp4240.kanonymity.Dataset;
+import comp4240.kanonymity.attribute.Attribute;
 
 public abstract class GeneralisationModel {
 
@@ -29,5 +30,9 @@ public abstract class GeneralisationModel {
 
     public void setDesiredK(int desiredK) {
         this.desiredK = desiredK;
+    }
+
+    public void updateModifiedValue(Attribute attribute, String modifiedValue) {
+        attribute.setModifiedValue(modifiedValue);
     }
 }

@@ -47,5 +47,6 @@ public class Main {
         // Print the results
         System.out.println("\nGeneralised values:");
         kAnonymity.anonymise();
+        dataset.displayModifiedDataset();
     }
 }

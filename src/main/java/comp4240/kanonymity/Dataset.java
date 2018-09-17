@@ -156,6 +156,24 @@ public class Dataset {
         }
     }
 
+    public void displayModifiedDataset() {
+
+        System.out.println("\nThe Modified Dataset");
+        for (AttributeType attributeType : attributeTypes) {
+            System.out.print(attributeType + "\t");
+        }
+        System.out.println();
+
+        for (String header : headers) {
+            System.out.print(header + "\t");
+        }
+        System.out.println();
+
+        for (Record r : records) {
+            System.out.println(r.getModifiedValues());
+        }
+    }
+
     public void addGeneralisation(Tree tree) {
         String attributeHeader = tree.getAttributeHeader();
         generalisations.put(attributeHeader, tree);

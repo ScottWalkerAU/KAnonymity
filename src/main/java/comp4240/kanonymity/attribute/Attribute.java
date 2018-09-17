@@ -4,6 +4,7 @@ public abstract class Attribute {
 
     private AttributeType attributeType;
     private IdentifierType identifierType;
+    private String modifiedValue;   // Where the generalised value is stored
 
     public Attribute(AttributeType attributeType, IdentifierType identifierType) {
         setAttributeType(attributeType);
@@ -24,6 +25,10 @@ public abstract class Attribute {
         return this.identifierType;
     }
 
+    public String getModifiedValue() {
+        return this.modifiedValue;
+    }
+
     private void setAttributeType(AttributeType attributeType) {
         this.attributeType = attributeType;
     }
@@ -31,4 +36,9 @@ public abstract class Attribute {
     private void setIdentifierType(IdentifierType identifierType) {
         this.identifierType = identifierType;
     }
+
+    public void setModifiedValue(String modifiedValue) {
+        this.modifiedValue = modifiedValue;
+    }
+
 }
