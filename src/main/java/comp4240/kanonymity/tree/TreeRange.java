@@ -73,6 +73,35 @@ public class TreeRange extends Tree {
         return null;
     }
 
+    /**
+     * {@Inheritdoc}
+     */
+    @Override
+    public List<String> getSubtree(String value) {
+        List<String> values = new ArrayList<>();
+        List<Node> queue = new ArrayList<>();
+
+        int number = Double.valueOf(value).intValue();
+        Range range = findRange(number);
+        if (range == null) {
+            throw new IllegalArgumentException("Cannot find range containing " + value + " in the taxonomy tree");
+        }
+        // Add the current value to the queue
+        queue.add(findNode(range));
+
+        while (!queue.isEmpty()) {
+            Node n = queue.remove(0);
+
+            values.add(n.getValue());
+
+            for (Node c : n.getChildren()) {
+                queue.add(c);
+            }
+        }
+
+        return values;
+    }
+
     // -- Getters --
 
     /**

@@ -22,10 +22,12 @@ public class KAnonymity {
     }
 
     public void anonymise() {
-        GeneralisationModel model = new FullDomainModel(1);
+        GeneralisationModel model = new SubtreeModel(1);
         model.setDataset(dataset);
         model.setDesiredK(k);
-        model.anonymise("Occupation", Arrays.asList(new StringAttribute("Chemical", IdentifierType.QID), new StringAttribute("Physics", IdentifierType.QID)));
+        //model.anonymise();                // Full dataset generalised
+        //model.anonymise("Occupation");    // Generalise only a column of data
+        model.anonymise("Occupation", Arrays.asList(new StringAttribute("Software", IdentifierType.QID)));
     }
 
     /**

@@ -5,4 +5,6 @@ Harry,  22,      Male,   Software,   N/A
 Scott,  21,      Male,   Software,   N/A
 Anna,   30,      Female, Physics,    N/A
 Bell,   25,      Female, Chemistry,  N/A
-John,   10,      Male,   Chemical,   N/A
+John,   10,      Male,   Surveying,   N/A
+Josh,   10,      Male,   Soft Engg,   N/A
+Nick,   10,      Male,   Comp Sci,   N/A

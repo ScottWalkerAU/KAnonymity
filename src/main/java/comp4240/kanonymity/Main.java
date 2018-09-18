@@ -23,8 +23,10 @@ public class Main {
         // Define the Occupation hierarchy
         TreeDefault occupation = new TreeDefault("Occupation");
         occupation.add("ANY", "Engineer", "Science");
-        occupation.add("Engineer", "Software", "Chemical");
+        occupation.add("Engineer", "Software", "Surveying");
         occupation.add("Science", "Physics", "Chemistry");
+
+        occupation.add("Software", "Comp Sci", "Soft Engg");
 
         TreeRange age = new TreeRange("Age");
         Range root = Range.between(0, 50), a = Range.between(0,24), b = Range.between(25, 50);

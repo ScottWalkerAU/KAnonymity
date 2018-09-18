@@ -1,5 +1,8 @@
 package comp4240.kanonymity.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Tree {
 
     protected Node root = null;
@@ -35,6 +38,14 @@ public abstract class Tree {
         }
         return node;
     }
+
+
+    /**
+     * Given a nodes value, return a list of all the values of the subtree nodes.
+     *
+     * @param node     The root node of the subtree.
+     */
+    public abstract List<String> getSubtree(String value);
 
     // -- Getters --
 

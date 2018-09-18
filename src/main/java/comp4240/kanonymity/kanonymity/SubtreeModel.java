@@ -9,11 +9,11 @@ import comp4240.kanonymity.tree.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FullDomainModel extends GeneralisationModel {
+public class SubtreeModel extends GeneralisationModel {
 
     private int generalisationLevel;
 
-    public FullDomainModel(int generalisationLevel) {
+    public SubtreeModel(int generalisationLevel) {
         this.generalisationLevel = generalisationLevel;
     }
 
@@ -85,14 +85,41 @@ public class FullDomainModel extends GeneralisationModel {
     }
 
     /**
-     * Full domain doesn't allow for subset generalisation. The identifiedAttributes will be ignored and the column
-     * will be generalised.
-     *
-     * @param header                    The column in which the attributes have been pulled from.
-     * @param identifiedAttributes      The list of attributes to be anonymised will be ignored.
+     * {@inheritDoc}
      */
     @Override
     public void anonymise(String header, List<Attribute> identifiedAttributes) {
-        anonymise(header);
+        List<String> subtreeValues = new ArrayList<>();
+        Dataset dataset = getDataset();
+
+        // Get the generalisation tree needed for the generalisations
+        Tree generalisationTree = dataset.getGeneralisationTree(header);
+
+        // For each identifiedAttribute get the subtree of values
+        for (Attribute identifiedAttribute : identifiedAttributes) {
+            String value = identifiedAttribute.toString();
+            String generalisedValue = generalisationTree.getGeneralised(value, generalisationLevel);
+
+            // Add all the unique subtree values to the list
+            List<String> subValues = generalisationTree.getSubtree(generalisedValue);
+            for (String s : subValues) {
+                if (!subtreeValues.contains(s)) {
+                    subtreeValues.add(s);
+                }
+            }
+        }
+
+        // Loop through all attributes again and generalise any if they occur in the subtreeValues
+        for (Attribute attribute : dataset.getAttributes(header)) {
+            String attributeValue = attribute.toString();
+
+            // If the current attribute is contained in the subtreeValues, generalise it
+            if (subtreeValues.contains(attributeValue)) {
+                String generalisedValue = generalisationTree.getGeneralised(attributeValue, generalisationLevel);
+
+                // Update the modified values
+                updateModifiedValue(attribute, generalisedValue);
+            }
+        }
     }
 }

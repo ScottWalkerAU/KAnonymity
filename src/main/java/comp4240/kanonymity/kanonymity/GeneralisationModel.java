@@ -24,7 +24,8 @@ public abstract class GeneralisationModel {
     public abstract void anonymise(String header);
 
     /**
-     * Only anonymises the attributes passed through as a list.
+     * The subset of attributes that are passed into the method will be generalised to the desired level.
+     *
      * @param header        The column in which the attributes have been pulled from.
      * @param attributes    The list of attributes to be anonymised.
      */
