@@ -100,6 +100,8 @@ public class SubtreeModel extends GeneralisationModel {
             String value = identifiedAttribute.toString();
             String generalisedValue = generalisationTree.getGeneralised(value, generalisationLevel);
 
+            System.out.println("Original value: " + value + ", generalisedValue: " + generalisedValue);
+
             // Add all the unique subtree values to the list
             List<String> subValues = generalisationTree.getSubtree(generalisedValue);
             for (String s : subValues) {

@@ -78,23 +78,40 @@ public class TreeRange extends Tree {
      */
     @Override
     public List<String> getSubtree(String value) {
+        // TODO - No idea how the TreeRange structure works, until its addressed return null, this was my attempt.
+        if (true) {
+            return null;
+        }
         List<String> values = new ArrayList<>();
         List<Node> queue = new ArrayList<>();
+
+        // Shitty code to make it split a range e.g. [0..24] into just the first value '0'
+        if (value.contains("..")) {
+            String[] rangeValue = value.split("\\.\\.");
+            value = rangeValue[0].substring(1, rangeValue[0].length());
+        }
 
         int number = Double.valueOf(value).intValue();
         Range range = findRange(number);
         if (range == null) {
             throw new IllegalArgumentException("Cannot find range containing " + value + " in the taxonomy tree");
         }
+
         // Add the current value to the queue
-        queue.add(findNode(range));
+        Node node = findNode(range);
+        System.out.println("getSubtree findNode(range): " + node);
+
+        queue.add(node);
 
         while (!queue.isEmpty()) {
             Node n = queue.remove(0);
 
+            System.out.println("getSubtree queue.isEmpty() n.getValue(): " + n.getValue());
+
             values.add(n.getValue());
 
             for (Node c : n.getChildren()) {
+                System.out.println("getSubtree Node children: " + c.getValue());
                 queue.add(c);
             }
         }

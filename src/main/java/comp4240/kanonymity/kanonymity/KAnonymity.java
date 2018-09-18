@@ -4,6 +4,7 @@ import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
 import comp4240.kanonymity.attribute.Attribute;
 import comp4240.kanonymity.attribute.IdentifierType;
+import comp4240.kanonymity.attribute.NumericAttribute;
 import comp4240.kanonymity.attribute.StringAttribute;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class KAnonymity {
         model.setDataset(dataset);
         model.setDesiredK(k);
         //model.anonymise();                // Full dataset generalised
-        //model.anonymise("Occupation");    // Generalise only a column of data
-        model.anonymise("Occupation", Arrays.asList(new StringAttribute("Software", IdentifierType.QID)));
+        //model.anonymise("Age");    // Generalise only a column of data
+        model.anonymise("Age", Arrays.asList(new NumericAttribute(10, IdentifierType.QID)));
     }
 
     /**
