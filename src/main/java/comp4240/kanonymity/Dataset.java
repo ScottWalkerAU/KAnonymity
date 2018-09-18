@@ -127,6 +127,17 @@ public class Dataset {
         records.add(record);
     }
 
+    /**
+     * Loop through all records and collect the attributes from a header column
+     * @param header
+     * @return
+     */
+    public List<Attribute> getAttributes(String header) {
+        int headerIndex = headers.indexOf(header);
+
+        return getAttributes(headerIndex);
+    }
+
     public List<Attribute> getAttributes(int column) {
         List<Attribute> attributes = new ArrayList<>();
 
@@ -194,4 +205,5 @@ public class Dataset {
     public Tree getGeneralisationTree(String key) {
         return generalisations.get(key);
     }
+
 }

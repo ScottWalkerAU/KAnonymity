@@ -4,10 +4,12 @@ import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
 import comp4240.kanonymity.attribute.Attribute;
 import comp4240.kanonymity.attribute.IdentifierType;
-import comp4240.kanonymity.tree.Tree;
+import comp4240.kanonymity.attribute.StringAttribute;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 public class KAnonymity {
 
@@ -23,7 +25,7 @@ public class KAnonymity {
         GeneralisationModel model = new FullDomainModel(1);
         model.setDataset(dataset);
         model.setDesiredK(k);
-        model.anonymise();
+        model.anonymise("Occupation", Arrays.asList(new StringAttribute("Chemical", IdentifierType.QID), new StringAttribute("Physics", IdentifierType.QID)));
     }
 
     /**
