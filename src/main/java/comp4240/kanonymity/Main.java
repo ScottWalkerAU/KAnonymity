@@ -1,9 +1,9 @@
 package comp4240.kanonymity;
 
 import comp4240.kanonymity.kanonymity.KAnonymity;
+import comp4240.kanonymity.tree.Range;
 import comp4240.kanonymity.tree.TreeDefault;
 import comp4240.kanonymity.tree.TreeRange;
-import org.apache.commons.lang3.Range;
 
 public class Main {
 
@@ -29,15 +29,16 @@ public class Main {
         occupation.add("Software", "Comp Sci", "Soft Engg");
 
         TreeRange age = new TreeRange("Age");
-        Range root = Range.between(0, 50), a = Range.between(0,24), b = Range.between(25, 50);
-        Range aa = Range.between(0,12), ab = Range.between(13, 24), ba = Range.between(25, 37), bb = Range.between(38, 50);
+        Range root = new Range(0, 50), a = new Range(0, 24), b = new Range(25, 50);
+        Range aa = new Range(0,12), ab = new Range(13, 24), ba = new Range(25, 37), bb = new Range(38, 50);
         age.add(root, a, b);
         age.add(a, aa, ab);
         age.add(b, ba, bb);
 
         // Show the tree contents
         System.out.println("\nOccupation Tree printout:");
-        occupation.getRoot().printAsArray();
+        //occupation.getRoot().printAsArray();
+        age.getRoot().printAsArray();
 
         // Add the generalisations to the dataset
         dataset.addGeneralisation(occupation);

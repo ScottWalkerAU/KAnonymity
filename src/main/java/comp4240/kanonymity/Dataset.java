@@ -107,7 +107,7 @@ public class Dataset {
                     attribute = new StringAttribute(value, identifiers.get(i));
                     break;
                 case NUMERIC:
-                    double v = Double.parseDouble(value);
+                    Integer v = Integer.parseInt(value);
                     attribute = new NumericAttribute(v, identifiers.get(i));
                     break;
                 case BINARY:

@@ -4,9 +4,9 @@ import static comp4240.kanonymity.attribute.AttributeType.NUMERIC;
 
 public class NumericAttribute extends Attribute {
 
-    private double value;
+    private Integer value;
 
-    public NumericAttribute(double value, IdentifierType identifierType) {
+    public NumericAttribute(Integer value, IdentifierType identifierType) {
         super(NUMERIC, identifierType);
         setValue(value);
     }
@@ -25,12 +25,12 @@ public class NumericAttribute extends Attribute {
         return this.value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Integer value) {
         this.value = value;
         setModifiedValue(Double.toString(value));
     }
 
     public String toString() {
-        return Double.toString(value);
+        return Integer.toString(value);
     }
 }

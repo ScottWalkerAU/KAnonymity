@@ -1,7 +1,5 @@
 package comp4240.kanonymity.tree;
 
-import org.apache.commons.lang3.Range;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +54,9 @@ public class TreeRange extends Tree {
      * @return
      */
     private NodeRange findNode(Range range) {
+        System.out.println("TreeRange   findNode(range): " + range);
         for (NodeRange node : nodes) {
-            if (node.getRange() == range) {
+            if (node.getRange().equals(range)) {
                 return node;
             }
         }
@@ -73,50 +72,32 @@ public class TreeRange extends Tree {
         return null;
     }
 
+    private Range findRange(String range) {
+        System.out.println("TreeRange   findNode(range): " + range);
+        if (!Range.isRange(range)) {
+            return findRange(Integer.parseInt(range));
+        }
+
+        for (NodeRange node : nodes) {
+            if (node.getRange().equals(range)) {
+                return node.getRange();
+            }
+        }
+        return null;
+    }
+
     /**
      * {@Inheritdoc}
      */
     @Override
-    public List<String> getSubtree(String value) {
-        // TODO - No idea how the TreeRange structure works, until its addressed return null, this was my attempt.
-        if (true) {
-            return null;
-        }
-        List<String> values = new ArrayList<>();
-        List<Node> queue = new ArrayList<>();
-
-        // Shitty code to make it split a range e.g. [0..24] into just the first value '0'
-        if (value.contains("..")) {
-            String[] rangeValue = value.split("\\.\\.");
-            value = rangeValue[0].substring(1, rangeValue[0].length());
-        }
-
-        int number = Double.valueOf(value).intValue();
-        Range range = findRange(number);
-        if (range == null) {
-            throw new IllegalArgumentException("Cannot find range containing " + value + " in the taxonomy tree");
-        }
-
-        // Add the current value to the queue
-        Node node = findNode(range);
-        System.out.println("getSubtree findNode(range): " + node);
-
-        queue.add(node);
-
-        while (!queue.isEmpty()) {
-            Node n = queue.remove(0);
-
-            System.out.println("getSubtree queue.isEmpty() n.getValue(): " + n.getValue());
-
-            values.add(n.getValue());
-
-            for (Node c : n.getChildren()) {
-                System.out.println("getSubtree Node children: " + c.getValue());
-                queue.add(c);
-            }
-        }
-
-        return values;
+    public List<String> getSubtree(String range) {
+        // TODO - This method
+        List<String> subtree = new ArrayList<>();
+        subtree.add("Go");
+        subtree.add("kill");
+        subtree.add("yourself");
+        subtree.add("!");
+        return subtree;
     }
 
     // -- Getters --
@@ -128,16 +109,16 @@ public class TreeRange extends Tree {
      * @return
      */
     public String getGeneralised(String value, int generalisationLevel) {
-        int number = Double.valueOf(value).intValue();
-        Range range = findRange(number);
+        Range range = findRange(value);
+
         if (range == null) {
-            throw new IllegalArgumentException("Cannot find range containing " + value + " in the taxonomy tree");
+            throw new IllegalArgumentException("TreeRange   Cannot find range containing " + value + " in the taxonomy tree");
         }
 
         // If the node doesn't exist, throw an error
         Node node = findNode(range);
         if (node == null) {
-            throw new IllegalArgumentException("Cannot find range " + range + " in the taxonomy tree");
+            throw new IllegalArgumentException("TreeRange   Cannot find range " + range + " in the taxonomy tree");
         }
 
         return getGeneralisedNode(node, generalisationLevel).getValue();
