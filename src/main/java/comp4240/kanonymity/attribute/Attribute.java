@@ -4,16 +4,30 @@ public abstract class Attribute {
 
     private AttributeType attributeType;
     private IdentifierType identifierType;
-    private String modifiedValue;   // Where the generalised value is stored
+    private String modifiedValue; // Where the generalised value is stored
 
     public Attribute(AttributeType attributeType, IdentifierType identifierType) {
         setAttributeType(attributeType);
         setIdentifierType(identifierType);
     }
 
-    // -- Abstract methods --
+    // -- General Methods --
 
-    public abstract boolean equivalentTo(Attribute other);
+    public final boolean equivalentTo(Attribute other) {
+        if (other == null) {
+            return false;
+        }
+
+        if (this.getClass() != other.getClass()) {
+            return false;
+        }
+
+        return toString().equals(other.toString());
+    }
+
+    public void resetModifiedValue() {
+        modifiedValue = toString();
+    }
 
     // -- Getters and Setters --
 

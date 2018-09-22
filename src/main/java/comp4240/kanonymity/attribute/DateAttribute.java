@@ -11,14 +11,6 @@ public class DateAttribute extends Attribute {
         setValue(value);
     }
 
-    public boolean equivalentTo(Attribute other) {
-        if (!(other instanceof DateAttribute)) {
-            return false;
-        }
-
-        return false; // TODO
-    }
-
     public String getValue() {
         return this.value;
     }

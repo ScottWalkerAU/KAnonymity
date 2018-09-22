@@ -11,15 +11,6 @@ public class StringAttribute extends Attribute {
         setValue(value);
     }
 
-    public boolean equivalentTo(Attribute other) {
-        if (!(other instanceof StringAttribute)) {
-            return false;
-        }
-
-        String otherValue = ((StringAttribute) other).getValue();
-        return value.equals(otherValue);
-    }
-
     public String getValue() {
         return this.value;
     }

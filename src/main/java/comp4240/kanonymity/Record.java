@@ -38,6 +38,12 @@ public class Record {
         return true;
     }
 
+    public void resetModifiedValues() {
+        for (Attribute a : attributes) {
+            a.resetModifiedValue();
+        }
+    }
+
     public String getModifiedValues() {
         StringBuilder output = new StringBuilder();
         for (Attribute a : attributes) {

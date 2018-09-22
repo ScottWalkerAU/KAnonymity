@@ -127,6 +127,12 @@ public class Dataset {
         records.add(record);
     }
 
+    public void resetModifiedValues() {
+        for (Record r : records) {
+            r.resetModifiedValues();
+        }
+    }
+
     /**
      * Loop through all records and collect the attributes from a header column
      * @param header
@@ -194,8 +200,12 @@ public class Dataset {
         return records;
     }
 
+    public List<IdentifierType> getIdentifiers() {
+        return identifiers;
+    }
+
     public int getAttributeSize() {
-        return headers.size();
+        return attributeTypes.size();
     }
 
     public List<String> getHeaders() {
@@ -204,6 +214,10 @@ public class Dataset {
 
     public Tree getGeneralisationTree(String key) {
         return generalisations.get(key);
+    }
+
+    public List<Tree> getGeneralisations() {
+        return new ArrayList<>(generalisations.values());
     }
 
 }

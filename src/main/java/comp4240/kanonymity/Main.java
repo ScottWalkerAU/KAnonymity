@@ -49,7 +49,9 @@ public class Main {
 
         // Print the results
         System.out.println("\nGeneralised values:");
-        kAnonymity.anonymise();
+        kAnonymity.anonymiseTest();
+        System.out.println("Divergence: " + kAnonymity.attributeDivergence());
         dataset.displayModifiedDataset();
+        System.out.println("\nk: " + kAnonymity.getK());
     }
 }

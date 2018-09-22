@@ -48,7 +48,7 @@ public class SiblingModel extends GeneralisationModel {
             updateModifiedValue(attribute, generalisedValue);
 
             // Output the new generalised value
-            System.out.printf("%s is generalised to %s when sibling model\n", originalValue, generalisedValue);
+            System.out.printf("%s is generalised to %s when using sibling model\n", originalValue, generalisedValue);
         }
     }
 }

@@ -16,15 +16,6 @@ public class BinaryAttribute extends Attribute {
         setValue(value);
     }
 
-    public boolean equivalentTo(Attribute other) {
-        if (!(other instanceof BinaryAttribute)) {
-            return false;
-        }
-
-        boolean otherValue = ((BinaryAttribute) other).getValue();
-        return value == otherValue;
-    }
-
     public boolean getValue() {
         return this.value;
     }

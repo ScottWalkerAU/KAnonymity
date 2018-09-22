@@ -3,6 +3,7 @@ package comp4240.kanonymity.kanonymity;
 import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
 import comp4240.kanonymity.attribute.Attribute;
+import comp4240.kanonymity.attribute.AttributeType;
 import comp4240.kanonymity.attribute.IdentifierType;
 import comp4240.kanonymity.attribute.NumericAttribute;
 import comp4240.kanonymity.tree.Node;
@@ -23,6 +24,11 @@ public class KAnonymity {
     }
 
     public void anonymise() {
+        // TODO This will be the method to find the best combination of generalisations for k
+    }
+
+    // TODO temporary method, remove later.
+    public void anonymiseTest() {
         Node parent = dataset.getGeneralisationTree("Age").getRoot();
         Node child = parent.getChildren().get(0);
         GeneralisationModel model = new SiblingModel("Age", parent, child);
@@ -91,27 +97,35 @@ public class KAnonymity {
         return minK;
     }
 
-    public void AttributeDivergence() {
-        System.out.println("\nAttribute Divergence");
+    public double attributeDivergence() {
         List<String> headers = dataset.getHeaders();
-        List<Record> records = dataset.getRecords();
+        List<IdentifierType> types = dataset.getIdentifiers();
+
+        double total = 0.0;
+        int count = 0;
 
         // Loop through all records one Attribute column at a time
         for (int i = 0; i < headers.size(); i++) {
+            IdentifierType type = types.get(i);
+            if (type != IdentifierType.QID) {
+                continue;
+            }
+
+            String header = headers.get(i);
             List<String> values = new ArrayList<>();
 
             // Record all the different variable types
-            for (Record r : records) {
-                List<Attribute> recordAttributes = r.getAttributes();
-                Attribute a = recordAttributes.get(i);
+            for (Attribute a : dataset.getAttributes(header)) {
                 String value = a.toString();
-
                 if (!values.contains(value)) {
                     values.add(value);
                 }
             }
-            // Calculate how many different results are found
-            System.out.println(headers.get(i) + ": Unique values: " + values.size() + ", percentage of data is " + (100 * records.size() / values.size() / records.size()) + "%");
+            // Calculate the percentage how many different results are found
+            total += 100.0 / values.size();
+            count++;
         }
+        // Average of the total divergence
+        return total / count;
     }
 }

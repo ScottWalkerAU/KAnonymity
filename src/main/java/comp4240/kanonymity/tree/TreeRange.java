@@ -57,7 +57,7 @@ public class TreeRange extends Tree {
      * @return
      */
     private NodeRange findNode(Range range) {
-        System.out.println("TreeRange   findNode(range): " + range);
+        //System.out.println("TreeRange   findNode(range): " + range);
         for (NodeRange node : nodes) {
             if (node.getRange().equals(range)) {
                 return node;
@@ -76,7 +76,7 @@ public class TreeRange extends Tree {
     }
 
     private Range findRange(String range) {
-        System.out.println("TreeRange   findNode(range): " + range);
+        //System.out.println("TreeRange   findNode(range): " + range);
         if (!Range.isRange(range)) {
             return findRange(Integer.parseInt(range));
         }
@@ -102,13 +102,13 @@ public class TreeRange extends Tree {
         Range range = findRange(num);
 
         if (range == null) {
-            throw new IllegalArgumentException("TreeRange   Cannot find range containing " + value + " in the taxonomy tree");
+            throw new IllegalArgumentException("TreeRange: Cannot find range containing " + value + " in the taxonomy tree");
         }
 
         // If the node doesn't exist, throw an error
         Node node = findNode(range);
         if (node == null) {
-            throw new IllegalArgumentException("TreeRange   Cannot find range " + range + " in the taxonomy tree");
+            throw new IllegalArgumentException("TreeRange: Cannot find range " + range + " in the taxonomy tree");
         }
 
         return getGeneralisedNode(node, generalisationLevel).getValue();

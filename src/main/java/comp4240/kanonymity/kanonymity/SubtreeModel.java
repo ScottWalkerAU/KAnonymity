@@ -46,7 +46,7 @@ public class SubtreeModel extends GeneralisationModel {
             updateModifiedValue(attribute, generalisedValue);
 
             // Output the new generalised value
-            System.out.printf("%s is generalised to %s when subtree model\n", originalValue, generalisedValue);
+            System.out.printf("%s is generalised to %s when using subtree model\n", originalValue, generalisedValue);
         }
     }
 }

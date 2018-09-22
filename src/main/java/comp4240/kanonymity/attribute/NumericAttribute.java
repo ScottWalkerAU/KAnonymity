@@ -11,15 +11,6 @@ public class NumericAttribute extends Attribute {
         setValue(value);
     }
 
-    public boolean equivalentTo(Attribute other) {
-        if (!(other instanceof NumericAttribute)) {
-            return false;
-        }
-
-        double otherValue = ((NumericAttribute) other).getValue();
-        return value == otherValue;
-    }
-
     public int getValue() {
         return this.value;
     }
