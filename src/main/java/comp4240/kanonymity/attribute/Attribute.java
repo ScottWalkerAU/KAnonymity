@@ -22,7 +22,7 @@ public abstract class Attribute {
             return false;
         }
 
-        return toString().equals(other.toString());
+        return getModifiedValue().equals(other.getModifiedValue());
     }
 
     public void resetModifiedValue() {

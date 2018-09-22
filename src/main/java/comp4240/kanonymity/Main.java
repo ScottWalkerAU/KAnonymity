@@ -48,10 +48,12 @@ public class Main {
         KAnonymity kAnonymity = new KAnonymity(dataset, 2);
 
         // Print the results
-        System.out.println("\nGeneralised values:");
+        /*System.out.println("\nGeneralised values:");
         kAnonymity.anonymiseTest();
         System.out.println("Divergence: " + kAnonymity.attributeDivergence());
         dataset.displayModifiedDataset();
-        System.out.println("\nk: " + kAnonymity.getK());
+        System.out.println("\nk: " + kAnonymity.getK());*/
+
+        kAnonymity.anonymise();
     }
 }

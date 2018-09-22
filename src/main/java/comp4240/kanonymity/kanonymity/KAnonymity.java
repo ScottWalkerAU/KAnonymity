@@ -6,25 +6,36 @@ import comp4240.kanonymity.attribute.Attribute;
 import comp4240.kanonymity.attribute.AttributeType;
 import comp4240.kanonymity.attribute.IdentifierType;
 import comp4240.kanonymity.attribute.NumericAttribute;
+import comp4240.kanonymity.incognito.DAG;
+import comp4240.kanonymity.incognito.DAGNode;
+import comp4240.kanonymity.incognito.GeneralisationResult;
 import comp4240.kanonymity.tree.Node;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class KAnonymity {
 
-    private int k;
+    private int desiredK;
     private Dataset dataset;
 
-    public KAnonymity(Dataset dataset, int k) {
+    public KAnonymity(Dataset dataset, int desiredK) {
         this.dataset = dataset;
-        this.k = k;
+        this.desiredK = desiredK;
     }
 
     public void anonymise() {
         // TODO This will be the method to find the best combination of generalisations for k
+        DAG dag = new DAG(this);
+        List<GeneralisationResult> anonymisation = dag.getAnonymisations();
+        GeneralisationResult best = null;
+        for (GeneralisationResult result : anonymisation) {
+            System.out.println(result.getNode() + " : divergence " + result.getDivergence());
+            if (best == null || result.getDivergence() < best.getDivergence()) {
+                best = result;
+            }
+        }
+        System.out.println("Best generalisation combo: " + best);
     }
 
     // TODO temporary method, remove later.
@@ -97,6 +108,10 @@ public class KAnonymity {
         return minK;
     }
 
+    public boolean isAtDesiredK() {
+        return isKAnonymous(desiredK);
+    }
+
     public double attributeDivergence() {
         List<String> headers = dataset.getHeaders();
         List<IdentifierType> types = dataset.getIdentifiers();
@@ -116,7 +131,7 @@ public class KAnonymity {
 
             // Record all the different variable types
             for (Attribute a : dataset.getAttributes(header)) {
-                String value = a.toString();
+                String value = a.getModifiedValue();
                 if (!values.contains(value)) {
                     values.add(value);
                 }
@@ -127,5 +142,13 @@ public class KAnonymity {
         }
         // Average of the total divergence
         return total / count;
+    }
+
+    public int getDesiredK() {
+        return desiredK;
+    }
+
+    public Dataset getDataset() {
+        return dataset;
     }
 }
