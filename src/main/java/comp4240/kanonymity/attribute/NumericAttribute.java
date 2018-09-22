@@ -16,12 +16,11 @@ public class NumericAttribute extends Attribute {
             return false;
         }
 
-        // TODO Leeway on double comparison for a small delta?
         double otherValue = ((NumericAttribute) other).getValue();
         return value == otherValue;
     }
 
-    public double getValue() {
+    public int getValue() {
         return this.value;
     }
 

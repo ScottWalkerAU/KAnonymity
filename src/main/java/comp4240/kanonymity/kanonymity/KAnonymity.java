@@ -5,6 +5,7 @@ import comp4240.kanonymity.Record;
 import comp4240.kanonymity.attribute.Attribute;
 import comp4240.kanonymity.attribute.IdentifierType;
 import comp4240.kanonymity.attribute.NumericAttribute;
+import comp4240.kanonymity.tree.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,12 +23,11 @@ public class KAnonymity {
     }
 
     public void anonymise() {
-        GeneralisationModel model = new SubtreeModel(1);
+        Node parent = dataset.getGeneralisationTree("Age").getRoot();
+        Node child = parent.getChildren().get(0);
+        GeneralisationModel model = new SiblingModel("Age", parent, child);
         model.setDataset(dataset);
-        model.setDesiredK(k);
-        //model.anonymise();                // Full dataset generalised
-        model.anonymise("Age");    // Generalise only a column of data
-        //model.anonymise("Age", Arrays.asList(new NumericAttribute(10, IdentifierType.QID)));
+        model.anonymise();
     }
 
     /**

@@ -1,5 +1,8 @@
 package comp4240.kanonymity.tree;
 
+import comp4240.kanonymity.attribute.Attribute;
+import comp4240.kanonymity.attribute.NumericAttribute;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,25 +82,11 @@ public class TreeRange extends Tree {
         }
 
         for (NodeRange node : nodes) {
-            if (node.getRange().equals(range)) {
+            if (node.getRange().equals(range)) { // TODO this is broken Harry
                 return node.getRange();
             }
         }
         return null;
-    }
-
-    /**
-     * {@Inheritdoc}
-     */
-    @Override
-    public List<String> getSubtree(String range) {
-        // TODO - This method
-        List<String> subtree = new ArrayList<>();
-        subtree.add("Go");
-        subtree.add("kill");
-        subtree.add("yourself");
-        subtree.add("!");
-        return subtree;
     }
 
     // -- Getters --
@@ -109,7 +98,8 @@ public class TreeRange extends Tree {
      * @return
      */
     public String getGeneralised(String value, int generalisationLevel) {
-        Range range = findRange(value);
+        int num = Integer.parseInt(value);
+        Range range = findRange(num);
 
         if (range == null) {
             throw new IllegalArgumentException("TreeRange   Cannot find range containing " + value + " in the taxonomy tree");
@@ -122,5 +112,16 @@ public class TreeRange extends Tree {
         }
 
         return getGeneralisedNode(node, generalisationLevel).getValue();
+    }
+
+    public List<Node> getNodes() {
+        return new ArrayList<>(nodes);
+    }
+
+    public Node getNode(Attribute attribute) {
+        NumericAttribute attr = (NumericAttribute) attribute; // TODO unchecked cast
+        int value = attr.getValue();
+        NodeRange parent = findNode(findRange(value));
+        return new NodeRange(parent, new Range(value, value));
     }
 }

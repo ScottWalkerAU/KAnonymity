@@ -8,28 +8,24 @@ import java.util.List;
 public abstract class GeneralisationModel {
 
     private Dataset dataset;
-    private int desiredK;
+    private String header;
 
-    // -- Abstract methods --
+    public GeneralisationModel(String header) {
+        this.header = header;
+    }
+
+    // -- Abstract Methods --
 
     /**
-     * Anonymise the entire dataset all to the same generalisation level.
+     * Anonymise the attributes in the column
      */
     public abstract void anonymise();
 
-    /**
-     * Only anonymise the attributes in the column
-     * @param header    The name of the dataset column that wishes to be anonymised.
-     */
-    public abstract void anonymise(String header);
+    // -- General Methods --
 
-    /**
-     * The subset of attributes that are passed into the method will be generalised to the desired level.
-     *
-     * @param header        The column in which the attributes have been pulled from.
-     * @param attributes    The list of attributes to be anonymised.
-     */
-    public abstract void anonymise(String header, List<Attribute> attributes);
+    public void updateModifiedValue(Attribute attribute, String modifiedValue) {
+        attribute.setModifiedValue(modifiedValue);
+    }
 
     // -- Getters  --
 
@@ -37,8 +33,8 @@ public abstract class GeneralisationModel {
         return dataset;
     }
 
-    public int getDesiredK() {
-        return desiredK;
+    public String getHeader() {
+        return header;
     }
 
     // -- Setters --
@@ -47,11 +43,7 @@ public abstract class GeneralisationModel {
         this.dataset = dataset;
     }
 
-    public void setDesiredK(int desiredK) {
-        this.desiredK = desiredK;
-    }
-
-    public void updateModifiedValue(Attribute attribute, String modifiedValue) {
-        attribute.setModifiedValue(modifiedValue);
+    public void setHeader(String header) {
+        this.header = header;
     }
 }

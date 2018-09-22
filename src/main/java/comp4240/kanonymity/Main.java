@@ -26,7 +26,7 @@ public class Main {
         occupation.add("Engineer", "Software", "Surveying");
         occupation.add("Science", "Physics", "Chemistry");
 
-        occupation.add("Software", "Comp Sci", "Soft Engg");
+        occupation.add("Software", "Comp Sci", "Soft Eng");
 
         TreeRange age = new TreeRange("Age");
         Range root = new Range(0, 50), a = new Range(0, 24), b = new Range(25, 50);
@@ -36,7 +36,7 @@ public class Main {
         age.add(b, ba, bb);
 
         // Show the tree contents
-        System.out.println("\nOccupation Tree printout:");
+        System.out.println("\nAge Tree printout:");
         //occupation.getRoot().printAsArray();
         age.getRoot().printAsArray();
 

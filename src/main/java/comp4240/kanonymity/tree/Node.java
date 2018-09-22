@@ -53,6 +53,17 @@ public abstract class Node {
         return height;
     }
 
+    public boolean canGeneraliseTo(Node node) {
+        Node parent = this;
+        while (parent != null) {
+            if (parent == node)
+                return true;
+
+            parent = parent.getParent();
+        }
+        return false;
+    }
+
     // -- Misc --
 
     @Override

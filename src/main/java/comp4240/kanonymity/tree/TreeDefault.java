@@ -1,5 +1,8 @@
 package comp4240.kanonymity.tree;
 
+import comp4240.kanonymity.attribute.Attribute;
+import comp4240.kanonymity.attribute.StringAttribute;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,29 +59,6 @@ public class TreeDefault extends Tree {
         nodes.put(node.getValue(), node);
     }
 
-    /**
-     * {@Inheritdoc}
-     */
-    @Override
-    public List<String> getSubtree(String value) {
-        List<String> values = new ArrayList<>();
-        List<Node> queue = new ArrayList<>();
-
-        // Add the current value to the queue
-        queue.add(findNode(value));
-
-        while (!queue.isEmpty()) {
-            Node n = queue.remove(0);
-
-            values.add(n.getValue());
-
-            for (Node c : n.getChildren()) {
-                queue.add(c);
-            }
-        }
-
-        return values;
-    }
 
     // -- Getters --
 
@@ -96,5 +76,14 @@ public class TreeDefault extends Tree {
         }
 
         return getGeneralisedNode(node, generalisationLevel).getValue();
+    }
+
+    public List<Node> getNodes() {
+        return new ArrayList<>(nodes.values());
+    }
+
+    public Node getNode(Attribute attribute) {
+        StringAttribute attr = (StringAttribute) attribute; // TODO unchecked cast
+        return findNode(attr.getValue());
     }
 }

@@ -1,20 +1,19 @@
 package comp4240.kanonymity.kanonymity;
 
 import comp4240.kanonymity.Dataset;
-import comp4240.kanonymity.Record;
 import comp4240.kanonymity.attribute.Attribute;
-import comp4240.kanonymity.attribute.IdentifierType;
+import comp4240.kanonymity.tree.Node;
 import comp4240.kanonymity.tree.Tree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SubtreeModel extends GeneralisationModel {
 
-    private int generalisationLevel;
+    private Node node;
 
-    public SubtreeModel(int generalisationLevel) {
-        this.generalisationLevel = generalisationLevel;
+    public SubtreeModel(String header, Node node) {
+        super(header);
+        this.node = node;
     }
 
     /**
@@ -22,74 +21,32 @@ public class SubtreeModel extends GeneralisationModel {
      */
     public void anonymise() {
         Dataset dataset = getDataset();
-        List<String> headers = dataset.getHeaders();
+        List<Attribute> attributes = dataset.getAttributes(getHeader());
+        Tree generalisationTree = dataset.getGeneralisationTree(getHeader());
 
-        // Loop through all records
-        for (Record r : dataset.getRecords()) {
-            // Get the attributes for each record
-            List<Attribute> attributes = r.getAttributes();
-
-            // Loop through all attributes
-            for (int i = 0; i < dataset.getAttributeSize(); i++) {
-                Attribute attribute = attributes.get(i);
-                IdentifierType identifierType = attribute.getIdentifierType();
-                String header = headers.get(i);
-
-                // Get the generalisation tree for that header if it exists
-                Tree generalisationTree = dataset.getGeneralisationTree(header);
-
-                // If either the identifier doesn't equal QID or there is no generalisation tree, skip the attribute
-                if (identifierType != IdentifierType.QID || generalisationTree == null) {
-                    continue;
-                }
-
-                // Calculate the generalised value
-                String originalValue = attribute.toString();
-                String generalisedValue = generalisationTree.getGeneralised(originalValue, generalisationLevel);
-
-                // Update the modified values
-                updateModifiedValue(attribute, generalisedValue);
-
-                // Output the new generalised value
-                System.out.printf("%s is generalised to %s when using a generalisation level of %d\n", originalValue, generalisedValue, generalisationLevel);
-            }
+        // No tree? Just return without doing anything
+        if (generalisationTree == null) {
+            return;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void anonymise(String header) {
-        Dataset dataset = getDataset();
-
-        List<Attribute> attributes = dataset.getAttributes(header);
 
         // Loop through all attributes
         for (Attribute attribute : attributes) {
-            IdentifierType identifierType = attribute.getIdentifierType();
+            Node current = generalisationTree.getNode(attribute);
 
-            // Get the generalisation tree for that header if it exists
-            Tree generalisationTree = dataset.getGeneralisationTree(header);
+            // Not a descendant, ignore it.
+            if (!current.canGeneraliseTo(node)) {
+                continue;
+            }
 
             // Calculate the generalised value
             String originalValue = attribute.toString();
-            String generalisedValue = generalisationTree.getGeneralised(originalValue, generalisationLevel);
+            String generalisedValue = node.getValue();
 
             // Update the modified values
             updateModifiedValue(attribute, generalisedValue);
 
             // Output the new generalised value
-            System.out.printf("%s is generalised to %s when using a generalisation level of %d\n", originalValue, generalisedValue, generalisationLevel);
+            System.out.printf("%s is generalised to %s when subtree model\n", originalValue, generalisedValue);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void anonymise(String header, List<Attribute> identifiedAttributes) {
-        // TODO this whole method
-        return;
     }
 }
