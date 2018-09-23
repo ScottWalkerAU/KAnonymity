@@ -7,6 +7,39 @@ public class Range {
         setMin(min);
         setMax(max);
     }
+
+    /**
+     * Takes a string version of the range in the format of [0..50] or [0..null] for an open upper range.
+     * @param range
+     */
+    public Range(String range) {
+        // [0..50] is the format
+
+        // Replaces the "[" & "]" at the end of the range
+        range = range.replaceAll("\\[|]", "");
+
+        // Split the range at ".."
+        String[] values = range.split("\\.\\.");
+        Integer min, max;
+
+        // Set the min value to either null or a value;
+        if (values[0].equals("null")) {
+            min = null;
+        } else {
+            min = Integer.parseInt(values[0]);
+        }
+
+        // Set the max value to either null or a value;
+        if (values[1].equals("null")) {
+            max = null;
+        } else {
+            max = Integer.parseInt(values[1]);
+        }
+
+        // Set the values
+        setMin(min);
+        setMax(max);
+    }
     // -- General Methods --
 
     public boolean contains(Integer value) {
