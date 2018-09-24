@@ -3,11 +3,8 @@ package comp4240.kanonymity.kanonymity;
 import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
 import comp4240.kanonymity.attribute.Attribute;
-import comp4240.kanonymity.attribute.AttributeType;
 import comp4240.kanonymity.attribute.IdentifierType;
-import comp4240.kanonymity.attribute.NumericAttribute;
 import comp4240.kanonymity.incognito.DAG;
-import comp4240.kanonymity.incognito.DAGNode;
 import comp4240.kanonymity.incognito.GeneralisationResult;
 import comp4240.kanonymity.tree.Node;
 
@@ -25,16 +22,8 @@ public class KAnonymity {
     }
 
     public void anonymise() {
-        // TODO This will be the method to find the best combination of generalisations for k
         DAG dag = new DAG(this);
-        List<GeneralisationResult> anonymisation = dag.getAnonymisations();
-        GeneralisationResult best = null;
-        for (GeneralisationResult result : anonymisation) {
-            System.out.println(result.getNode() + " : divergence " + result.getDivergence());
-            if (best == null || result.getDivergence() < best.getDivergence()) {
-                best = result;
-            }
-        }
+        GeneralisationResult best = dag.getBestGeneralisation();
         System.out.println("Best generalisation combo: " + best);
     }
 

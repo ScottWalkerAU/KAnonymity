@@ -3,9 +3,7 @@ package comp4240.kanonymity.incognito;
 import comp4240.kanonymity.kanonymity.KAnonymity;
 import comp4240.kanonymity.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class DAG {
 
@@ -66,15 +64,32 @@ public class DAG {
         return temp;
     }
 
-    public List<GeneralisationResult> getAnonymisations() {
-        List<GeneralisationResult> anonymisations = new ArrayList<>();
-        for (DAGNode node : nodes) {
+    public GeneralisationResult getBestGeneralisation() {
+        GeneralisationResult best = null;
+        List<DAGNode> toCheck = new LinkedList<>(nodes);
+
+        while (!toCheck.isEmpty()) {
+            int index = new Random().nextInt(toCheck.size());
+            DAGNode node = toCheck.remove(index);
+            // If we have already calculated the anonymity of the node, skip over it.
+            if (node.getAnonymous() != DAGNode.Anonymous.UNCHECKED) {
+                continue;
+            }
+
             Double divergence = node.getDivergence(kAnonymity);
-            if (divergence != null) {
-                anonymisations.add(new GeneralisationResult(node, divergence));
+            // Not anonymous. Add the children and keep checking
+            if (divergence == null) {
+                node.setAnonymous(DAGNode.Anonymous.FALSE);
+                continue;
+            }
+
+            node.setAnonymous(DAGNode.Anonymous.TRUE);
+            if (best == null || divergence < best.getDivergence()) {
+                best = new GeneralisationResult(node, divergence);
             }
         }
-        return anonymisations;
+
+        return best;
     }
 
     public int size() {
