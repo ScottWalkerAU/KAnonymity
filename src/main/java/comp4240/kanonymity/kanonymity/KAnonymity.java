@@ -117,7 +117,7 @@ public class KAnonymity {
         Record r1 = recordsQueue.remove(0);
 
         // Count the number of matches for this record
-        int matches = 0;
+        int matches = 1;
 
         // Uses an iterator to look for matching pair
         Iterator<Record> itr = recordsQueue.iterator();

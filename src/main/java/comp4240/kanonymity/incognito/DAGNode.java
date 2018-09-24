@@ -49,8 +49,8 @@ public class DAGNode {
             model.setDataset(dataset);
             model.anonymise();
         }
-        dataset.displayModifiedDataset();
-        System.out.println(this);
+        //dataset.displayModifiedDataset();
+        //System.out.println(this);
 
         Double divergence = null;
         if (kAnonymity.isAtDesiredK()) {
