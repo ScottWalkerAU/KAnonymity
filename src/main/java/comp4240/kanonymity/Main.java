@@ -14,7 +14,7 @@ public class Main {
         new Main("data.txt", "dataTaxonomy.txt");
     }
 
-    Main(String... files) {
+    private Main(String... files) {
         this.fileName = files[0];
         Dataset dataset;
 
@@ -25,31 +25,6 @@ public class Main {
         }
 
         dataset.displayDataset();
-
-        // Define the Occupation hierarchy
-        /*
-        TreeDefault occupation = new TreeDefault("Occupation");
-        occupation.add("ANY", "Engineer", "Science");
-        occupation.add("Engineer", "Software", "Surveying");
-        occupation.add("Science", "Physics", "Chemistry");
-        occupation.add("Software", "Comp Sci", "Soft Eng");
-
-        TreeRange age = new TreeRange("Age");
-        Range root = new Range(0, 50), a = new Range(0, 24), b = new Range(25, 50);
-        Range aa = new Range(0,12), ab = new Range(13, 24), ba = new Range(25, 37), bb = new Range(38, 50);
-        age.add(root, a, b);
-        age.add(a, aa, ab);
-        age.add(b, ba, bb);
-
-        // Show the tree contents
-        System.out.println("\nAge Tree printout:");
-        //occupation.getRoot().printAsArray();
-        age.getRoot().printAsArray();
-
-        // Add the generalisations to the dataset
-        dataset.addGeneralisation(occupation);
-        dataset.addGeneralisation(age);
-        */
 
         // Create the K-Anonymity class
         KAnonymity kAnonymity = new KAnonymity(dataset, 2);

@@ -295,7 +295,6 @@ public class Dataset {
     }
 
     public void displayModifiedDataset() {
-
         System.out.println("\nThe Modified Dataset");
         for (AttributeType attributeType : attributeTypes) {
             System.out.print(attributeType + "\t");

@@ -22,7 +22,7 @@ public class DAG {
         nodes = new ArrayList<>();
         List<FullDomainLevel> generalisations = new ArrayList<>(trees.size());
         for (Tree tree : trees) {
-            int level = 0; // Can be set to tree.height if we wanted to work backwards (With other tweaks)
+            int level = tree.getTreeHeight();
             generalisations.add(new FullDomainLevel(tree, level));
         }
         root = new DAGNode(generalisations);
@@ -41,9 +41,9 @@ public class DAG {
                 Tree tree = generalisation.getTree();
                 int level = generalisation.getLevel();
 
-                if (level < tree.getTreeHeight()) {
+                if (level > 0) {
                     List<FullDomainLevel> nextGens = new ArrayList<>(generalisations);
-                    FullDomainLevel nextGen = new FullDomainLevel(tree, level + 1);
+                    FullDomainLevel nextGen = new FullDomainLevel(tree, level - 1);
                     nextGens.set(i, nextGen);
                     DAGNode next = findNode(new DAGNode(nextGens));
                     current.addChild(next);
