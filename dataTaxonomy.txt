@@ -1,0 +1,10 @@
+Occupation, ANY, Engineer, Science
+Occupation, Engineer, Software, Surveying
+Occupation, Science, Physics, Chemistry
+Occupation, Software, Comp Sci, Soft Eng
+
+Age, [0..null], [0..24], [25..50]
+Age, [0..24], [0..12], [13..24]
+Age, [25..50], [25..37], [38..50]
+
+Gender, ANY, Male, Female
