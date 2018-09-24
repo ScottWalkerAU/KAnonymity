@@ -66,23 +66,8 @@ public class KAnonymity {
 
         // For each record check if there are at least k matches
         while (!recordsQueue.isEmpty()) {
-            // Get the first element of the list
-            Record r1 = recordsQueue.remove(0);
-
-            // Count the number of matches for this record
-            int matches = 0;
-
-            // Uses an iterator to look for matching pair
-            Iterator<Record> itr = recordsQueue.iterator();
-            while(itr.hasNext()) {
-                Record r2 = itr.next();
-
-                // When found removes the Record from the list to speed things up.
-                if (r1.equivalentTo(r2)) {
-                    matches++;
-                    itr.remove();
-                }
-            }
+            // Get the number of matched records
+            int matches = findMatches(recordsQueue);
 
             // If we've found a worse value than what we're looking for, return false
             if (matches < k) {
@@ -99,29 +84,54 @@ public class KAnonymity {
      * @return the size of k.
      */
     public int getK() {
-        List<Record> records = dataset.getRecords();
-        int minK = records.size();
+        // Create a queue of all records to iterate through.
+        List<Record> recordsQueue = new LinkedList<>(dataset.getRecords());
+
+        // Finds the lowest k value within the data set.
+        int maxK = recordsQueue.size();
 
         // For each record check if there are at least k matches
-        for (Record r1 : records) {
-            // Count the number of matches for this record
-            int matches = 0;
-            for (Record r2 : records) {
-                if (r1.equivalentTo(r2)) {
-                    matches++;
-                }
-            }
+        while (!recordsQueue.isEmpty()) {
+            // Get the number of matched records
+            int matches = findMatches(recordsQueue);
 
-            // Can't get any worse than 1, not reason to keep looking
+            // If matches == 1, you can't get a worse value of 1. So just return 1.
             if (matches == 1) {
                 return 1;
-            }
-            // If we've found a worse k value, update it
-            else if (matches < minK) {
-                minK = matches;
+            } else if (matches < maxK) { // If we've found a worse k value, update it
+                maxK = matches;
             }
         }
-        return minK;
+
+        return maxK;
+    }
+
+    /**
+     * Given an List of records, return the number of times the first element if found within that list.
+     *
+     * @param recordsQueue  List of Records
+     * @return              The number of matches the first element is found within that list.
+     */
+    private int findMatches(List<Record> recordsQueue) {
+        // Get the first element of the list
+        Record r1 = recordsQueue.remove(0);
+
+        // Count the number of matches for this record
+        int matches = 0;
+
+        // Uses an iterator to look for matching pair
+        Iterator<Record> itr = recordsQueue.iterator();
+        while(itr.hasNext()) {
+            Record r2 = itr.next();
+
+            // When found removes the Record from the list to speed things up.
+            if (r1.equivalentTo(r2)) {
+                matches++;
+                itr.remove();
+            }
+        }
+
+        return matches;
     }
 
     public boolean isAtDesiredK() {
