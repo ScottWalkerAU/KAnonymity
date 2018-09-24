@@ -95,10 +95,6 @@ public class DAGNode {
         return divergence;
     }
 
-    public List<DAGNode> getChildren() {
-        return children;
-    }
-
     public List<FullDomainLevel> getGeneralisations() {
         return generalisations;
     }

@@ -24,14 +24,6 @@ public class FullDomainLevel {
         return level;
     }
 
-    public void setTree(Tree tree) {
-        this.tree = tree;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     @Override
     public String toString() {
         return String.format("%s%d", tree.getAttributeHeader(), level);

@@ -8,27 +8,29 @@ import java.util.*;
 public class DAG {
 
     private KAnonymity kAnonymity;
-    private List<Tree> trees;
 
     private DAGNode root;
     private List<DAGNode> nodes;
 
     public DAG(KAnonymity kAnonymity) {
         this.kAnonymity = kAnonymity;
-        this.trees = kAnonymity.getDataset().getGeneralisations();
+        this.nodes = new ArrayList<>();
 
-        nodes = new ArrayList<>();
+        // Create the root node of which all other nodes will be created from
+        List<Tree> trees = kAnonymity.getDataset().getGeneralisations();
         List<FullDomainLevel> generalisations = new ArrayList<>(trees.size());
         for (Tree tree : trees) {
             int level = tree.getTreeHeight();
             generalisations.add(new FullDomainLevel(tree, level));
         }
         root = new DAGNode(generalisations);
-        nodes.add(root);
         initialise();
     }
 
     private void initialise() {
+        nodes.clear();
+        nodes.add(root);
+
         int index = 0;
         while (index < nodes.size()) {
             DAGNode current = nodes.get(index);
@@ -95,10 +97,4 @@ public class DAG {
     public int size() {
         return nodes.size();
     }
-
-    public void print() {
-        for (DAGNode node : nodes)
-            System.out.println(node);
-    }
-
 }

@@ -10,7 +10,6 @@ public class Main {
     private String fileName;
 
     public static void main(String[] args) {
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         new Main("data.txt", "dataTaxonomy.txt");
     }
 

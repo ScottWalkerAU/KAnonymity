@@ -32,7 +32,7 @@ public class Dataset {
     }
 
     public void loadData(String path) {
-        System.out.println("[INFO]   loadData   Loading data");
+        //System.out.println("[INFO]   loadData   Loading data");
         Scanner scanner;
         String line;
 
@@ -70,7 +70,7 @@ public class Dataset {
     }
 
     public void loadTaxonomyTrees(String path) {
-        System.out.println("[INFO]   loadTaxonomyTrees   Loading TaxonomyTrees");
+        //System.out.println("[INFO]   loadTaxonomyTrees   Loading TaxonomyTrees");
         Scanner scanner;
         String line;
 
@@ -107,7 +107,7 @@ public class Dataset {
             // Get the header for the taxonomy tree
             String header = values[0];
 
-            // Find out what index the header is in the data set to find the corrisponding attributeType for the column.
+            // Find out what index the header is in the data set to find the corresponding attributeType for the column.
             int headerIndex = headers.indexOf(header);
             AttributeType attributeType = attributeTypes.get(headerIndex);
 
@@ -238,8 +238,7 @@ public class Dataset {
                     attribute = new DateAttribute(value, identifiers.get(i));
                     break;
                 default:
-                    System.out.println("{WARNING]   addRecord   The Attribute Type: '" + attributeTypes.get(i) + "' is not recognised.");
-                    break;
+                    throw new IllegalArgumentException("{WARNING] addRecord :: The Attribute Type: '" + attributeTypes.get(i) + "' is not recognised.");
             }
 
             record.addAttribute(attribute);

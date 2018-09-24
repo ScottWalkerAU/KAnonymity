@@ -21,10 +21,6 @@ public class GeneralisationResult {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("GeneralisationResult{");
-        sb.append("node: ").append(node);
-        sb.append(", divergence: ").append(divergence);
-        sb.append('}');
-        return sb.toString();
+        return String.format("DAGNode: %s, Divergence: %f", node, divergence);
     }
 }
