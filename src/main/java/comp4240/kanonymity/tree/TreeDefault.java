@@ -72,7 +72,7 @@ public class TreeDefault extends Tree {
         // If the node doesn't exist, throw an error
         Node node = findNode(value);
         if (node == null) {
-            throw new IllegalArgumentException("Cannot find node with value " + value + " in the taxonomy tree");
+            throw new IllegalArgumentException("Cannot find node with value '" + value + "' in the taxonomy tree '" + attributeHeader + "'");
         }
 
         return getGeneralisedNode(node, generalisationLevel).getValue();

@@ -53,26 +53,42 @@ public class KAnonymity {
      * @return true of false if the dataset is k-anonymised
      */
     public boolean isKAnonymous(int k) {
-        List<Record> records = dataset.getRecords();
-        int minK = records.size();
+        // Returns true if k is equal to 1. All data sets have a k of 1.
+        if (k == 1) {
+            return true;
+        }
+
+        // Create a queue of all records to iterate through.
+        List<Record> recordsQueue = new LinkedList<>(dataset.getRecords());
+
+        // Finds the lowest k value within the data set.
+        int maxK = recordsQueue.size();
 
         // For each record check if there are at least k matches
-        for (Record r1 : records) {
+        while (!recordsQueue.isEmpty()) {
+            // Get the first element of the list
+            Record r1 = recordsQueue.remove(0);
+
             // Count the number of matches for this record
             int matches = 0;
-            for (Record r2 : records) {
+
+            // Uses an iterator to look for matching pair
+            Iterator<Record> itr = recordsQueue.iterator();
+            while(itr.hasNext()) {
+                Record r2 = itr.next();
+
+                // When found removes the Record from the list to speed things up.
                 if (r1.equivalentTo(r2)) {
                     matches++;
+                    itr.remove();
                 }
             }
 
             // If we've found a worse value than what we're looking for, return false
             if (matches < k) {
                 return false;
-            }
-            // If we've found a worse k value, update it
-            else if (k < minK) {
-                minK = k;
+            } else if (k < maxK) { // If we've found a worse k value, update it
+                maxK = k;
             }
         }
         return true;
