@@ -23,14 +23,14 @@ public class Range {
         Integer min, max;
 
         // Set the min value to either null or a value;
-        if (values[0].equals("null")) {
+        if (values[0].equals("*")) {
             min = null;
         } else {
             min = Integer.parseInt(values[0]);
         }
 
         // Set the max value to either null or a value;
-        if (values[1].equals("null")) {
+        if (values[1].equals("*")) {
             max = null;
         } else {
             max = Integer.parseInt(values[1]);
@@ -63,7 +63,14 @@ public class Range {
     }
 
     public String toString() {
-        return "[" + min + ", " + max + "]";
+        String out = "[";
+
+        out += (min == null) ? "*" : min;
+        out += ", ";
+        out += (max == null) ? "*" : max;
+        out += "]";
+
+        return out;
     }
 
     public boolean hasLowerBound() {

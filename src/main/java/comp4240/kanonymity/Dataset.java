@@ -92,7 +92,7 @@ public class Dataset {
             line = scanner.nextLine();
 
             // Check the line isn't empty
-            if (line.isEmpty()) {
+            if (line.trim().isEmpty()) {
                 continue;
             }
 
@@ -293,6 +293,26 @@ public class Dataset {
         }
     }
 
+    public void displaySomeDataset() {
+
+        System.out.println("Some of the Dataset");
+        for (AttributeType attributeType : attributeTypes) {
+            System.out.print(attributeType + "\t");
+        }
+        System.out.println();
+
+        for (String header : headers) {
+            System.out.print(header + "\t");
+        }
+        System.out.println();
+
+        for (int i = 0; i < Math.min(10, records.size()); i++) {
+            Record r = records.get(i);
+            System.out.println(r);
+        }
+    }
+
+
     public void displayModifiedDataset() {
         System.out.println("\nThe Modified Dataset");
         for (AttributeType attributeType : attributeTypes) {
@@ -339,4 +359,15 @@ public class Dataset {
         return new ArrayList<>(generalisations.values());
     }
 
+
+    public int getTaxonomyTreeCombinations() {
+        int combinations = 1;
+
+        for (String header : headers) {
+            Tree tree = generalisations.get(header);
+            combinations *= tree.getTreeDepth();
+        }
+
+        return combinations;
+    }
 }

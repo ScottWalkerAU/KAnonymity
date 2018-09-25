@@ -10,7 +10,7 @@ public class Main {
     private String fileName;
 
     public static void main(String[] args) {
-        new Main("data.txt", "dataTaxonomy.txt");
+        new Main("CensusData10.csv", "CensusDataTaxonomy.txt");
     }
 
     private Main(String... files) {
@@ -23,7 +23,10 @@ public class Main {
             dataset = new Dataset(fileName);
         }
 
-        dataset.displayDataset();
+        System.out.println("The number of combinations for the loaded taxonomy trees is " + dataset.getTaxonomyTreeCombinations() + " combinations");
+
+        //dataset.displayDataset();
+        dataset.displaySomeDataset();
 
         // Create the K-Anonymity class
         KAnonymity kAnonymity = new KAnonymity(dataset, 2);
@@ -35,6 +38,9 @@ public class Main {
         dataset.displayModifiedDataset();
         System.out.println("\nk: " + kAnonymity.getK());*/
 
+        long startTime = System.currentTimeMillis();
         kAnonymity.anonymise();
+        long ellapsedTime = System.currentTimeMillis();
+        System.out.println("Ellapsed Time: " + (ellapsedTime / 1000.0) + " seconds.");
     }
 }

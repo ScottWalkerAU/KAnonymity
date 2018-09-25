@@ -34,7 +34,7 @@ public class TreeDefault extends Tree {
 
         // Otherwise create a new node and add it to the list of nodes.
         if (node == null) {
-            throw new IllegalArgumentException("The parent must already be defined in the taxonomy tree");
+            throw new IllegalArgumentException("The parent must already be defined in the taxonomy tree, couldn't find '" + parent + "'");
         }
 
         // For all children passed in
