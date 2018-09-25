@@ -15,6 +15,7 @@ import java.util.*;
 public class Dataset {
 
     private List<String> headers;
+    private int[] headerWidths;
     private List<IdentifierType> identifiers;
     private List<AttributeType> attributeTypes;
     private List<Record> records;
@@ -53,20 +54,37 @@ public class Dataset {
         line = scanner.nextLine();
         setIdentifierType(line.split(","));
 
+        // Set the header widths, used for displaying the dataset
+        headerWidths = new int[identifiers.size()];
+        setHeaders(line.split(","));
+
         // Attribute Type
         line = scanner.nextLine();
         setAttributeTypes(line.split(","));
+        setHeaders(line.split(","));
 
         // Headers
         line = scanner.nextLine();
         setHeaders(line.split(","));
+        setHeaderWidths(line.split(","));
+
 
         // Data
         while (scanner.hasNextLine()) {
             line = scanner.nextLine();
             addRecord(line.split(","));
+            setHeaderWidths(line.split(","));
         }
         scanner.close();
+    }
+
+    private void setHeaderWidths(String[] values) {
+        for (int i = 0; i < values.length; i++) {
+            String value = values[i];
+
+            headerWidths[i] = Math.max(headerWidths[i], value.length());
+            headerWidths[i] = Math.max(headerWidths[i], 6);
+        }
     }
 
     public void loadTaxonomyTrees(String path) {
@@ -282,19 +300,29 @@ public class Dataset {
     public void displayDataset(int amount) {
 
         System.out.println("Some of the Dataset");
-        for (AttributeType attributeType : attributeTypes) {
-            System.out.print(attributeType + "\t");
+        for (int i = 0; i < headers.size(); i++) {
+            AttributeType attributeType = attributeTypes.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            System.out.printf(format, attributeType);
         }
         System.out.println();
 
-        for (String header : headers) {
-            System.out.print(header + "\t");
+        for (int i = 0; i < headers.size(); i++) {
+            String header = headers.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            System.out.printf(format, header);
         }
         System.out.println();
 
         for (int i = 0; i < Math.min(amount, records.size()); i++) {
             Record r = records.get(i);
-            System.out.println(r);
+            List<Attribute> attributes = r.getAttributes();
+            for (int j = 0; j < attributes.size(); j++) {
+                Attribute attribute = attributes.get(j);
+                String format = "%-" + headerWidths[j] + "s ";
+                System.out.printf(format, attribute.toString());
+            }
+            System.out.println();
         }
     }
 
@@ -304,19 +332,29 @@ public class Dataset {
 
     public void displayModifiedDataset(int amount) {
         System.out.println("\nThe Modified Dataset");
-        for (AttributeType attributeType : attributeTypes) {
-            System.out.print(attributeType + "\t");
+        for (int i = 0; i < headers.size(); i++) {
+            AttributeType attributeType = attributeTypes.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            System.out.printf(format, attributeType);
         }
         System.out.println();
 
-        for (String header : headers) {
-            System.out.print(header + "\t");
+        for (int i = 0; i < headers.size(); i++) {
+            String header = headers.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            System.out.printf(format, header);
         }
         System.out.println();
 
         for (int i = 0; i < Math.min(amount, records.size()); i++) {
             Record r = records.get(i);
-            System.out.println(r.getModifiedValues());
+            List<Attribute> attributes = r.getAttributes();
+            for (int j = 0; j < attributes.size(); j++) {
+                Attribute attribute = attributes.get(j);
+                String format = "%-" + headerWidths[j] + "s ";
+                System.out.printf(format, attribute.getModifiedValue().toString());
+            }
+            System.out.println();
         }
     }
 
