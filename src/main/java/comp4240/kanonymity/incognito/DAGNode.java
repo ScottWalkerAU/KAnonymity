@@ -35,22 +35,6 @@ public class DAGNode {
         }
     }
 
-    public boolean generalisationsMatch(DAGNode other) {
-        if (generalisations.size() != other.generalisations.size()) {
-            return false;
-        }
-
-        for (int i = 0; i < generalisations.size(); i++) {
-            FullDomainLevel genA = generalisations.get(i);
-            FullDomainLevel genB = other.generalisations.get(i);
-
-            if (!genA.equalTo(genB)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Sets if the node is anonymous. Value is null by default as we are uncertain.
      * If setting to true, all the more generalised nodes must also be true.
@@ -78,7 +62,7 @@ public class DAGNode {
         }
     }
 
-    public Double getFitness(KAnonymity kAnonymity) {
+    public void anonymise(KAnonymity kAnonymity) {
         Dataset dataset = kAnonymity.getDataset();
         for (FullDomainLevel generalisation : generalisations) {
             String header = generalisation.getTree().getAttributeHeader();
@@ -87,6 +71,10 @@ public class DAGNode {
             model.setDataset(dataset);
             model.anonymise();
         }
+    }
+
+    public Double getFitness(KAnonymity kAnonymity) {
+        anonymise(kAnonymity);
         //dataset.displayModifiedDataset();
         //System.out.println(this);
 
@@ -94,7 +82,7 @@ public class DAGNode {
         if (kAnonymity.isAtDesiredK()) {
             fitness = kAnonymity.getFitness();
         }
-        dataset.resetModifiedValues();
+        kAnonymity.getDataset().resetModifiedValues();
         return fitness;
     }
 

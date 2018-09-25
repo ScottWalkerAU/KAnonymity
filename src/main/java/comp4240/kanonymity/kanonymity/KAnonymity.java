@@ -25,6 +25,9 @@ public class KAnonymity {
         DAG dag = new DAG(this);
         GeneralisationResult best = dag.getBestGeneralisation();
         System.out.println("Best generalisation combo: " + best);
+
+        best.getNode().anonymise(this);
+        dataset.displayModifiedDataset(10);
     }
 
     // TODO temporary method, remove later.
@@ -128,14 +131,14 @@ public class KAnonymity {
     }
 
     public double getFitness() {
-        HashSet<String> equiverlentClasses = new HashSet<>();
+        HashSet<String> equivalentClasses = new HashSet<>();
 
         for (Record r : dataset.getRecords()) {
             String contents = r.getModifiedValues();
-            equiverlentClasses.add(contents);
+            equivalentClasses.add(contents);
         }
 
-        return equiverlentClasses.size();
+        return equivalentClasses.size();
     }
 
     public int getDesiredK() {

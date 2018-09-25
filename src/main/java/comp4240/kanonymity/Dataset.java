@@ -276,24 +276,10 @@ public class Dataset {
     }
 
     public void displayDataset() {
-
-        System.out.println("The Dataset");
-        for (AttributeType attributeType : attributeTypes) {
-            System.out.print(attributeType + "\t");
-        }
-        System.out.println();
-
-        for (String header : headers) {
-            System.out.print(header + "\t");
-        }
-        System.out.println();
-
-        for (Record r : records) {
-            System.out.println(r);
-        }
+        displayDataset(records.size());
     }
 
-    public void displaySomeDataset() {
+    public void displayDataset(int amount) {
 
         System.out.println("Some of the Dataset");
         for (AttributeType attributeType : attributeTypes) {
@@ -306,14 +292,17 @@ public class Dataset {
         }
         System.out.println();
 
-        for (int i = 0; i < Math.min(10, records.size()); i++) {
+        for (int i = 0; i < Math.min(amount, records.size()); i++) {
             Record r = records.get(i);
             System.out.println(r);
         }
     }
 
-
     public void displayModifiedDataset() {
+        displayModifiedDataset(records.size());
+    }
+
+    public void displayModifiedDataset(int amount) {
         System.out.println("\nThe Modified Dataset");
         for (AttributeType attributeType : attributeTypes) {
             System.out.print(attributeType + "\t");
@@ -325,7 +314,8 @@ public class Dataset {
         }
         System.out.println();
 
-        for (Record r : records) {
+        for (int i = 0; i < Math.min(amount, records.size()); i++) {
+            Record r = records.get(i);
             System.out.println(r.getModifiedValues());
         }
     }

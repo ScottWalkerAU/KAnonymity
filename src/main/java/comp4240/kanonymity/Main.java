@@ -26,7 +26,7 @@ public class Main {
         System.out.println("The number of combinations for the loaded taxonomy trees is " + dataset.getTaxonomyTreeCombinations() + " combinations");
 
         //dataset.displayDataset();
-        dataset.displaySomeDataset();
+        dataset.displayDataset(10);
 
         // Create the K-Anonymity class
         KAnonymity kAnonymity = new KAnonymity(dataset, 2);
