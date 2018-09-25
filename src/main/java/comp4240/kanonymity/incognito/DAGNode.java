@@ -78,7 +78,7 @@ public class DAGNode {
         }
     }
 
-    public Double getDivergence(KAnonymity kAnonymity) {
+    public Double getFitness(KAnonymity kAnonymity) {
         Dataset dataset = kAnonymity.getDataset();
         for (FullDomainLevel generalisation : generalisations) {
             String header = generalisation.getTree().getAttributeHeader();
@@ -88,14 +88,14 @@ public class DAGNode {
             model.anonymise();
         }
         //dataset.displayModifiedDataset();
-        System.out.println(this);
+        //System.out.println(this);
 
-        Double divergence = null;
+        Double fitness = null;
         if (kAnonymity.isAtDesiredK()) {
-            divergence = kAnonymity.attributeDivergence();
+            fitness = kAnonymity.getFitness();
         }
         dataset.resetModifiedValues();
-        return divergence;
+        return fitness;
     }
 
     public List<FullDomainLevel> getGeneralisations() {

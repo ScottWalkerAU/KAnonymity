@@ -10,7 +10,7 @@ public class Main {
     private String fileName;
 
     public static void main(String[] args) {
-        new Main("data/CensusData100.csv", "data/CensusDataTaxonomy.txt");
+        new Main("data/CensusData1000.csv", "data/CensusDataTaxonomy.txt");
     }
 
     private Main(String... files) {

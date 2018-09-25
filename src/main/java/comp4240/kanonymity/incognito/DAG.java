@@ -78,16 +78,18 @@ public class DAG {
                 continue;
             }
 
-            Double divergence = node.getDivergence(kAnonymity);
+            Double fitness = node.getFitness(kAnonymity);
             // Not anonymous. Add the children and keep checking
-            if (divergence == null) {
+            if (fitness == null) {
                 node.setAnonymous(DAGNode.Anonymous.FALSE);
                 continue;
             }
 
             node.setAnonymous(DAGNode.Anonymous.TRUE);
-            if (best == null || divergence < best.getDivergence()) {
-                best = new GeneralisationResult(node, divergence);
+            System.out.println(node + ": Fitness: " + fitness);
+
+            if (best == null || fitness > best.getFitness()) {
+                best = new GeneralisationResult(node, fitness);
             }
         }
 

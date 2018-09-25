@@ -127,36 +127,15 @@ public class KAnonymity {
         return isKAnonymous(desiredK);
     }
 
-    public double attributeDivergence() {
-        List<String> headers = dataset.getHeaders();
-        List<IdentifierType> types = dataset.getIdentifiers();
+    public double getFitness() {
+        HashSet<String> equiverlentClasses = new HashSet<>();
 
-        double total = 0.0;
-        int count = 0;
-
-        // Loop through all records one Attribute column at a time
-        for (int i = 0; i < headers.size(); i++) {
-            IdentifierType type = types.get(i);
-            if (type != IdentifierType.QID) {
-                continue;
-            }
-
-            String header = headers.get(i);
-            List<String> values = new ArrayList<>();
-
-            // Record all the different variable types
-            for (Attribute a : dataset.getAttributes(header)) {
-                String value = a.getModifiedValue();
-                if (!values.contains(value)) {
-                    values.add(value);
-                }
-            }
-            // Calculate the percentage how many different results are found
-            total += 100.0 / values.size();
-            count++;
+        for (Record r : dataset.getRecords()) {
+            String contents = r.getModifiedValues();
+            equiverlentClasses.add(contents);
         }
-        // Average of the total divergence
-        return total / count;
+
+        return equiverlentClasses.size();
     }
 
     public int getDesiredK() {
