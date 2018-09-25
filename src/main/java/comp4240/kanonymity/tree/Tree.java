@@ -55,10 +55,6 @@ public abstract class Tree {
         return root.getHeight();
     }
 
-    public int getTreeDepth() {
-        return root.getDepth();
-    };
-
     public String getAttributeHeader() {
         return attributeHeader;
     }

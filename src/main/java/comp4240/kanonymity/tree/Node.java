@@ -53,16 +53,6 @@ public abstract class Node {
         return height;
     }
 
-    public int getDepth() {
-        int height = getHeight();
-
-        for (Node c : children) {
-            height = Math.max(height, c.getHeight());
-        }
-
-        return height + 1;
-    }
-
     public boolean canGeneraliseTo(Node node) {
         Node parent = this;
         while (parent != null) {

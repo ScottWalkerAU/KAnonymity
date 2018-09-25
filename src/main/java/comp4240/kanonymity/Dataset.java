@@ -365,7 +365,7 @@ public class Dataset {
 
         for (String header : headers) {
             Tree tree = generalisations.get(header);
-            combinations *= tree.getTreeDepth();
+            combinations *= tree.getTreeHeight() + 1;
         }
 
         return combinations;
