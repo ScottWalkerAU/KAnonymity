@@ -57,8 +57,11 @@ public class DAGNode {
      * @param anonymous True if anonymous
      */
     public void setAnonymous(Anonymous anonymous) {
-        this.anonymous = anonymous;
+        if (this.anonymous != Anonymous.UNCHECKED) {
+            return;
+        }
 
+        this.anonymous = anonymous;
         switch (anonymous) {
             case FALSE:
                 // If this level is false, all the parents must be false too

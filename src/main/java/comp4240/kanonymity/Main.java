@@ -10,7 +10,7 @@ public class Main {
     private String fileName;
 
     public static void main(String[] args) {
-        new Main("CensusData10.csv", "CensusDataTaxonomy.txt");
+        new Main("data/CensusData100.csv", "data/CensusDataTaxonomy.txt");
     }
 
     private Main(String... files) {
@@ -40,7 +40,7 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
         kAnonymity.anonymise();
-        long ellapsedTime = System.currentTimeMillis();
-        System.out.println("Ellapsed Time: " + (ellapsedTime / 1000.0) + " seconds.");
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Ellapsed Time: " + (elapsedTime / 1000.0) + " seconds.");
     }
 }

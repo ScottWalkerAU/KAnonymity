@@ -10,11 +10,11 @@ public class DAG {
     private KAnonymity kAnonymity;
 
     private DAGNode root;
-    private List<DAGNode> nodes;
+    private HashMap<String, DAGNode> hashedNodes;
 
     public DAG(KAnonymity kAnonymity) {
         this.kAnonymity = kAnonymity;
-        this.nodes = new ArrayList<>();
+        this.hashedNodes = new HashMap<>();
 
         // Create the root node of which all other nodes will be created from
         List<Tree> trees = kAnonymity.getDataset().getGeneralisations();
@@ -28,8 +28,9 @@ public class DAG {
     }
 
     private void initialise() {
-        nodes.clear();
+        List<DAGNode> nodes = new ArrayList<>();
         nodes.add(root);
+        hashedNodes.put(root.toString(), root);
 
         int index = 0;
         while (index < nodes.size()) {
@@ -45,7 +46,7 @@ public class DAG {
                     List<FullDomainLevel> nextGens = new ArrayList<>(generalisations);
                     FullDomainLevel nextGen = new FullDomainLevel(tree, level - 1);
                     nextGens.set(i, nextGen);
-                    DAGNode next = findNode(new DAGNode(nextGens));
+                    DAGNode next = findNode(nodes, new DAGNode(nextGens));
                     current.addChild(next);
                 }
             }
@@ -54,21 +55,20 @@ public class DAG {
         }
     }
 
-    private DAGNode findNode(DAGNode temp) {
-        for (DAGNode node : nodes) {
-            // Check existing nodes
-            if (node.generalisationsMatch(temp)) {
-                return node;
-            }
+    private DAGNode findNode(List<DAGNode> nodes, DAGNode temp) {
+        DAGNode node = hashedNodes.get(temp.toString());
+        if (node != null) {
+            return node;
         }
         // Not in the DAG yet, add it and return it
         nodes.add(temp);
+        hashedNodes.put(temp.toString(), temp);
         return temp;
     }
 
     public GeneralisationResult getBestGeneralisation() {
         GeneralisationResult best = null;
-        List<DAGNode> toCheck = new LinkedList<>(nodes);
+        List<DAGNode> toCheck = new LinkedList<>(hashedNodes.values());
 
         while (!toCheck.isEmpty()) {
             int index = new Random().nextInt(toCheck.size());
@@ -95,6 +95,6 @@ public class DAG {
     }
 
     public int size() {
-        return nodes.size();
+        return hashedNodes.size();
     }
 }
