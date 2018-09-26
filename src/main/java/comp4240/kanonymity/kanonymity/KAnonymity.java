@@ -53,19 +53,14 @@ public class KAnonymity {
         // Create a queue of all records to iterate through.
         List<Record> recordsQueue = new LinkedList<>(dataset.getRecords());
 
-        // Finds the lowest k value within the data set.
-        int maxK = recordsQueue.size();
-
         // For each record check if there are at least k matches
         while (!recordsQueue.isEmpty()) {
             // Get the number of matched records
             int matches = findMatches(recordsQueue);
 
-            // If we've found a worse value than what we're looking for, return false
+            // If matches is less than k return false.
             if (matches < k) {
                 return false;
-            } else if (k < maxK) { // If we've found a worse k value, update it
-                maxK = k;
             }
         }
         return true;

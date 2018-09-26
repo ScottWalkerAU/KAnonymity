@@ -387,7 +387,6 @@ public class Dataset {
         return new ArrayList<>(generalisations.values());
     }
 
-
     public int getTaxonomyTreeCombinations() {
         int combinations = 1;
 
@@ -397,5 +396,28 @@ public class Dataset {
         }
 
         return combinations;
+    }
+
+    public void getEquivalenceClass() {
+        HashMap<String, Integer> equivalenceClasses = new HashMap<>();
+
+        for (Record r : records) {
+            String modifiedValues = r.getModifiedValues();
+
+            Integer ecSize = equivalenceClasses.get(modifiedValues);
+            System.out.println("exSize: " + ecSize + ", r: " + modifiedValues);
+            if (ecSize == null) {
+                equivalenceClasses.put(modifiedValues, 1);
+            } else {
+                equivalenceClasses.put(modifiedValues, ecSize + 1);
+            }
+        }
+
+        Iterator it = equivalenceClasses.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getValue() + " = " + pair.getKey());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
     }
 }

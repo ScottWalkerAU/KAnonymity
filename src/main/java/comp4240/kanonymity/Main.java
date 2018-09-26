@@ -10,10 +10,11 @@ public class Main {
     private String fileName;
 
     public static void main(String[] args) {
-        new Main("data/CensusData1000.csv", "data/CensusDataTaxonomy.txt");
+        new Main("data/CensusData100.csv", "data/CensusDataTaxonomy.txt");
     }
 
     private Main(String... files) {
+        long startTime = System.currentTimeMillis();
         this.fileName = files[0];
         Dataset dataset;
 
@@ -31,16 +32,15 @@ public class Main {
         // Create the K-Anonymity class
         KAnonymity kAnonymity = new KAnonymity(dataset, 2);
 
-        // Print the results
-        /*System.out.println("\nGeneralised values:");
-        kAnonymity.anonymiseTest();
-        System.out.println("Divergence: " + kAnonymity.attributeDivergence());
-        dataset.displayModifiedDataset();
-        System.out.println("\nk: " + kAnonymity.getK());*/
-
-        long startTime = System.currentTimeMillis();
+        // Anonymise the data set
         kAnonymity.anonymise();
         long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Ellapsed Time: " + (elapsedTime / 1000.0) + " seconds.");
+        System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds.");
+
+        dataset.getEquivalenceClass();
+        System.out.println("Dataset has k: " + kAnonymity.getK());
+
+
     }
+
 }
