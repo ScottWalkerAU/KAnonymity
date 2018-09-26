@@ -1,6 +1,7 @@
 package comp4240.kanonymity;
 
 import comp4240.kanonymity.attribute.Attribute;
+import comp4240.kanonymity.attribute.AttributeType;
 import comp4240.kanonymity.attribute.IdentifierType;
 
 import java.util.ArrayList;
@@ -48,6 +49,16 @@ public class Record {
         StringBuilder output = new StringBuilder();
         for (Attribute a : attributes) {
             output.append(a.getModifiedValue()).append('\t');
+        }
+        return output.toString();
+    }
+
+    public String getModifiedQIDValues() {
+        StringBuilder output = new StringBuilder();
+        for (Attribute a : attributes) {
+            if (a.getIdentifierType() == IdentifierType.QID) {
+                output.append(a.getModifiedValue()).append('\t');
+            }
         }
         return output.toString();
     }

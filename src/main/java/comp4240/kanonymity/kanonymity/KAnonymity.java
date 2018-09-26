@@ -81,7 +81,7 @@ public class KAnonymity {
         while (!recordsQueue.isEmpty()) {
             // Get the number of matched records
             int matches = findMatches(recordsQueue);
-
+            
             // If matches == 1, you can't get a worse value of 1. So just return 1.
             if (matches == 1) {
                 return 1;
@@ -129,7 +129,7 @@ public class KAnonymity {
         HashSet<String> equivalentClasses = new HashSet<>();
 
         for (Record r : dataset.getRecords()) {
-            String contents = r.getModifiedValues();
+            String contents = r.getModifiedQIDValues();
             equivalentClasses.add(contents);
         }
 

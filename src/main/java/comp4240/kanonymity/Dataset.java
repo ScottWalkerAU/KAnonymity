@@ -392,7 +392,9 @@ public class Dataset {
 
         for (String header : headers) {
             Tree tree = generalisations.get(header);
-            combinations *= tree.getTreeHeight() + 1;
+            if (tree != null) {
+                combinations *= tree.getTreeHeight() + 1;
+            }
         }
 
         return combinations;
@@ -402,21 +404,36 @@ public class Dataset {
         HashMap<String, Integer> equivalenceClasses = new HashMap<>();
 
         for (Record r : records) {
-            String modifiedValues = r.getModifiedValues();
+            String modifiedValues = r.getModifiedQIDValues();
 
-            Integer ecSize = equivalenceClasses.get(modifiedValues);
-            System.out.println("exSize: " + ecSize + ", r: " + modifiedValues);
-            if (ecSize == null) {
+            Integer equivalenceClassSize = equivalenceClasses.get(modifiedValues);
+            if (equivalenceClassSize == null) {
                 equivalenceClasses.put(modifiedValues, 1);
             } else {
-                equivalenceClasses.put(modifiedValues, ecSize + 1);
+                equivalenceClasses.put(modifiedValues, equivalenceClassSize + 1);
             }
         }
+
+        System.out.println("\nEquivalence Classes");
+        for (int i = 0; i < headers.size(); i++) {
+            String header = headers.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            System.out.printf(format, header);
+        }
+        System.out.println();
 
         Iterator it = equivalenceClasses.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            System.out.println(pair.getValue() + " = " + pair.getKey());
+            String value = (String) (pair.getKey());
+            String[] values = value.split("\t");
+
+
+            for (int j = 0; j < values.length; j++) {
+                String format = "%-" + headerWidths[j] + "s ";
+                System.out.printf(format, values[j]);
+            }
+            System.out.println("\tEquivalence Class Size: " + pair.getValue());
             it.remove(); // avoids a ConcurrentModificationException
         }
     }
