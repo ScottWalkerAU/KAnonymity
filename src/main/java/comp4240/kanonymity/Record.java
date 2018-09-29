@@ -63,6 +63,16 @@ public class Record {
         return output.toString();
     }
 
+    public String getModifiedSensitiveValues() {
+        StringBuilder output = new StringBuilder();
+        for (Attribute a : attributes) {
+            if (a.getIdentifierType() == IdentifierType.SENSITIVE) {
+                output.append(a.getModifiedValue()).append('\t');
+            }
+        }
+        return output.toString();
+    }
+
     public String toString() {
         StringBuilder output = new StringBuilder();
         for (Attribute a : attributes) {

@@ -13,8 +13,8 @@ import java.util.*;
 
 public class KAnonymity {
 
-    private int desiredK;
-    private Dataset dataset;
+    protected int desiredK;
+    protected Dataset dataset;
 
     public KAnonymity(Dataset dataset, int desiredK) {
         this.dataset = dataset;
@@ -26,7 +26,9 @@ public class KAnonymity {
         GeneralisationResult best = dag.getBestGeneralisation();
         System.out.println("Best generalisation combo: " + best);
 
-        best.getNode().anonymise(this);
+        if (best != null) {
+            best.getNode().anonymise(this);
+        }
         dataset.displayModifiedDataset(10);
     }
 
@@ -121,19 +123,39 @@ public class KAnonymity {
         return matches;
     }
 
-    public boolean isAtDesiredK() {
+
+    /**
+     * For KAnonymity it, just ensures that k is met.
+     *
+     * @return
+     */
+    public boolean meetsConditions() {
         return isKAnonymous(desiredK);
     }
 
     public double getFitness() {
-        HashSet<String> equivalentClasses = new HashSet<>();
+        HashMap<String, Integer> equivalentClasses = new HashMap<>();
 
         for (Record r : dataset.getRecords()) {
             String contents = r.getModifiedQIDValues();
-            equivalentClasses.add(contents);
+            Integer count = equivalentClasses.get(contents);
+
+            if (count == null) {
+                equivalentClasses.put(contents, 1);
+            } else {
+                equivalentClasses.put(contents, count + 1);
+            }
         }
 
-        return equivalentClasses.size();
+        double fitness = 0;
+        Iterator<Map.Entry<String, Integer>> itr = equivalentClasses.entrySet().iterator();
+        while(itr.hasNext()) {
+            Map.Entry value = itr.next();
+            Integer count = (Integer) value.getValue();
+            fitness += count;
+        }
+
+        return fitness / equivalentClasses.size();
     }
 
     public int getDesiredK() {
@@ -142,5 +164,9 @@ public class KAnonymity {
 
     public Dataset getDataset() {
         return dataset;
+    }
+
+    public void printStats() {
+        System.out.println("Dataset has k: " + getK());
     }
 }

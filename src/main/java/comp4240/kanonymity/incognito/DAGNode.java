@@ -79,7 +79,7 @@ public class DAGNode {
         //System.out.println(this);
 
         Double fitness = null;
-        if (kAnonymity.isAtDesiredK()) {
+        if (kAnonymity.meetsConditions()) {
             fitness = kAnonymity.getFitness();
         }
         kAnonymity.getDataset().resetModifiedValues();
