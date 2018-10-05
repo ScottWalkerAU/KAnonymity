@@ -21,14 +21,17 @@ public class Dataset {
     private List<Record> records;
     private HashMap<String, Tree> generalisations;
 
+    private List<Record> filtered;
+
     public Dataset(String fileName, String taxonomyFileName) {
         this(fileName);
         loadTaxonomyTrees(taxonomyFileName);
     }
 
     public Dataset(String fileName) {
-        records = new ArrayList<>();
-        generalisations = new HashMap<>();
+        this.records = new ArrayList<>();
+        this.generalisations = new HashMap<>();
+        this.filtered = null;
         loadData(fileName);
     }
 
@@ -202,7 +205,6 @@ public class Dataset {
 
     private void setIdentifierType(String[] values) {
         identifiers = new ArrayList<>(values.length);
-
         for (String value : values) {
             value = value.trim();
             IdentifierType type = IdentifierType.getType(value);
@@ -216,7 +218,6 @@ public class Dataset {
      */
     private void setAttributeTypes(String[] values) {
         attributeTypes = new ArrayList<>(values.length);
-
         for (String value : values) {
             value = value.trim();
             AttributeType type = AttributeType.getType(value);
@@ -239,7 +240,7 @@ public class Dataset {
         Record record = new Record();
         for (int i = 0; i < values.length; i++) {
             String value = values[i].trim();
-            Attribute attribute = null;
+            Attribute attribute;
 
             switch (attributeTypes.get(i)) {
                 case STRING:
@@ -256,7 +257,7 @@ public class Dataset {
                     attribute = new DateAttribute(value, identifiers.get(i));
                     break;
                 default:
-                    throw new IllegalArgumentException("{WARNING] addRecord :: The Attribute Type: '" + attributeTypes.get(i) + "' is not recognised.");
+                    throw new IllegalArgumentException("addRecord :: The Attribute Type: '" + attributeTypes.get(i) + "' is not recognised.");
             }
 
             record.addAttribute(attribute);
@@ -265,6 +266,19 @@ public class Dataset {
         records.add(record);
     }
 
+    /**
+     * Reset modified values and if the record is suppressed
+     */
+    public void hardReset() {
+        filtered = null;
+        for (Record r : records) {
+            r.hardReset();
+        }
+    }
+
+    /**
+     * Reset modified values. Not if the record is suppressed
+     */
     public void resetModifiedValues() {
         for (Record r : records) {
             r.resetModifiedValues();
@@ -278,7 +292,6 @@ public class Dataset {
      */
     public List<Attribute> getAttributes(String header) {
         int headerIndex = headers.indexOf(header);
-
         return getAttributes(headerIndex);
     }
 
@@ -352,7 +365,7 @@ public class Dataset {
             for (int j = 0; j < attributes.size(); j++) {
                 Attribute attribute = attributes.get(j);
                 String format = "%-" + headerWidths[j] + "s ";
-                System.out.printf(format, attribute.getModifiedValue().toString());
+                System.out.printf(format, attribute.getModifiedValue());
             }
             System.out.println();
         }
@@ -364,7 +377,21 @@ public class Dataset {
     }
 
     public List<Record> getRecords() {
-        return records;
+        if (filtered != null) {
+            return filtered;
+        }
+
+        filtered = new ArrayList<>();
+        for (Record r : records) {
+            if (!r.isSuppressed()) {
+                filtered.add(r);
+            }
+        }
+        return filtered;
+    }
+
+    public int getSize() {
+        return records.size();
     }
 
     public List<IdentifierType> getIdentifiers() {
@@ -389,29 +416,24 @@ public class Dataset {
 
     public int getTaxonomyTreeCombinations() {
         int combinations = 1;
-
         for (String header : headers) {
             Tree tree = generalisations.get(header);
             if (tree != null) {
                 combinations *= tree.getTreeHeight() + 1;
             }
         }
-
         return combinations;
     }
 
-    public void getEquivalenceClass() {
+    // Debug method
+    public void printEquivalenceClasses() {
         HashMap<String, Integer> equivalenceClasses = new HashMap<>();
 
-        for (Record r : records) {
+        for (Record r : getRecords()) {
             String modifiedValues = r.getModifiedQIDValues();
-
-            Integer equivalenceClassSize = equivalenceClasses.get(modifiedValues);
-            if (equivalenceClassSize == null) {
-                equivalenceClasses.put(modifiedValues, 1);
-            } else {
-                equivalenceClasses.put(modifiedValues, equivalenceClassSize + 1);
-            }
+            Integer size = equivalenceClasses.get(modifiedValues);
+            size = (size == null) ? 1 : size + 1;
+            equivalenceClasses.put(modifiedValues, size);
         }
 
         System.out.println("\nEquivalence Classes");
@@ -422,10 +444,11 @@ public class Dataset {
         }
         System.out.println();
 
-        Iterator it = equivalenceClasses.entrySet().iterator();
+        Iterator<Map.Entry<String, Integer>> it = equivalenceClasses.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            String value = (String) (pair.getKey());
+            Map.Entry<String, Integer> pair = it.next();
+            it.remove();
+            String value = pair.getKey();
             String[] values = value.split("\t");
 
 
@@ -434,7 +457,61 @@ public class Dataset {
                 System.out.printf(format, values[j]);
             }
             System.out.println("\tEquivalence Class Size: " + pair.getValue());
-            it.remove(); // avoids a ConcurrentModificationException
         }
+    }
+
+    public List<String> getQIDHeaders() {
+        List<String> QIDs = new ArrayList<>();
+        for (int i = 0; i < headers.size(); i++) {
+            if (identifiers.get(i) == IdentifierType.QID) {
+                QIDs.add(headers.get(i));
+            }
+        }
+        return QIDs;
+    }
+
+    public HashMap<String, AttributeCount> getAttributeCounts(List<String> headerQIDs) {
+        HashMap<String, AttributeCount> counts = new HashMap<>();
+        for (Record r : records) {
+            List<Attribute> recordQIDs = r.getQIDs();
+            for (int i = 0; i < headerQIDs.size(); i++) {
+                String qid = headerQIDs.get(i);
+                AttributeCount counter = counts.get(qid);
+                if (counter == null) {
+                    counter = new AttributeCount(qid);
+                    counts.put(qid, counter);
+                }
+                counter.add(recordQIDs.get(i).toString());
+            }
+        }
+        return counts;
+    }
+
+    public void suppressOutliers() {
+        List<String> qids = getQIDHeaders();
+        HashMap<String, AttributeCount> countMap = getAttributeCounts(qids);
+
+        int suppressed = 0;
+        for (int i = 0; i < qids.size(); i++) {
+            String qid = qids.get(i);
+            AttributeCount counts = countMap.get(qid);
+            double mean = counts.getMean();
+            double stdDev = counts.getStdDev();
+
+            for (Record r : getRecords()) {
+                if (r.isSuppressed()) {
+                    continue;
+                }
+
+                Attribute attribute = r.getQIDs().get(i);
+                int count = counts.getCounts().get(attribute.toString());
+                if (count < mean - stdDev) {
+                    r.setSuppressed();
+                    suppressed++;
+                }
+            }
+        }
+        this.filtered = null;
+        System.out.println("Suppressed " + suppressed + " rows!");
     }
 }

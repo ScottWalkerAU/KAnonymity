@@ -75,8 +75,6 @@ public class DAGNode {
 
     public Double getFitness(KAnonymity kAnonymity) {
         anonymise(kAnonymity);
-        //dataset.displayModifiedDataset();
-        //System.out.println(this);
 
         Double fitness = null;
         if (kAnonymity.meetsConditions()) {

@@ -139,23 +139,11 @@ public class KAnonymity {
         for (Record r : dataset.getRecords()) {
             String contents = r.getModifiedQIDValues();
             Integer count = equivalentClasses.get(contents);
-
-            if (count == null) {
-                equivalentClasses.put(contents, 1);
-            } else {
-                equivalentClasses.put(contents, count + 1);
-            }
+            count = (count == null) ? 1 : count + 1;
+            equivalentClasses.put(contents, count);
         }
 
-        double fitness = 0;
-        Iterator<Map.Entry<String, Integer>> itr = equivalentClasses.entrySet().iterator();
-        while(itr.hasNext()) {
-            Map.Entry value = itr.next();
-            Integer count = (Integer) value.getValue();
-            fitness += count;
-        }
-
-        return fitness / equivalentClasses.size();
+        return equivalentClasses.size();
     }
 
     public int getDesiredK() {
