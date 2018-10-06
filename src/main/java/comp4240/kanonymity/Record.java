@@ -1,7 +1,6 @@
 package comp4240.kanonymity;
 
 import comp4240.kanonymity.attribute.Attribute;
-import comp4240.kanonymity.attribute.AttributeType;
 import comp4240.kanonymity.attribute.IdentifierType;
 
 import java.util.ArrayList;

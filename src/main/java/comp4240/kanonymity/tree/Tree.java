@@ -2,7 +2,6 @@ package comp4240.kanonymity.tree;
 
 import comp4240.kanonymity.attribute.Attribute;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Tree {

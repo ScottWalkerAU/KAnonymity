@@ -4,7 +4,10 @@ import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Log4j2
 public class LDiversity extends KAnonymity {
@@ -54,7 +57,7 @@ public class LDiversity extends KAnonymity {
     }
 
 
-    private HashMap<String, List<String>> getEquivalenceClasses () {
+    private HashMap<String, List<String>> getEquivalenceClasses() {
         HashMap<String, List<String>> equivalenceClasses = new HashMap<>();
 
         // Loop through all records

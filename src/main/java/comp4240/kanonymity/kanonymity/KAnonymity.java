@@ -6,7 +6,10 @@ import comp4240.kanonymity.incognito.DAG;
 import comp4240.kanonymity.incognito.GeneralisationResult;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 @Log4j2
 public class KAnonymity {
@@ -72,7 +75,7 @@ public class KAnonymity {
         while (!recordsQueue.isEmpty()) {
             // Get the number of matched records
             int matches = findMatches(recordsQueue);
-            
+
             // If matches == 1, you can't get a worse value of 1. So just return 1.
             if (matches == 1) {
                 return 1;
@@ -86,9 +89,8 @@ public class KAnonymity {
 
     /**
      * Given an List of records, return the number of times the first element if found within that list.
-     *
-     * @param recordsQueue  List of Records
-     * @return              The number of matches the first element is found within that list.
+     * @param recordsQueue List of Records
+     * @return The number of matches the first element is found within that list.
      */
     private int findMatches(List<Record> recordsQueue) {
         // Get the first element of the list
@@ -99,7 +101,7 @@ public class KAnonymity {
 
         // Uses an iterator to look for matching pair
         Iterator<Record> itr = recordsQueue.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             Record r2 = itr.next();
 
             // When found removes the Record from the list to speed things up.

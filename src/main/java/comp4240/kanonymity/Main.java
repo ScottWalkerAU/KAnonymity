@@ -1,7 +1,6 @@
 package comp4240.kanonymity;
 
 import comp4240.kanonymity.kanonymity.KAnonymity;
-import comp4240.kanonymity.kanonymity.LDiversity;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2

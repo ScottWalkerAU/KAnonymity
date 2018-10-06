@@ -30,7 +30,7 @@ public class AttributeCount {
         double mean = getMean();
         double temp = 0;
         for (Integer count : counts.values()) {
-            temp += Math.pow(count-mean, 2);
+            temp += Math.pow(count - mean, 2);
         }
         return temp / (counts.size() - 1);
     }

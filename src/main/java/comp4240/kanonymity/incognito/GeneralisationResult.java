@@ -20,7 +20,7 @@ public class GeneralisationResult {
         return fitness;
     }
 
-     // -- Overrides --
+    // -- Overrides --
 
     @Override
     public String toString() {

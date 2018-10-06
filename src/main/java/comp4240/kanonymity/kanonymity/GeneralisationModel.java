@@ -3,8 +3,6 @@ package comp4240.kanonymity.kanonymity;
 import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.attribute.Attribute;
 
-import java.util.List;
-
 public abstract class GeneralisationModel {
 
     private Dataset dataset;
