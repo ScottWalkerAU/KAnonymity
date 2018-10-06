@@ -7,11 +7,13 @@ import comp4240.kanonymity.tree.Range;
 import comp4240.kanonymity.tree.Tree;
 import comp4240.kanonymity.tree.TreeDefault;
 import comp4240.kanonymity.tree.TreeRange;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+@Log4j2
 public class Dataset {
 
     private List<String> headers;
@@ -312,20 +314,20 @@ public class Dataset {
 
     public void displayDataset(int amount) {
 
-        System.out.println("Some of the Dataset");
+        StringBuilder builder = new StringBuilder("Some of the dataset\n");
         for (int i = 0; i < headers.size(); i++) {
             AttributeType attributeType = attributeTypes.get(i);
             String format = "%-" + headerWidths[i] + "s ";
-            System.out.printf(format, attributeType);
+            builder.append(String.format(format, attributeType));
         }
-        System.out.println();
+        builder.append('\n');
 
         for (int i = 0; i < headers.size(); i++) {
             String header = headers.get(i);
             String format = "%-" + headerWidths[i] + "s ";
-            System.out.printf(format, header);
+            builder.append(String.format(format, header));
         }
-        System.out.println();
+        builder.append('\n');
 
         for (int i = 0; i < Math.min(amount, records.size()); i++) {
             Record r = records.get(i);
@@ -333,10 +335,12 @@ public class Dataset {
             for (int j = 0; j < attributes.size(); j++) {
                 Attribute attribute = attributes.get(j);
                 String format = "%-" + headerWidths[j] + "s ";
-                System.out.printf(format, attribute.toString());
+                builder.append(String.format(format, attribute.toString()));
             }
-            System.out.println();
+            builder.append('\n');
         }
+
+        log.debug(builder.toString());
     }
 
     public void displayModifiedDataset() {
@@ -344,20 +348,21 @@ public class Dataset {
     }
 
     public void displayModifiedDataset(int amount) {
-        System.out.println("\nThe Modified Dataset");
+
+        StringBuilder builder = new StringBuilder("The modified dataset\n");
         for (int i = 0; i < headers.size(); i++) {
             AttributeType attributeType = attributeTypes.get(i);
             String format = "%-" + headerWidths[i] + "s ";
-            System.out.printf(format, attributeType);
+            builder.append(String.format(format, attributeType));
         }
-        System.out.println();
+        builder.append('\n');
 
         for (int i = 0; i < headers.size(); i++) {
             String header = headers.get(i);
             String format = "%-" + headerWidths[i] + "s ";
-            System.out.printf(format, header);
+            builder.append(String.format(format, header));
         }
-        System.out.println();
+        builder.append('\n');
 
         for (int i = 0; i < Math.min(amount, records.size()); i++) {
             Record r = records.get(i);
@@ -365,10 +370,11 @@ public class Dataset {
             for (int j = 0; j < attributes.size(); j++) {
                 Attribute attribute = attributes.get(j);
                 String format = "%-" + headerWidths[j] + "s ";
-                System.out.printf(format, attribute.getModifiedValue());
+                builder.append(String.format(format, attribute.getModifiedValue()));
             }
-            System.out.println();
+            builder.append('\n');
         }
+        log.debug(builder.toString());
     }
 
     public void addGeneralisation(Tree tree) {
@@ -425,24 +431,28 @@ public class Dataset {
         return combinations;
     }
 
-    // Debug method
-    public void printEquivalenceClasses() {
+    public HashMap<String, Integer> getEquivalenceClasses() {
         HashMap<String, Integer> equivalenceClasses = new HashMap<>();
-
         for (Record r : getRecords()) {
             String modifiedValues = r.getModifiedQIDValues();
             Integer size = equivalenceClasses.get(modifiedValues);
             size = (size == null) ? 1 : size + 1;
             equivalenceClasses.put(modifiedValues, size);
         }
+        return equivalenceClasses;
+    }
 
-        System.out.println("\nEquivalence Classes");
+    // Debug method
+    public void printEquivalenceClasses() {
+        HashMap<String, Integer> equivalenceClasses = getEquivalenceClasses();
+
+        StringBuilder builder = new StringBuilder("Equivalence Classes\n");
         for (int i = 0; i < headers.size(); i++) {
             String header = headers.get(i);
             String format = "%-" + headerWidths[i] + "s ";
-            System.out.printf(format, header);
+            builder.append(String.format(format, header));
         }
-        System.out.println();
+        builder.append('\n');
 
         Iterator<Map.Entry<String, Integer>> it = equivalenceClasses.entrySet().iterator();
         while (it.hasNext()) {
@@ -454,13 +464,14 @@ public class Dataset {
 
             for (int j = 0; j < values.length; j++) {
                 String format = "%-" + headerWidths[j] + "s ";
-                System.out.printf(format, values[j]);
+                builder.append(String.format(format, values[j]));
             }
-            System.out.println("\tEquivalence Class Size: " + pair.getValue());
+            builder.append("\tEquivalence Class Size: ").append(pair.getValue()).append('\n');
         }
+        log.debug(builder.toString());
     }
 
-    public List<String> getQIDHeaders() {
+    private List<String> getQIDHeaders() {
         List<String> QIDs = new ArrayList<>();
         for (int i = 0; i < headers.size(); i++) {
             if (identifiers.get(i) == IdentifierType.QID) {
@@ -470,7 +481,7 @@ public class Dataset {
         return QIDs;
     }
 
-    public HashMap<String, AttributeCount> getAttributeCounts(List<String> headerQIDs) {
+    private HashMap<String, AttributeCount> getAttributeCounts(List<String> headerQIDs) {
         HashMap<String, AttributeCount> counts = new HashMap<>();
         for (Record r : records) {
             List<Attribute> recordQIDs = r.getQIDs();
@@ -512,6 +523,6 @@ public class Dataset {
             }
         }
         this.filtered = null;
-        System.out.println("Suppressed " + suppressed + " rows!");
+        log.debug("Suppressed " + suppressed + " rows!");
     }
 }

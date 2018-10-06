@@ -2,7 +2,9 @@ package comp4240.kanonymity;
 
 import comp4240.kanonymity.kanonymity.KAnonymity;
 import comp4240.kanonymity.kanonymity.LDiversity;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class Main {
 
     private String fileName;
@@ -26,9 +28,8 @@ public class Main {
         long startTime = System.currentTimeMillis();
         dataset.suppressOutliers();
 
-        //System.out.println("The number of combinations for the loaded taxonomy trees is " + dataset.getTaxonomyTreeCombinations() + " combinations");
+        log.debug("The number of combinations for the loaded taxonomy trees is " + dataset.getTaxonomyTreeCombinations() + " combinations");
 
-        //dataset.displayDataset();
         dataset.displayDataset(10);
 
         // Create the K-Anonymity class
@@ -41,11 +42,10 @@ public class Main {
         kAnonymity.anonymise();
 
         dataset.printEquivalenceClasses();
-
         kAnonymity.printStats();
 
         long elapsedTime = System.currentTimeMillis() - startTime;
-        System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
+        log.debug("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
     }
 
 }

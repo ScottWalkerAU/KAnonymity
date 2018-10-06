@@ -2,15 +2,13 @@ package comp4240.kanonymity.kanonymity;
 
 import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
-import comp4240.kanonymity.attribute.Attribute;
-import comp4240.kanonymity.attribute.IdentifierType;
 import comp4240.kanonymity.incognito.DAG;
 import comp4240.kanonymity.incognito.GeneralisationResult;
-import comp4240.kanonymity.tree.Node;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.*;
 
-
+@Log4j2
 public class KAnonymity {
 
     protected int desiredK;
@@ -24,21 +22,12 @@ public class KAnonymity {
     public void anonymise() {
         DAG dag = new DAG(this);
         GeneralisationResult best = dag.getBestGeneralisation();
-        System.out.println("Best generalisation combo: " + best);
+        log.info("Best generalisation combo: " + best);
 
         if (best != null) {
             best.getNode().anonymise(this);
         }
         dataset.displayModifiedDataset(10);
-    }
-
-    // TODO temporary method, remove later.
-    public void anonymiseTest() {
-        Node parent = dataset.getGeneralisationTree("Age").getRoot();
-        Node child = parent.getChildren().get(0);
-        GeneralisationModel model = new SiblingModel("Age", parent, child);
-        model.setDataset(dataset);
-        model.anonymise();
     }
 
     /**
@@ -123,28 +112,24 @@ public class KAnonymity {
         return matches;
     }
 
-
     /**
      * For KAnonymity it, just ensures that k is met.
-     *
-     * @return
+     * @return true if the dataset is k-anonymous
      */
     public boolean meetsConditions() {
         return isKAnonymous(desiredK);
     }
 
     public double getFitness() {
-        HashMap<String, Integer> equivalentClasses = new HashMap<>();
-
-        for (Record r : dataset.getRecords()) {
-            String contents = r.getModifiedQIDValues();
-            Integer count = equivalentClasses.get(contents);
-            count = (count == null) ? 1 : count + 1;
-            equivalentClasses.put(contents, count);
-        }
-
+        HashMap<String, Integer> equivalentClasses = dataset.getEquivalenceClasses();
         return equivalentClasses.size();
     }
+
+    public void printStats() {
+        log.info("Dataset has k: " + getK());
+    }
+
+    // -- Getters --
 
     public int getDesiredK() {
         return desiredK;
@@ -152,9 +137,5 @@ public class KAnonymity {
 
     public Dataset getDataset() {
         return dataset;
-    }
-
-    public void printStats() {
-        System.out.println("Dataset has k: " + getK());
     }
 }

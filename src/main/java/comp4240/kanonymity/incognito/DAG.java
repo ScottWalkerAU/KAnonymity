@@ -2,9 +2,11 @@ package comp4240.kanonymity.incognito;
 
 import comp4240.kanonymity.kanonymity.KAnonymity;
 import comp4240.kanonymity.tree.Tree;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.*;
 
+@Log4j2
 public class DAG {
 
     private KAnonymity kAnonymity;
@@ -86,7 +88,7 @@ public class DAG {
             }
 
             node.setAnonymous(DAGNode.Anonymous.TRUE);
-            System.out.println(node + ": Fitness: " + fitness);
+            //log.debug(node + ": Fitness: " + fitness);
 
             if (best == null || fitness > best.getFitness()) {
                 best = new GeneralisationResult(node, fitness);
@@ -96,7 +98,7 @@ public class DAG {
         return best;
     }
 
-    public int size() {
+    public int getSize() {
         return hashedNodes.size();
     }
 }

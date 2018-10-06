@@ -4,16 +4,14 @@ import comp4240.kanonymity.tree.Tree;
 
 public class FullDomainLevel {
 
+    /** The tree this generalisation is for */
     private Tree tree;
+    /** What level to generalise to */
     private int level;
 
     public FullDomainLevel(Tree tree, int level) {
         this.tree = tree;
         this.level = level;
-    }
-
-    public boolean equalTo(FullDomainLevel other) {
-        return (other != null && getTree() == other.getTree() && getLevel() == other.getLevel());
     }
 
     public Tree getTree() {

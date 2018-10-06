@@ -39,14 +39,8 @@ public class SubtreeModel extends GeneralisationModel {
             }
 
             // Calculate the generalised value
-            String originalValue = attribute.toString();
             String generalisedValue = node.getValue();
-
-            // Update the modified values
             updateModifiedValue(attribute, generalisedValue);
-
-            // Output the new generalised value
-            System.out.printf("%s is generalised to %s when using subtree model\n", originalValue, generalisedValue);
         }
     }
 }

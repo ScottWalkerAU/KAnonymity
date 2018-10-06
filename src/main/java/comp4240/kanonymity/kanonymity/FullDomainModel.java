@@ -37,9 +37,6 @@ public class FullDomainModel extends GeneralisationModel {
 
             // Update the modified values
             updateModifiedValue(attribute, generalisedValue);
-
-            // Output the new generalised value TODO remove
-            //System.out.printf("%s is generalised to %s when using a generalisation level of %d\n", originalValue, generalisedValue, generalisationLevel);
         }
     }
 }

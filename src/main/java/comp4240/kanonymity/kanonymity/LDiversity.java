@@ -2,9 +2,11 @@ package comp4240.kanonymity.kanonymity;
 
 import comp4240.kanonymity.Dataset;
 import comp4240.kanonymity.Record;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.*;
 
+@Log4j2
 public class LDiversity extends KAnonymity {
 
     private int desiredL;
@@ -22,12 +24,9 @@ public class LDiversity extends KAnonymity {
     public boolean isLDiverse(int desiredL) {
         HashMap<String, List<String>> equivalenceClasses = getEquivalenceClasses();
 
-        // Check each list inside the hashmap has > desiredL
-        Iterator<Map.Entry<String, List<String>>> itr = equivalenceClasses.entrySet().iterator();
-        while(itr.hasNext()) {
-            Map.Entry value = itr.next();
-            List<String> sensitiveList = (List<String>) value.getValue();
-
+        // Check each list inside the HashMap has > desiredL
+        for (Map.Entry<String, List<String>> entry : equivalenceClasses.entrySet()) {
+            List<String> sensitiveList = entry.getValue();
             if (sensitiveList.size() < desiredL) {
                 return false;
             }
@@ -39,14 +38,12 @@ public class LDiversity extends KAnonymity {
     public int getL() {
         HashMap<String, List<String>> equivalenceClasses = getEquivalenceClasses();
 
-        // Check each list inside the hashmap has > desiredL
+        // Check each list inside the HashMap has > desiredL
         Integer maxL = null;
-        Iterator<Map.Entry<String, List<String>>> itr = equivalenceClasses.entrySet().iterator();
-        while(itr.hasNext()) {
-            Map.Entry value = itr.next();
-            List<String> sensitiveList = (List<String>) value.getValue();
+        for (Map.Entry<String, List<String>> entry : equivalenceClasses.entrySet()) {
+            List<String> sensitiveList = entry.getValue();
 
-            System.out.println("Value: " + value + ", List Size: " + sensitiveList.size());
+            log.debug("Value: " + entry + ", List Size: " + sensitiveList.size());
 
             if (maxL == null || sensitiveList.size() < maxL) {
                 maxL = sensitiveList.size();
@@ -73,7 +70,7 @@ public class LDiversity extends KAnonymity {
                 equivalenceClasses.put(qids, sensitiveList);
             }
 
-            // Put the sensitive value into the list inside the hashmap
+            // Put the sensitive value into the list inside the HashMap
             if (!sensitiveList.contains(sensitive)) {
                 sensitiveList.add(sensitive);
             }
@@ -84,7 +81,7 @@ public class LDiversity extends KAnonymity {
 
     @Override
     public void printStats() {
-        System.out.println("Dataset has k: " + getK());
-        System.out.println("Dataset has L: " + getL());
+        log.info("Dataset has k: " + getK() +
+                "\nDataset has L: " + getL());
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public class DAGNode {
 
+    /** Checked status for any given node */
     public enum Anonymous {
         UNCHECKED, TRUE, FALSE
     }
@@ -41,6 +42,7 @@ public class DAGNode {
      * @param anonymous True if anonymous
      */
     public void setAnonymous(Anonymous anonymous) {
+        // Already checked? Don't do it again.
         if (this.anonymous != Anonymous.UNCHECKED) {
             return;
         }
@@ -91,6 +93,8 @@ public class DAGNode {
     public Anonymous getAnonymous() {
         return anonymous;
     }
+
+    // -- Overrides --
 
     @Override
     public String toString() {

@@ -1,6 +1,5 @@
 package comp4240.kanonymity.incognito;
 
-
 public class GeneralisationResult {
 
     private DAGNode node;
@@ -11,6 +10,8 @@ public class GeneralisationResult {
         this.fitness = fitness;
     }
 
+    // -- Getters --
+
     public DAGNode getNode() {
         return node;
     }
@@ -18,6 +19,8 @@ public class GeneralisationResult {
     public double getFitness() {
         return fitness;
     }
+
+     // -- Overrides --
 
     @Override
     public String toString() {
