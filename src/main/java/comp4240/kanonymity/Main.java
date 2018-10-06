@@ -3,21 +3,26 @@ package comp4240.kanonymity;
 import comp4240.kanonymity.kanonymity.KAnonymity;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.FileNotFoundException;
+
 @Log4j2
 public class Main {
 
-    private String fileName;
+    /** Dataset we're using */
     private Dataset dataset;
 
     public static void main(String[] args) {
-        new Main("data/CensusData1000.csv", "data/CensusDataTaxonomy.txt").run();
+        try {
+            new Main("data/CensusData1000.csv", "data/CensusDataTaxonomy.txt").run();
+        } catch (FileNotFoundException e) {
+            log.error(e);
+            e.printStackTrace();
+        }
     }
 
-    private Main(String... files) {
-        this.fileName = files[0];
-
-        if (files.length > 1) {
-            dataset = new Dataset(fileName, files[1]);
+    private Main(String fileName, String... trees) throws FileNotFoundException {
+        if (trees.length > 0) {
+            dataset = new Dataset(fileName, trees[0]);
         } else {
             dataset = new Dataset(fileName);
         }

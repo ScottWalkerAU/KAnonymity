@@ -66,26 +66,10 @@ public abstract class Node {
         return false;
     }
 
-    // -- Misc --
+    // -- Overrides --
 
     @Override
     public String toString() {
         return getValue();
-    }
-
-    public void printAsArray() {
-        String out = toString();
-
-        for (Node c : children) {
-            out += "," + c.toString();
-        }
-
-        if (children.size() > 0) {
-            System.out.println(out);
-        }
-
-        for (Node c : children) {
-            c.printAsArray();
-        }
     }
 }

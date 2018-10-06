@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreeDefault extends Tree {
+public class TreeString extends Tree {
 
     private HashMap<String, NodeString> nodes = new HashMap<>();
 
-    public TreeDefault(String attributeHeader) {
+    public TreeString(String attributeHeader) {
         super(attributeHeader);
     }
 

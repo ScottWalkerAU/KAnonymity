@@ -5,7 +5,7 @@ package comp4240.kanonymity;
 import comp4240.kanonymity.attribute.*;
 import comp4240.kanonymity.tree.Range;
 import comp4240.kanonymity.tree.Tree;
-import comp4240.kanonymity.tree.TreeDefault;
+import comp4240.kanonymity.tree.TreeString;
 import comp4240.kanonymity.tree.TreeRange;
 import lombok.extern.log4j.Log4j2;
 
@@ -25,30 +25,22 @@ public class Dataset {
 
     private List<Record> filtered;
 
-    public Dataset(String fileName, String taxonomyFileName) {
+    public Dataset(String fileName, String taxonomyFileName) throws FileNotFoundException {
         this(fileName);
         loadTaxonomyTrees(taxonomyFileName);
     }
 
-    public Dataset(String fileName) {
+    public Dataset(String fileName) throws FileNotFoundException {
         this.records = new ArrayList<>();
         this.generalisations = new HashMap<>();
         this.filtered = null;
         loadData(fileName);
     }
 
-    public void loadData(String path) {
-        //System.out.println("[INFO]   loadData   Loading data");
-        Scanner scanner;
+    private void loadData(String path) throws FileNotFoundException {
+        File file = new File(path);
+        Scanner scanner = new Scanner(file);
         String line;
-
-        try {
-            File file = new File(path);
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
 
         // Check the files not blank
         if (!scanner.hasNext()) {
@@ -59,22 +51,18 @@ public class Dataset {
         line = scanner.nextLine();
         setIdentifierType(line.split(","));
 
-        // Set the header widths, used for displaying the dataset
-        headerWidths = new int[identifiers.size()];
-        setHeaders(line.split(","));
-
         // Attribute Type
         line = scanner.nextLine();
         setAttributeTypes(line.split(","));
-        setHeaders(line.split(","));
 
         // Headers
         line = scanner.nextLine();
         setHeaders(line.split(","));
+
+        // Set the header widths, used for displaying the dataset
         setHeaderWidths(line.split(","));
 
-
-        // Data
+        // Read in data
         while (scanner.hasNextLine()) {
             line = scanner.nextLine();
             addRecord(line.split(","));
@@ -84,35 +72,21 @@ public class Dataset {
     }
 
     private void setHeaderWidths(String[] values) {
+        headerWidths = new int[identifiers.size()];
         for (int i = 0; i < values.length; i++) {
             String value = values[i];
-
             headerWidths[i] = Math.max(headerWidths[i], value.length());
             headerWidths[i] = Math.max(headerWidths[i], 6);
         }
     }
 
-    public void loadTaxonomyTrees(String path) {
-        //System.out.println("[INFO]   loadTaxonomyTrees   Loading TaxonomyTrees");
-        Scanner scanner;
-        String line;
-
-        try {
-            File file = new File(path);
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // Check the files not blank
-        if (!scanner.hasNext()) {
-            return;
-        }
+    private void loadTaxonomyTrees(String path) throws FileNotFoundException {
+        File file = new File(path);
+        Scanner scanner = new Scanner(file);
 
         // Loop through the file line by line
         while (scanner.hasNextLine()) {
-            line = scanner.nextLine();
+            String line = scanner.nextLine();
 
             // Check the line isn't empty
             if (line.trim().isEmpty()) {
@@ -148,21 +122,19 @@ public class Dataset {
 
     /**
      * Given an array of values:
-     * Index 0:     Header of the data set column used to reference the generalisation tree
-     * Index 1:     The parent node
-     * Index 2+:    The children nodes that will be added to the parent node
-     * @param values
+     * Index 0:  Header of the data set column used to reference the generalisation tree
+     * Index 1:  The parent node
+     * Index 2+: The children nodes that will be added to the parent node
+     * @param values Input data as per description
      */
     private void addTaxonomyTreeNodeString(String[] values) {
-        // Header of the data set column
-        String header = values[0];
-
         // Get the generalisation tree
-        TreeDefault tree = (TreeDefault) generalisations.get(header);
+        String header = values[0];
+        TreeString tree = (TreeString) generalisations.get(header);
 
         // If the tree doesn't exist then create it
         if (tree == null) {
-            tree = new TreeDefault(header);
+            tree = new TreeString(header);
             addGeneralisation(tree);
         }
 
@@ -177,16 +149,14 @@ public class Dataset {
 
     /**
      * Given an array of values:
-     * Index 0:     Header of the data set column used to reference the generalisation tree
-     * Index 1:     The parent node
-     * Index 2+:    The children nodes that will be added to the parent node
-     * @param values
+     * Index 0:  Header of the data set column used to reference the generalisation tree
+     * Index 1:  The parent node
+     * Index 2+: The children nodes that will be added to the parent node
+     * @param values Input data set per description
      */
     private void addTaxonomyTreeNodeRange(String[] values) {
-        // Header of the data set column
-        String header = values[0];
-
         // Get the generalisation tree
+        String header = values[0];
         TreeRange tree = (TreeRange) generalisations.get(header);
 
         // If the tree doesn't exist then create it
@@ -203,6 +173,11 @@ public class Dataset {
             Range child = new Range(values[i]);
             tree.add(parent, child);
         }
+    }
+
+    private void addGeneralisation(Tree tree) {
+        String attributeHeader = tree.getAttributeHeader();
+        generalisations.put(attributeHeader, tree);
     }
 
     private void setIdentifierType(String[] values) {
@@ -231,14 +206,14 @@ public class Dataset {
      * Takes an array of Strings and sets the headers to the corresponding values
      * @param values the array containing the header values.
      */
-    public void setHeaders(String[] values) {
+    private void setHeaders(String[] values) {
         headers = new ArrayList<>(values.length);
         for (String value : values) {
             headers.add(value.trim());
         }
     }
 
-    public void addRecord(String[] values) {
+    private void addRecord(String[] values) {
         Record record = new Record();
         for (int i = 0; i < values.length; i++) {
             String value = values[i].trim();
@@ -289,14 +264,19 @@ public class Dataset {
 
     /**
      * Loop through all records and collect the attributes from a header column
-     * @param header
-     * @return
+     * @param header Header to get attributes for
+     * @return List of all attributes
      */
     public List<Attribute> getAttributes(String header) {
         int headerIndex = headers.indexOf(header);
         return getAttributes(headerIndex);
     }
 
+    /**
+     * Loop through all records and collect the attributes from a header column
+     * @param column Column to get attributes for
+     * @return List of all attributes
+     */
     public List<Attribute> getAttributes(int column) {
         List<Attribute> attributes = new ArrayList<>();
 
@@ -306,80 +286,6 @@ public class Dataset {
         }
 
         return attributes;
-    }
-
-    public void displayDataset() {
-        displayDataset(records.size());
-    }
-
-    public void displayDataset(int amount) {
-
-        StringBuilder builder = new StringBuilder("Some of the dataset\n");
-        for (int i = 0; i < headers.size(); i++) {
-            AttributeType attributeType = attributeTypes.get(i);
-            String format = "%-" + headerWidths[i] + "s ";
-            builder.append(String.format(format, attributeType));
-        }
-        builder.append('\n');
-
-        for (int i = 0; i < headers.size(); i++) {
-            String header = headers.get(i);
-            String format = "%-" + headerWidths[i] + "s ";
-            builder.append(String.format(format, header));
-        }
-        builder.append('\n');
-
-        for (int i = 0; i < Math.min(amount, records.size()); i++) {
-            Record r = records.get(i);
-            List<Attribute> attributes = r.getAttributes();
-            for (int j = 0; j < attributes.size(); j++) {
-                Attribute attribute = attributes.get(j);
-                String format = "%-" + headerWidths[j] + "s ";
-                builder.append(String.format(format, attribute.toString()));
-            }
-            builder.append('\n');
-        }
-
-        log.debug(builder.toString());
-    }
-
-    public void displayModifiedDataset() {
-        displayModifiedDataset(records.size());
-    }
-
-    public void displayModifiedDataset(int amount) {
-
-        StringBuilder builder = new StringBuilder("The modified dataset\n");
-        for (int i = 0; i < headers.size(); i++) {
-            AttributeType attributeType = attributeTypes.get(i);
-            String format = "%-" + headerWidths[i] + "s ";
-            builder.append(String.format(format, attributeType));
-        }
-        builder.append('\n');
-
-        for (int i = 0; i < headers.size(); i++) {
-            String header = headers.get(i);
-            String format = "%-" + headerWidths[i] + "s ";
-            builder.append(String.format(format, header));
-        }
-        builder.append('\n');
-
-        for (int i = 0; i < Math.min(amount, records.size()); i++) {
-            Record r = records.get(i);
-            List<Attribute> attributes = r.getAttributes();
-            for (int j = 0; j < attributes.size(); j++) {
-                Attribute attribute = attributes.get(j);
-                String format = "%-" + headerWidths[j] + "s ";
-                builder.append(String.format(format, attribute.getModifiedValue()));
-            }
-            builder.append('\n');
-        }
-        log.debug(builder.toString());
-    }
-
-    public void addGeneralisation(Tree tree) {
-        String attributeHeader = tree.getAttributeHeader();
-        generalisations.put(attributeHeader, tree);
     }
 
     public List<Record> getRecords() {
@@ -524,5 +430,76 @@ public class Dataset {
         }
         this.filtered = null;
         log.debug("Suppressed " + suppressed + " rows!");
+    }
+
+    // -- Printers --
+
+    public void displayDataset() {
+        displayDataset(records.size());
+    }
+
+    public void displayDataset(int amount) {
+
+        StringBuilder builder = new StringBuilder("Some of the dataset\n");
+        for (int i = 0; i < headers.size(); i++) {
+            AttributeType attributeType = attributeTypes.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            builder.append(String.format(format, attributeType));
+        }
+        builder.append('\n');
+
+        for (int i = 0; i < headers.size(); i++) {
+            String header = headers.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            builder.append(String.format(format, header));
+        }
+        builder.append('\n');
+
+        for (int i = 0; i < Math.min(amount, records.size()); i++) {
+            Record r = records.get(i);
+            List<Attribute> attributes = r.getAttributes();
+            for (int j = 0; j < attributes.size(); j++) {
+                Attribute attribute = attributes.get(j);
+                String format = "%-" + headerWidths[j] + "s ";
+                builder.append(String.format(format, attribute.toString()));
+            }
+            builder.append('\n');
+        }
+
+        log.debug(builder.toString());
+    }
+
+    public void displayModifiedDataset() {
+        displayModifiedDataset(records.size());
+    }
+
+    public void displayModifiedDataset(int amount) {
+
+        StringBuilder builder = new StringBuilder("The modified dataset\n");
+        for (int i = 0; i < headers.size(); i++) {
+            AttributeType attributeType = attributeTypes.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            builder.append(String.format(format, attributeType));
+        }
+        builder.append('\n');
+
+        for (int i = 0; i < headers.size(); i++) {
+            String header = headers.get(i);
+            String format = "%-" + headerWidths[i] + "s ";
+            builder.append(String.format(format, header));
+        }
+        builder.append('\n');
+
+        for (int i = 0; i < Math.min(amount, records.size()); i++) {
+            Record r = records.get(i);
+            List<Attribute> attributes = r.getAttributes();
+            for (int j = 0; j < attributes.size(); j++) {
+                Attribute attribute = attributes.get(j);
+                String format = "%-" + headerWidths[j] + "s ";
+                builder.append(String.format(format, attribute.getModifiedValue()));
+            }
+            builder.append('\n');
+        }
+        log.debug(builder.toString());
     }
 }

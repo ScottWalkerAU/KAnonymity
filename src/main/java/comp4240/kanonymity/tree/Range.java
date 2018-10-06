@@ -10,16 +10,16 @@ public class Range {
 
     /**
      * Takes a string version of the range in the format of [0..50] or [0..null] for an open upper range.
-     * @param range
+     * @param range The range string
      */
     public Range(String range) {
         // [0..50] is the format
 
         // Replaces the "[" & "]" at the end of the range
-        range = range.replaceAll("\\[|]", "");
+        range = range.replaceAll("[\\[\\]]", "");
 
         // Split the range at ".."
-        String[] values = range.split("\\.\\.");
+        String[] values = range.split("\\.{2}");
         Integer min, max;
 
         // Set the min value to either null or a value;
@@ -40,6 +40,7 @@ public class Range {
         setMin(min);
         setMax(max);
     }
+
     // -- General Methods --
 
     public boolean contains(Integer value) {
@@ -55,11 +56,7 @@ public class Range {
     }
 
     public boolean equals(Range other) {
-        if (other.getMin() == this.getMin() && other.getMax() == this.getMax()) {
-            return true;
-        }
-
-        return false;
+        return other.getMin() == this.getMin() && other.getMax() == this.getMax();
     }
 
     public String toString() {
