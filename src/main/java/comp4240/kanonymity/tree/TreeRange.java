@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TreeRange extends Tree {
 
-    private List<NodeRange> nodes = new ArrayList<>();
+    private List<Node<Range>> nodes = new ArrayList<>();
     private List<Range> leafRanges = new ArrayList<>();
 
     public TreeRange(String attributeHeader) {
@@ -21,11 +21,11 @@ public class TreeRange extends Tree {
      * @param children
      */
     public void add(Range parent, Range... children) {
-        NodeRange node;
+        Node<Range> node;
 
         // First time set the root node
         if (root == null) {
-            node = new NodeRange(parent);
+            node = new Node<>(parent);
             root = node;
             nodes.add(node);
         } else {
@@ -39,7 +39,7 @@ public class TreeRange extends Tree {
 
         // For all children passed in
         for (Range c : children) {
-            NodeRange child = new NodeRange(node, c);
+            Node<Range> child = new Node<>(node, c);
             node.addChild(child);
             nodes.add(child);
             leafRanges.add(c);
@@ -56,10 +56,10 @@ public class TreeRange extends Tree {
      * @param range
      * @return
      */
-    private NodeRange findNode(Range range) {
+    private Node<Range> findNode(Range range) {
         //System.out.println("TreeRange   findNode(range): " + range);
-        for (NodeRange node : nodes) {
-            if (node.getRange().equals(range)) {
+        for (Node<Range> node : nodes) {
+            if (node.getData().equals(range)) {
                 return node;
             }
         }
@@ -81,9 +81,9 @@ public class TreeRange extends Tree {
             return findRange(Integer.parseInt(range));
         }
 
-        for (NodeRange node : nodes) {
-            if (node.getRange().equals(range)) { // TODO this is broken Harry
-                return node.getRange();
+        for (Node<Range> node : nodes) {
+            if (node.getData().equals(range)) { // TODO this is broken Harry
+                return node.getData();
             }
         }
         return null;
@@ -111,7 +111,7 @@ public class TreeRange extends Tree {
             throw new IllegalArgumentException("TreeRange: Cannot find range " + range + " in the taxonomy tree");
         }
 
-        return getGeneralisedNode(node, generalisationLevel).getValue();
+        return getGeneralisedNode(node, generalisationLevel).toString();
     }
 
     public List<Node> getNodes() {
@@ -121,7 +121,7 @@ public class TreeRange extends Tree {
     public Node getNode(Attribute attribute) {
         NumericAttribute attr = (NumericAttribute) attribute; // TODO unchecked cast
         int value = attr.getValue();
-        NodeRange parent = findNode(findRange(value));
-        return new NodeRange(parent, new Range(value, value));
+        Node<Range> parent = findNode(findRange(value));
+        return new Node<>(parent, new Range(value, value));
     }
 }

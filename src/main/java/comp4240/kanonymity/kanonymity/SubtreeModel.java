@@ -39,7 +39,7 @@ public class SubtreeModel extends GeneralisationModel {
             }
 
             // Calculate the generalised value
-            String generalisedValue = node.getValue();
+            String generalisedValue = node.toString();
             updateModifiedValue(attribute, generalisedValue);
         }
     }

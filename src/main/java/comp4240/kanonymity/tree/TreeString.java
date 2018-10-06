@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TreeString extends Tree {
 
-    private HashMap<String, NodeString> nodes = new HashMap<>();
+    private HashMap<String, Node<String>> nodes = new HashMap<>();
 
     public TreeString(String attributeHeader) {
         super(attributeHeader);
@@ -21,11 +21,11 @@ public class TreeString extends Tree {
      * @param children
      */
     public void add(String parent, String... children) {
-        NodeString node;
+        Node<String> node;
 
         // First time set the root node
         if (root == null) {
-            node = new NodeString(parent);
+            node = new Node<>(parent);
             root = node;
             addNode(node);
         } else {
@@ -39,7 +39,7 @@ public class TreeString extends Tree {
 
         // For all children passed in
         for (String c : children) {
-            NodeString child = new NodeString(node, c);
+            Node<String> child = new Node<>(node, c);
             node.addChild(child);
             addNode(child);
         }
@@ -51,12 +51,12 @@ public class TreeString extends Tree {
      * @param value
      * @return
      */
-    private NodeString findNode(String value) {
+    private Node<String> findNode(String value) {
         return nodes.get(value);
     }
 
-    public void addNode(NodeString node) {
-        nodes.put(node.getValue(), node);
+    public void addNode(Node<String> node) {
+        nodes.put(node.toString(), node);
     }
 
 
@@ -75,7 +75,7 @@ public class TreeString extends Tree {
             throw new IllegalArgumentException("Cannot find node with value '" + value + "' in the taxonomy tree '" + attributeHeader + "'");
         }
 
-        return getGeneralisedNode(node, generalisationLevel).getValue();
+        return getGeneralisedNode(node, generalisationLevel).toString();
     }
 
     public List<Node> getNodes() {

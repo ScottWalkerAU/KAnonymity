@@ -41,7 +41,7 @@ public class SiblingModel extends GeneralisationModel {
             }
 
             // Calculate the generalised value
-            String generalisedValue = parent.getValue();
+            String generalisedValue = parent.toString();
             updateModifiedValue(attribute, generalisedValue);
         }
     }

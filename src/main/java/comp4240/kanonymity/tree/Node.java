@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Node {
+public class Node<T> {
 
-    private Node parent;
-    private List<Node> children;
+    private T data;
+
+    private Node<T> parent;
+    private List<Node<T>> children;
     private int level;
 
-    public Node(Node parent) {
+    public Node(T data) {
+        this(null, data);
+    }
+
+    public Node(Node<T> parent, T data) {
+        this.data = data;
         this.parent = parent;
         this.children = new ArrayList<>();
         this.level = parent == null ? 0 : parent.getLevel() + 1;
@@ -18,23 +25,23 @@ public abstract class Node {
 
     /**
      * Add one or more children to the node.
-     * @param nodes Children to be added
+     * @param node Child to be added
      */
-    public void addChild(Node... nodes) {
-        Collections.addAll(children, nodes);
+    public void addChild(Node<T> node) {
+        children.add(node);
     }
-
-    // -- Abstract methods --
-
-    public abstract String getValue();
 
     // -- Getters --
 
-    public Node getParent() {
+    public T getData() {
+        return data;
+    }
+
+    public Node<T> getParent() {
         return parent;
     }
 
-    public List<Node> getChildren() {
+    public List<Node<T>> getChildren() {
         return children;
     }
 
@@ -55,8 +62,8 @@ public abstract class Node {
         return height;
     }
 
-    public boolean canGeneraliseTo(Node node) {
-        Node parent = this;
+    public boolean canGeneraliseTo(Node<T> node) {
+        Node<T> parent = this;
         while (parent != null) {
             if (parent == node)
                 return true;
@@ -70,6 +77,6 @@ public abstract class Node {
 
     @Override
     public String toString() {
-        return getValue();
+        return data.toString();
     }
 }
