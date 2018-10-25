@@ -3,7 +3,7 @@ package comp4240.kanonymity.tree;
 public class Range {
     private Integer min, max;
 
-    public Range(Integer min, Integer max) {
+    Range(Integer min, Integer max) {
         setMin(min);
         setMax(max);
     }
@@ -43,7 +43,7 @@ public class Range {
 
     // -- General Methods --
 
-    public boolean contains(Integer value) {
+    boolean contains(Integer value) {
         if (hasLowerBound() && value < min) {
             return false;
         }
@@ -55,7 +55,7 @@ public class Range {
         return true;
     }
 
-    public boolean equals(Range other) {
+    boolean equals(Range other) {
         return other.getMin() == this.getMin() && other.getMax() == this.getMax();
     }
 
@@ -63,23 +63,23 @@ public class Range {
         String out = "[";
 
         out += (min == null) ? "*" : min;
-        out += ", ";
+        out += " - ";
         out += (max == null) ? "*" : max;
         out += "]";
 
         return out;
     }
 
-    public boolean hasLowerBound() {
+    private boolean hasLowerBound() {
         return min != null;
     }
 
-    public boolean hasUpperBound() {
+    private boolean hasUpperBound() {
         return max != null;
     }
 
-    public static boolean isRange(String range) {
-        if (range.contains("[") && range.contains("]") && range.contains(",")) {
+    static boolean isRange(String range) {
+        if (range.contains("[") && range.contains("]") && range.contains("-")) {
             return true;
         }
 
@@ -88,21 +88,21 @@ public class Range {
 
     // -- Getters --
 
-    public Integer getMin() {
+    private Integer getMin() {
         return min;
     }
 
-    public Integer getMax() {
+    private Integer getMax() {
         return max;
     }
 
     // -- Setters --
 
-    public void setMin(Integer min) {
+    private void setMin(Integer min) {
         this.min = min;
     }
 
-    public void setMax(Integer max) {
+    private void setMax(Integer max) {
         this.max = max;
     }
 }

@@ -25,12 +25,12 @@ public class Dataset {
 
     private List<Record> filtered;
 
-    public Dataset(String fileName, String taxonomyFileName) throws FileNotFoundException {
+    Dataset(String fileName, String taxonomyFileName) throws FileNotFoundException {
         this(fileName);
         loadTaxonomyTrees(taxonomyFileName);
     }
 
-    public Dataset(String fileName) throws FileNotFoundException {
+    Dataset(String fileName) throws FileNotFoundException {
         this.records = new ArrayList<>();
         this.generalisations = new HashMap<>();
         this.filtered = null;
@@ -76,7 +76,7 @@ public class Dataset {
         for (int i = 0; i < values.length; i++) {
             String value = values[i];
             headerWidths[i] = Math.max(headerWidths[i], value.length());
-            headerWidths[i] = Math.max(headerWidths[i], 6);
+            headerWidths[i] = Math.max(headerWidths[i], 8);
         }
     }
 
@@ -277,7 +277,7 @@ public class Dataset {
      * @param column Column to get attributes for
      * @return List of all attributes
      */
-    public List<Attribute> getAttributes(int column) {
+    private List<Attribute> getAttributes(int column) {
         List<Attribute> attributes = new ArrayList<>();
 
         for (Record r : records) {
@@ -326,7 +326,7 @@ public class Dataset {
         return new ArrayList<>(generalisations.values());
     }
 
-    public int getTaxonomyTreeCombinations() {
+    int getTaxonomyTreeCombinations() {
         int combinations = 1;
         for (String header : headers) {
             Tree tree = generalisations.get(header);
@@ -349,13 +349,13 @@ public class Dataset {
     }
 
     // Debug method
-    public void printEquivalenceClasses() {
+    String printEquivalenceClasses() {
         HashMap<String, Integer> equivalenceClasses = getEquivalenceClasses();
 
         StringBuilder builder = new StringBuilder("Equivalence Classes\n");
         for (int i = 0; i < headers.size(); i++) {
             String header = headers.get(i);
-            String format = "%-" + headerWidths[i] + "s ";
+            String format = "%-" + (headerWidths[i]+2) + "s ";
             builder.append(String.format(format, header));
         }
         builder.append('\n');
@@ -369,12 +369,65 @@ public class Dataset {
 
 
             for (int j = 0; j < values.length; j++) {
-                String format = "%-" + headerWidths[j] + "s ";
+                String format = "%-" + (headerWidths[j]+2) + "s ";
                 builder.append(String.format(format, values[j]));
             }
             builder.append("\tEquivalence Class Size: ").append(pair.getValue()).append('\n');
         }
-        log.debug(builder.toString());
+        return builder.toString();
+    }
+
+    String modifiedToCSV() {
+        StringBuilder builder = new StringBuilder("The modified dataset\n");
+        for (int i = 0; i < headers.size(); i++) {
+            AttributeType attributeType = attributeTypes.get(i);
+            builder.append(attributeType);
+            builder.append(",");
+        }
+        builder.append('\n');
+
+        for (String header : headers) {
+            builder.append(header);
+            builder.append(",");
+        }
+        builder.append('\n');
+
+        for (Record r : records) {
+            List<Attribute> attributes = r.getAttributes();
+            for (Attribute attribute : attributes) {
+                builder.append(attribute.getModifiedValue());
+                builder.append(",");
+            }
+            builder.append('\n');
+        }
+        return builder.toString();
+    }
+
+    String equivalenceToCSV() {
+        HashMap<String, Integer> equivalenceClasses = getEquivalenceClasses();
+
+        StringBuilder builder = new StringBuilder("Equivalence Classes\n");
+        for (String header : headers) {
+            builder.append(header);
+            builder.append(",");
+        }
+        builder.append('\n');
+
+        Iterator<Map.Entry<String, Integer>> it = equivalenceClasses.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Integer> pair = it.next();
+            it.remove();
+            String value = pair.getKey();
+            String[] values = value.split("\t");
+
+
+            for (String value1 : values) {
+                builder.append(value1);
+                builder.append(",");
+            }
+            builder.append("\tEquivalence Class Size: ").append(pair.getValue()).append('\n');
+        }
+        return builder.toString();
     }
 
     private List<String> getQIDHeaders() {
@@ -404,7 +457,7 @@ public class Dataset {
         return counts;
     }
 
-    public void suppressOutliers() {
+    void suppressOutliers() {
         List<String> qids = getQIDHeaders();
         HashMap<String, AttributeCount> countMap = getAttributeCounts(qids);
 
@@ -429,7 +482,7 @@ public class Dataset {
             }
         }
         this.filtered = null;
-        log.debug("Suppressed " + suppressed + " rows!");
+        System.out.println("Suppressed " + suppressed + " rows!");
     }
 
     // -- Printers --
@@ -438,7 +491,7 @@ public class Dataset {
         displayDataset(records.size());
     }
 
-    public void displayDataset(int amount) {
+    void displayDataset(int amount) {
 
         StringBuilder builder = new StringBuilder("Some of the dataset\n");
         for (int i = 0; i < headers.size(); i++) {
@@ -466,7 +519,7 @@ public class Dataset {
             builder.append('\n');
         }
 
-        log.debug(builder.toString());
+        System.out.println(builder.toString());
     }
 
     public void displayModifiedDataset() {
@@ -500,6 +553,6 @@ public class Dataset {
             }
             builder.append('\n');
         }
-        log.debug(builder.toString());
+        System.out.println(builder.toString());
     }
 }

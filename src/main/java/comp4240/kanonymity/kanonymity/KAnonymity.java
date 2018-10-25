@@ -14,7 +14,7 @@ import java.util.List;
 @Log4j2
 public class KAnonymity {
 
-    protected int desiredK;
+    int desiredK;
     protected Dataset dataset;
 
     public KAnonymity(Dataset dataset, int desiredK) {
@@ -25,7 +25,7 @@ public class KAnonymity {
     public void anonymise() {
         DAG dag = new DAG(this);
         GeneralisationResult best = dag.getBestGeneralisation();
-        log.info("Best generalisation combo: " + best);
+        System.out.println("Best generalisation combo: " + best);
 
         if (best != null) {
             best.getNode().anonymise(this);
@@ -38,7 +38,7 @@ public class KAnonymity {
      * @param k the size of k
      * @return true of false if the dataset is k-anonymised
      */
-    public boolean isKAnonymous(int k) {
+    boolean isKAnonymous(int k) {
         // Returns true if k is equal to 1. All data sets have a k of 1.
         if (k == 1) {
             return true;
@@ -64,7 +64,7 @@ public class KAnonymity {
      * Calculates the size of k from the current dataset.
      * @return the size of k.
      */
-    public int getK() {
+    int getK() {
         // Create a queue of all records to iterate through.
         List<Record> recordsQueue = new LinkedList<>(dataset.getRecords());
 
@@ -128,7 +128,7 @@ public class KAnonymity {
     }
 
     public void printStats() {
-        log.info("Dataset has k: " + getK());
+        System.out.println("Dataset has k: " + getK());
     }
 
     // -- Getters --

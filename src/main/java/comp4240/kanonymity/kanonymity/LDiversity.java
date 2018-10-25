@@ -24,7 +24,7 @@ public class LDiversity extends KAnonymity {
         return isKAnonymous(desiredK) && isLDiverse(desiredL);
     }
 
-    public boolean isLDiverse(int desiredL) {
+    private boolean isLDiverse(int desiredL) {
         HashMap<String, List<String>> equivalenceClasses = getEquivalenceClasses();
 
         // Check each list inside the HashMap has > desiredL
@@ -38,7 +38,7 @@ public class LDiversity extends KAnonymity {
         return true;
     }
 
-    public int getL() {
+    private int getL() {
         HashMap<String, List<String>> equivalenceClasses = getEquivalenceClasses();
 
         // Check each list inside the HashMap has > desiredL
@@ -46,7 +46,7 @@ public class LDiversity extends KAnonymity {
         for (Map.Entry<String, List<String>> entry : equivalenceClasses.entrySet()) {
             List<String> sensitiveList = entry.getValue();
 
-            log.debug("Value: " + entry + ", List Size: " + sensitiveList.size());
+            System.out.println("Value: " + entry + ", List Size: " + sensitiveList.size());
 
             if (maxL == null || sensitiveList.size() < maxL) {
                 maxL = sensitiveList.size();
@@ -84,7 +84,7 @@ public class LDiversity extends KAnonymity {
 
     @Override
     public void printStats() {
-        log.info("Dataset has k: " + getK() +
-                "\nDataset has L: " + getL());
+        System.out.println("Dataset has k: " + getK());
+        System.out.println("Dataset has l: " + getL());
     }
 }
