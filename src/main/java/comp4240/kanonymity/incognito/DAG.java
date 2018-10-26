@@ -35,7 +35,13 @@ public class DAG {
         hashedNodes.put(root.toString(), root);
 
         int index = 0;
+        int counter = 0;
+        int totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
         while (index < nodes.size()) {
+            counter++;
+            if (counter % 10 == 0) {
+                System.out.print("\rGenerating all combinations: " + (100 * counter / totalCombinations) + "%" );
+            }
             DAGNode current = nodes.get(index);
 
             List<FullDomainLevel> generalisations = current.getGeneralisations();
@@ -55,6 +61,8 @@ public class DAG {
 
             index++;
         }
+
+        System.out.println("\rFinished Generating all combinations!");
     }
 
     private DAGNode findNode(List<DAGNode> nodes, DAGNode temp) {
@@ -72,7 +80,11 @@ public class DAG {
         GeneralisationResult best = null;
         List<DAGNode> toCheck = new LinkedList<>(hashedNodes.values());
 
+        int counter = 0;
+        int totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
         while (!toCheck.isEmpty()) {
+            counter++;
+            System.out.print("\rSearching for the best generalisation: (" + counter + "/" + totalCombinations + ")\t" + (100.0 * counter / totalCombinations ) + "%" );
             int index = new Random().nextInt(toCheck.size());
             DAGNode node = toCheck.remove(index);
             // If we have already calculated the anonymity of the node, skip over it.
@@ -95,6 +107,7 @@ public class DAG {
             }
         }
 
+        System.out.println("\nFinished Searching for the best generalisation!");
         return best;
     }
 

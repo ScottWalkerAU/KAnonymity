@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
 @Log4j2
@@ -71,6 +72,25 @@ public class Dataset {
         scanner.close();
     }
 
+    public void outputData(String fileName) {
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (String header : headers) {
+            out.print(header + "\t");
+        }
+
+        for (Record r : records) {
+            out.print("\n" + r.getModifiedValues());
+        }
+
+        out.close();
+    }
+
     private void setHeaderWidths(String[] values) {
         headerWidths = new int[identifiers.size()];
         for (int i = 0; i < values.length; i++) {
@@ -106,6 +126,9 @@ public class Dataset {
 
             // Find out what index the header is in the data set to find the corresponding attributeType for the column.
             int headerIndex = headers.indexOf(header);
+            if (headerIndex == -1) {
+                throw new IllegalArgumentException("The taxonomy tree with the header '" + header + "' is not found within the dataset.");
+            }
             AttributeType attributeType = attributeTypes.get(headerIndex);
 
             // Depending on the attribute type call each respective function.
@@ -326,7 +349,7 @@ public class Dataset {
         return new ArrayList<>(generalisations.values());
     }
 
-    int getTaxonomyTreeCombinations() {
+    public int getTaxonomyTreeCombinations() {
         int combinations = 1;
         for (String header : headers) {
             Tree tree = generalisations.get(header);
@@ -344,6 +367,20 @@ public class Dataset {
             Integer size = equivalenceClasses.get(modifiedValues);
             size = (size == null) ? 1 : size + 1;
             equivalenceClasses.put(modifiedValues, size);
+        }
+        return equivalenceClasses;
+    }
+
+    public HashMap<String, List<Record>> getEquivalenceClassesRecords() {
+        HashMap<String, List<Record>> equivalenceClasses = new HashMap<>();
+        for (Record r : getRecords()) {
+            String modifiedValues = r.getModifiedQIDValues();
+            List<Record> list = equivalenceClasses.get(modifiedValues);
+            if (list == null) {
+                list = new ArrayList<>();
+                equivalenceClasses.put(modifiedValues, list);
+            }
+            list.add(r);
         }
         return equivalenceClasses;
     }
@@ -493,7 +530,7 @@ public class Dataset {
 
     void displayDataset(int amount) {
 
-        StringBuilder builder = new StringBuilder("Some of the dataset\n");
+        StringBuilder builder = new StringBuilder("\nSome of the dataset\n");
         for (int i = 0; i < headers.size(); i++) {
             AttributeType attributeType = attributeTypes.get(i);
             String format = "%-" + headerWidths[i] + "s ";

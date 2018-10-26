@@ -17,12 +17,14 @@ public class KAnonymity {
     int desiredK;
     protected Dataset dataset;
 
+    public KAnonymity() {}
+
     public KAnonymity(Dataset dataset, int desiredK) {
         this.dataset = dataset;
         this.desiredK = desiredK;
     }
 
-    public void anonymise() {
+    public GeneralisationResult anonymise() {
         DAG dag = new DAG(this);
         GeneralisationResult best = dag.getBestGeneralisation();
         System.out.println("Best generalisation combo: " + best);
@@ -31,6 +33,8 @@ public class KAnonymity {
             best.getNode().anonymise(this);
         }
         dataset.displayModifiedDataset(10);
+
+        return best;
     }
 
     /**
@@ -139,5 +143,15 @@ public class KAnonymity {
 
     public Dataset getDataset() {
         return dataset;
+    }
+
+    // --- Setters ---
+
+    public void setDataset(Dataset dataset) {
+        this.dataset = dataset;
+    }
+
+    public void setDesiredK(int k) {
+        this.desiredK = k;
     }
 }

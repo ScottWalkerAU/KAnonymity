@@ -1,5 +1,6 @@
 package comp4240.kanonymity;
 
+import comp4240.kanonymity.incognito.GeneralisationResult;
 import comp4240.kanonymity.kanonymity.KAnonymity;
 import comp4240.kanonymity.kanonymity.LDiversity;
 import lombok.extern.log4j.Log4j2;
@@ -157,13 +158,15 @@ public class Main {
 
 
         // Anonymise the data set
-        algorithm.anonymise();
+        GeneralisationResult generalisation = algorithm.anonymise();
 
         System.out.println(dataset.printEquivalenceClasses());
         algorithm.printStats();
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
+
+        Statistics.getDatasetUtility(generalisation.getNode());
 
         try {
             createCSV(dataset.modifiedToCSV(),"ModifiedDataset");
