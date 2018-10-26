@@ -167,6 +167,7 @@ public class Main {
         System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
 
         Statistics.getDatasetUtility(generalisation.getNode());
+        Statistics.getMinimumEquiverlenceClassEntropy(dataset);
 
         try {
             createCSV(dataset.modifiedToCSV(),"ModifiedDataset");

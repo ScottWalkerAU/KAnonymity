@@ -84,7 +84,8 @@ public class DAG {
         int totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
         while (!toCheck.isEmpty()) {
             counter++;
-            System.out.print("\rSearching for the best generalisation: (" + counter + "/" + totalCombinations + ")\t" + (100.0 * counter / totalCombinations ) + "%" );
+            //System.out.print("\rSearching for the best generalisation: (" + counter + "/" + totalCombinations + ")\t" + (100.0 * counter / totalCombinations ) + "%" );
+            System.out.printf("\rSearching for the best generalisation: (%d/%d)\t%.4f%%", counter, totalCombinations, (100.0 * counter / totalCombinations));
             int index = new Random().nextInt(toCheck.size());
             DAGNode node = toCheck.remove(index);
             // If we have already calculated the anonymity of the node, skip over it.
@@ -92,6 +93,7 @@ public class DAG {
                 continue;
             }
 
+            //Double fitness = node.getFitness(kAnonymity);
             Double fitness = node.getFitness(kAnonymity);
             // Not anonymous. Add the children and keep checking
             if (fitness == null) {
@@ -107,7 +109,7 @@ public class DAG {
             }
         }
 
-        System.out.println("\nFinished Searching for the best generalisation!");
+        System.out.println("\nFinished Searching for the best generalisation!\n");
         return best;
     }
 

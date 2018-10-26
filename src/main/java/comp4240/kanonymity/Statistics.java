@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Statistics {
 
-    public static void getDatasetUtility(DAGNode node) {
+    public static double getDatasetUtility(DAGNode node) {
         List<FullDomainLevel> generalisations = node.getGeneralisations();
 
         double utilitySum = 0;
@@ -25,6 +25,7 @@ public class Statistics {
         utilitySum /= generalisations.size();
         System.out.println("The total utiltiy of the dataset is " + (int)(utilitySum * 100) + "%\n");
 
+        return utilitySum;
     }
 
     public static double getTaxonomyTreeUtility(FullDomainLevel generalisation) {
@@ -36,8 +37,11 @@ public class Statistics {
         return utility;
     }
 
-    public static void getEquiverlenceClassEntropy(Dataset dataset) {
+    public static void getMinimumEquiverlenceClassEntropy(Dataset dataset) {
         HashMap<String, List<Record>> equivalenceClasses =  dataset.getEquivalenceClassesRecords();
+        Double minEntropy = null;
+        Double maxEntropy = null;
+        Double avgEntropy = 0.0;
 
         for (String key : equivalenceClasses.keySet()) {
             List<Record> equivalenceClass = equivalenceClasses.get(key);
@@ -62,19 +66,46 @@ public class Statistics {
 
             double entropy = 0;
 
+            // Calculate the entropy using the number of occurrences of each value and the total number of occurances.
             for (Integer occurrence : sensitiveValues.values()) {
                 double percent = 1.0 * occurrence / equivalenceClass.size();
                 entropy += percent * (Math.log(percent) / Math.log(2));
             }
 
+            // The entropy calculation is a negative sum.
             if (entropy != 0) {
                 entropy = -entropy;
             }
+
+            // Round to 2dp
             entropy = (Math.floor(entropy * 100)) / 100.0;
+
+            // add to the average entropy
+            avgEntropy += entropy;
+
+            // Set the min entropy found.
+            if (minEntropy == null || entropy < minEntropy) {
+                minEntropy = entropy;
+            }
+
+            // Set the max entropy found.
+            if (maxEntropy == null || entropy > maxEntropy) {
+                maxEntropy = entropy;
+            }
+
+
             //System.out.println(key + "\nClass size = " + equivalenceClass.size() + ", Entropy = " + entropy + "\n");
 
             // TODO - Used to get the data out for graphing
-            System.out.println(entropy);
+            //System.out.println(entropy);
         }
+
+        // Calculate average entropy
+        avgEntropy /= equivalenceClasses.size();
+
+        // Output the stats
+        System.out.println("Minimum Entropy for the data set is: " + minEntropy);
+        System.out.println("Maximum Entropy for the data set is: " + maxEntropy);
+        System.out.printf("Average Entropy for the data set is: %.2f\n", avgEntropy);
     }
 }
