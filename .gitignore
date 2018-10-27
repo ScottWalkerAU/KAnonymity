@@ -27,4 +27,9 @@ hs_err_pid*
 .idea/
 target/
 
+# Maven
+dependency-reduced-pom.xml
+
+# Our own
 data/
+*.csv
