@@ -4,6 +4,9 @@ import comp4240.kanonymity.incognito.DAGNode;
 import comp4240.kanonymity.incognito.FullDomainLevel;
 import comp4240.kanonymity.tree.Tree;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +14,8 @@ public class Statistics {
 
     public static double getDatasetUtility(DAGNode node) {
         List<FullDomainLevel> generalisations = node.getGeneralisations();
+
+        StringBuilder builder = new StringBuilder();
 
         double utilitySum = 0;
         System.out.println("\nUtility for individual attributes are:");
@@ -20,10 +25,21 @@ public class Statistics {
 
             String attributeHeader = generalisation.getTree().getAttributeHeader();
             System.out.println("    " + attributeHeader + ": " + (int)(utility * 100) + "%");
+            builder.append(attributeHeader + ", " + (int)(utility * 100) + "\n");
         }
 
         utilitySum /= generalisations.size();
-        System.out.println("The total utiltiy of the dataset is " + (int)(utilitySum * 100) + "%\n");
+        System.out.println("The total utility of the dataset is " + (int)(utilitySum * 100) + "%\n");
+//        builder.append("Total," + (int)(utilitySum * 100) + "\n");
+
+        try{
+            PrintWriter pw = new PrintWriter(new File("statistics.csv"));
+            pw.write(builder.toString());
+            pw.close();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("output successful");
 
         return utilitySum;
     }
@@ -107,5 +123,12 @@ public class Statistics {
         System.out.println("Minimum Entropy for the data set is: " + minEntropy);
         System.out.println("Maximum Entropy for the data set is: " + maxEntropy);
         System.out.printf("Average Entropy for the data set is: %.2f\n", avgEntropy);
+    }
+
+    String toCSV() {
+        StringBuilder builder = new StringBuilder();
+
+
+        return builder.toString();
     }
 }
