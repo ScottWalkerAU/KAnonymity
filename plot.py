@@ -11,6 +11,8 @@ print(opt)
 classes = []
 utility = []
 privacy = []
+pPerAttribute = []
+uPerAttribute = []
 utotal = 0
 ptotal = 0
 
@@ -22,27 +24,38 @@ with open(opt.file, 'r') as f:
 		privacy.append((100-float(row[1])))
 for num in utility:
     utotal += num
+    uPerAttribute.append(utotal/(len(uPerAttribute)+1))
 utotal = utotal/(len(utility))
 for num in privacy:
     ptotal += num
+    pPerAttribute.append(ptotal/(len(pPerAttribute)+1))
 ptotal = ptotal/(len(privacy))
 
-plt.figure(figsize=(12,7))
-plt.plot(classes,utility)
-plt.scatter(classes,utility)
-a = np.arange(100,utotal,-((100-utotal)/len(utility)))
-z = np.polyfit(range(0,len(classes)), a.tolist(),2)
-p = np.poly1d(z)
-plt.plot(range(0,len(classes)),p(range(0,len(classes))),'r:')
-
-b = np.arange(0,ptotal,((0+ptotal)/len(privacy)))
-z = np.polyfit(range(0,len(classes)), b.tolist(),2)
-p = np.poly1d(z)
-plt.plot(range(0,len(classes)),p(range(0,len(classes))),'b:')
-
+plt.figure(figsize=(15,8))
+plt.subplot(2,1,2)
 plt.ylabel('Utility (%)')
 plt.xlabel('Attribute')
-plt.title("Dataset Utility vs Privacy")
-plt.legend(['Utility per attribute','Overall Utility Loss','Overall Privacy Gain'])
+plt.title("Dataset Utility per Attribute")
+plt.plot(classes,utility)
+plt.scatter(classes,utility)
+
+plt.subplot(2,2,1)
+plt.ylabel('Utility (%)')
+plt.xlabel('Number of Attributes')
+plt.title("Dataset Utility per # of Attributes")
+plt.axis([0,len(utility),0,100])
+z = np.polyfit(range(0,len(uPerAttribute)), uPerAttribute,4)
+p = np.poly1d(z)
+plt.plot(range(0,len(uPerAttribute)),p(range(0,len(uPerAttribute))),'r:')
+
+plt.subplot(2,2,2)
+plt.ylabel('Privacy (%)')
+plt.xlabel('Number of Attributes')
+plt.title("Dataset Privacy per # of Attributes")
+plt.axis([0,len(privacy),0,100])
+z = np.polyfit(range(0,len(pPerAttribute)), pPerAttribute,4)
+p = np.poly1d(z)
+plt.plot(range(0,len(pPerAttribute)),p(range(0,len(pPerAttribute))),'r:')
+plt.plot(range(0,len(classes)),p(range(0,len(classes))),'b:')
 
 plt.show()
