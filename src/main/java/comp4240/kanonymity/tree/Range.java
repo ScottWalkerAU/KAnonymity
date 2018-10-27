@@ -1,8 +1,18 @@
 package comp4240.kanonymity.tree;
 
+/**
+ * Range of integers, with open ends
+ */
 public class Range {
-    private Integer min, max;
 
+    private Integer min;
+    private Integer max;
+
+    /**
+     * Constructor
+     * @param min Minimum value (null for open-end)
+     * @param max Maximum value (null for open-end)
+     */
     Range(Integer min, Integer max) {
         setMin(min);
         setMax(max);
@@ -43,6 +53,10 @@ public class Range {
 
     // -- General Methods --
 
+    /**
+     * @param value Value to test
+     * @return True if the range contains the value
+     */
     boolean contains(Integer value) {
         if (hasLowerBound() && value < min) {
             return false;

@@ -4,11 +4,20 @@ import comp4240.kanonymity.attribute.Attribute;
 
 import java.util.List;
 
+/**
+ * A generalisation ttree
+ */
 public abstract class Tree {
 
+    /** Root node */
     protected Node root = null;
+    /** Name of the attribute */
     protected String attributeHeader;
 
+    /**
+     * Constructor
+     * @param attributeHeader Name of the attribute
+     */
     public Tree(String attributeHeader) {
         this.attributeHeader = attributeHeader;
     }
@@ -46,24 +55,17 @@ public abstract class Tree {
 
     // -- Getters --
 
-    public Node getRoot() {
-        return root;
-    }
-
+    /**
+     * @return The height of the tree
+     */
     public int getTreeHeight() {
         return root.getHeight();
     }
 
+    /**
+     * @return The name of the attribute column
+     */
     public String getAttributeHeader() {
         return attributeHeader;
-    }
-
-    // -- Setters --
-    public void setRoot(Node root) {
-        this.root = root;
-    }
-
-    public void setAttributeHeader(String attributeHeader) {
-        this.attributeHeader = attributeHeader;
     }
 }

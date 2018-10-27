@@ -1,10 +1,20 @@
 package comp4240.kanonymity.incognito;
 
+/**
+ * A simple container to store a node and its fitness result
+ */
 public class GeneralisationResult {
 
+    /** Node that was used */
     private DAGNode node;
+    /** Its fitness */
     private double fitness;
 
+    /**
+     * Constructor
+     * @param node DAGNode
+     * @param fitness Fitness
+     */
     public GeneralisationResult(DAGNode node, double fitness) {
         this.node = node;
         this.fitness = fitness;

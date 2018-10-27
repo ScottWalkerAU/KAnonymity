@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Node within a tree
+ * @param <T> The data type stored within
+ */
 public class Node<T> {
 
     private T data;
@@ -49,9 +53,9 @@ public class Node<T> {
         return level;
     }
 
-    /*
-        Return the height of the tree from the root the the furthest node.
-    */
+    /**
+     * @return Return the height of the tree from the root the the furthest node.
+     */
     public int getHeight() {
         int height = 0;
 
@@ -62,6 +66,10 @@ public class Node<T> {
         return height;
     }
 
+    /**
+     * @param node Higher node
+     * @return If this node can generalise to the other node
+     */
     public boolean canGeneraliseTo(Node<T> node) {
         Node<T> parent = this;
         while (parent != null) {

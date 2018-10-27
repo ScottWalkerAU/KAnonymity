@@ -6,6 +6,9 @@ import comp4240.kanonymity.attribute.NumericAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tree to hold ranges
+ */
 public class TreeRange extends Tree {
 
     private List<Node<Range>> nodes = new ArrayList<>();
@@ -17,8 +20,8 @@ public class TreeRange extends Tree {
 
     /**
      * Add the children to the parent node. If any of the Nodes already exsist use those, otherwise create new nodes.
-     * @param parent
-     * @param children
+     * @param parent Parent range
+     * @param children Children ranges
      */
     public void add(Range parent, Range... children) {
         Node<Range> node;
@@ -53,8 +56,8 @@ public class TreeRange extends Tree {
 
     /**
      * Look for the node within the current array of recorded nodes.
-     * @param range
-     * @return
+     * @param range Range to find the node for
+     * @return Node containing range
      */
     private Node<Range> findNode(Range range) {
         //System.out.println("TreeRange   findNode(range): " + range);
@@ -66,6 +69,11 @@ public class TreeRange extends Tree {
         return null;
     }
 
+    /**
+     * Find the range for the given value
+     * @param value Value to check
+     * @return Node containing the value
+     */
     private Range findRange(int value) {
         for (Range range : leafRanges) {
             if (range.contains(value)) {
@@ -75,27 +83,13 @@ public class TreeRange extends Tree {
         return null;
     }
 
-    private Range findRange(String range) {
-        //System.out.println("TreeRange   findNode(range): " + range);
-        if (!Range.isRange(range)) {
-            return findRange(Integer.parseInt(range));
-        }
-
-        for (Node<Range> node : nodes) {
-            if (node.getData().equals(range)) { // TODO this is broken Harry
-                return node.getData();
-            }
-        }
-        return null;
-    }
-
     // -- Getters --
 
     /**
-     * Returns the generalised value of an attribute by getting the nodes parent 'suppressionLevel' times.
-     * @param value
-     * @param generalisationLevel
-     * @return
+     * Returns the generalised value of an attribute by getting the nodes parent 'generalisationLevel' times.
+     * @param value Value to generalise
+     * @param generalisationLevel Level to read
+     * @return Resultant value
      */
     public String getGeneralised(String value, int generalisationLevel) {
         int num = Integer.parseInt(value);
@@ -114,12 +108,20 @@ public class TreeRange extends Tree {
         return getGeneralisedNode(node, generalisationLevel).toString();
     }
 
+    /**
+     * @return All nodes in the tree
+     */
     public List<Node> getNodes() {
         return new ArrayList<>(nodes);
     }
 
+    /**
+     * Find the node given the attribute
+     * @param attribute Attribute
+     * @return Node
+     */
     public Node getNode(Attribute attribute) {
-        NumericAttribute attr = (NumericAttribute) attribute; // TODO unchecked cast
+        NumericAttribute attr = (NumericAttribute) attribute;
         int value = attr.getValue();
         Node<Range> parent = findNode(findRange(value));
         return new Node<>(parent, new Range(value, value));

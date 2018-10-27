@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Tree to hold strings
+ */
 public class TreeString extends Tree {
 
     private HashMap<String, Node<String>> nodes = new HashMap<>();
@@ -16,9 +19,9 @@ public class TreeString extends Tree {
     }
 
     /**
-     * Add the children to the parent node. If any of the Nodes already exsist use those, otherwise create new nodes.
-     * @param parent
-     * @param children
+     * Add the children to the parent node. If any of the Nodes already exist use those, otherwise create new nodes.
+     * @param parent Parent string
+     * @param children Children strings
      */
     public void add(String parent, String... children) {
         Node<String> node;
@@ -48,14 +51,18 @@ public class TreeString extends Tree {
 
     /**
      * Look for the node within the current array of recorded nodes.
-     * @param value
-     * @return
+     * @param value Value to find
+     * @return The node containing the value
      */
     private Node<String> findNode(String value) {
         return nodes.get(value);
     }
 
-    public void addNode(Node<String> node) {
+    /**
+     * Add the node to the list
+     * @param node Node to add
+     */
+    private void addNode(Node<String> node) {
         nodes.put(node.toString(), node);
     }
 
@@ -63,10 +70,10 @@ public class TreeString extends Tree {
     // -- Getters --
 
     /**
-     * Returns the generalised value of an attribute by getting the nodes parent 'suppressionLevel' times.
-     * @param value
-     * @param generalisationLevel
-     * @return
+     * Returns the generalised value of an attribute by getting the nodes parent 'generalisationLevel' times.
+     * @param value Value to generalise
+     * @param generalisationLevel Level to read
+     * @return Resultant value
      */
     public String getGeneralised(String value, int generalisationLevel) {
         // If the node doesn't exist, throw an error
@@ -78,10 +85,18 @@ public class TreeString extends Tree {
         return getGeneralisedNode(node, generalisationLevel).toString();
     }
 
+    /**
+     * @return All nodes in the tree
+     */
     public List<Node> getNodes() {
         return new ArrayList<>(nodes.values());
     }
 
+    /**
+     * Find the node given the attribute
+     * @param attribute Attribute
+     * @return Node
+     */
     public Node getNode(Attribute attribute) {
         StringAttribute attr = (StringAttribute) attribute; // TODO unchecked cast
         return findNode(attr.getValue());

@@ -2,6 +2,9 @@ package comp4240.kanonymity.incognito;
 
 import comp4240.kanonymity.tree.Tree;
 
+/**
+ * A simple container to hold a tree and a level to generalise to
+ */
 public class FullDomainLevel {
 
     /** The tree this generalisation is for */

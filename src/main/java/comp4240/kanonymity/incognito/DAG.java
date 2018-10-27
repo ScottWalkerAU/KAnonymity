@@ -6,14 +6,24 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.*;
 
+/**
+ * The outer class to hold the nodes within the DAG
+ */
 @Log4j2
 public class DAG {
 
+    /** The settings to use for generalisation */
     private KAnonymity kAnonymity;
 
+    /** Root node of the dag (No generalisations) */
     private DAGNode root;
+    /** Map containing all the nodes for quick access */
     private HashMap<String, DAGNode> hashedNodes;
 
+    /**
+     * Constructor to create the DAG
+     * @param kAnonymity Settings
+     */
     public DAG(KAnonymity kAnonymity) {
         this.kAnonymity = kAnonymity;
         this.hashedNodes = new HashMap<>();
@@ -29,6 +39,9 @@ public class DAG {
         initialise();
     }
 
+    /**
+     * Create every node in the DAG by generalising one attribute to the next level recursively
+     */
     private void initialise() {
         List<DAGNode> nodes = new ArrayList<>();
         nodes.add(root);
@@ -37,6 +50,8 @@ public class DAG {
         int index = 0;
         int counter = 0;
         int totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
+
+        // While there are nodes we have no checked. The size increases as we find more
         while (index < nodes.size()) {
             counter++;
             if (counter % 10 == 0) {
@@ -44,12 +59,14 @@ public class DAG {
             }
             DAGNode current = nodes.get(index);
 
+            // For each of the attributes in the generalisation
             List<FullDomainLevel> generalisations = current.getGeneralisations();
             for (int i = 0; i < generalisations.size(); i++) {
                 FullDomainLevel generalisation = generalisations.get(i);
                 Tree tree = generalisation.getTree();
                 int level = generalisation.getLevel();
 
+                // If the level can be generalised further, do it and add it to the DAG
                 if (level > 0) {
                     List<FullDomainLevel> nextGens = new ArrayList<>(generalisations);
                     FullDomainLevel nextGen = new FullDomainLevel(tree, level - 1);
@@ -65,6 +82,12 @@ public class DAG {
         System.out.println("\rFinished Generating all combinations!");
     }
 
+    /**
+     * Check if a generalisation level has already been found, and create it if not
+     * @param nodes List of all nodes
+     * @param temp Temporary DAGNode
+     * @return Temp if the node did not exist, or the already existing one
+     */
     private DAGNode findNode(List<DAGNode> nodes, DAGNode temp) {
         DAGNode node = hashedNodes.get(temp.toString());
         if (node != null) {
@@ -76,6 +99,10 @@ public class DAG {
         return temp;
     }
 
+    /**
+     * Find the best generalisation combination
+     * @return Best generalisation combination with its fitness
+     */
     public GeneralisationResult getBestGeneralisation() {
         GeneralisationResult best = null;
         List<DAGNode> toCheck = new LinkedList<>(hashedNodes.values());
@@ -113,6 +140,9 @@ public class DAG {
         return best;
     }
 
+    /**
+     * @return Number of nodes in the DAG
+     */
     public int getSize() {
         return hashedNodes.size();
     }
