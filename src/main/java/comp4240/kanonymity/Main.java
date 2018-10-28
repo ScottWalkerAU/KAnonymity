@@ -167,7 +167,15 @@ public class Main {
         long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
 
-        Statistics.getDatasetUtility(generalisation.getNode());
+        if(generalisation != null) // If no generalisations were made, the utility of the set should be 100%
+        {
+            Statistics.getDatasetUtility(generalisation.getNode());
+        }
+        else
+        {
+            System.out.println("The total utility of the dataset is 100%");
+        }
+
         Statistics.getMinimumEquiverlenceClassEntropy(dataset);
 
         try {

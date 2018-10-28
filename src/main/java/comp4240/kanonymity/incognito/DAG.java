@@ -49,7 +49,7 @@ public class DAG {
 
         int index = 0;
         int counter = 0;
-        int totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
+        long totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
 
         // While there are nodes we have no checked. The size increases as we find more
         while (index < nodes.size()) {
@@ -108,7 +108,7 @@ public class DAG {
         List<DAGNode> toCheck = new LinkedList<>(hashedNodes.values());
 
         int counter = 0;
-        int totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
+        long totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
         while (!toCheck.isEmpty()) {
             counter++;
             //System.out.print("\rSearching for the best generalisation: (" + counter + "/" + totalCombinations + ")\t" + (100.0 * counter / totalCombinations ) + "%" );

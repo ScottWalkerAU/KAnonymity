@@ -349,8 +349,8 @@ public class Dataset {
         return new ArrayList<>(generalisations.values());
     }
 
-    public int getTaxonomyTreeCombinations() {
-        int combinations = 1;
+    public long getTaxonomyTreeCombinations() {
+        long combinations = 1;
         for (String header : headers) {
             Tree tree = generalisations.get(header);
             if (tree != null) {
