@@ -161,14 +161,15 @@ public class Main {
         // Anonymise the data set
         GeneralisationResult generalisation = algorithm.anonymise();
 
-        System.out.println(dataset.printEquivalenceClasses());
         algorithm.printStats();
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
 
-        Statistics.getDatasetUtility(generalisation.getNode());
-        Statistics.getMinimumEquiverlenceClassEntropy(dataset);
+        if (generalisation != null) {
+            Statistics.getDatasetUtility(generalisation.getNode());
+            Statistics.getMinimumEquiverlenceClassEntropy(dataset);
+        }
 
         try {
             createCSV(dataset.modifiedToCSV(), "ModifiedDataset");
