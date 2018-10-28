@@ -46,8 +46,6 @@ public class LDiversity extends KAnonymity {
         for (Map.Entry<String, List<String>> entry : equivalenceClasses.entrySet()) {
             List<String> sensitiveList = entry.getValue();
 
-            System.out.println("Value: " + entry + ", List Size: " + sensitiveList.size());
-
             if (maxL == null || sensitiveList.size() < maxL) {
                 maxL = sensitiveList.size();
             }

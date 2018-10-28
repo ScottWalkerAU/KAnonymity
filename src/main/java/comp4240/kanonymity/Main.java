@@ -161,22 +161,15 @@ public class Main {
         // Anonymise the data set
         GeneralisationResult generalisation = algorithm.anonymise();
 
-        System.out.println(dataset.printEquivalenceClasses());
         algorithm.printStats();
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
 
-        if(generalisation != null) // If no generalisations were made, the utility of the set should be 100%
-        {
+        if (generalisation != null) {
             Statistics.getDatasetUtility(generalisation.getNode());
+            Statistics.getMinimumEquiverlenceClassEntropy(dataset);
         }
-        else
-        {
-            System.out.println("The total utility of the dataset is 100%");
-        }
-
-        Statistics.getMinimumEquiverlenceClassEntropy(dataset);
 
         try {
             createCSV(dataset.modifiedToCSV(), "ModifiedDataset");
