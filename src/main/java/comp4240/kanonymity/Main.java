@@ -39,11 +39,19 @@ public class Main {
 
         if (args.length == 0) {
             System.out.println("You must supply a dataset in order to run the anonymiser");
-            return;
+        }
+        else if (args.length == 1) {
+            System.out.println("No taxonomy tree was supplied");
         }
 
-        if (args.length == 1) {
-            System.out.println("No taxonomy tree was supplied");
+        // Print the help if not enough arguments were supplised
+        if (args.length < 2) {
+            System.out.println("\nInsufficient arguments, the first two are required:\n" +
+                "  <dataset> : The path to the file of the dataset\n" +
+                "  <taxonomy> : The path to the file of taxonomy trees\n" +
+                "  [algorithm] : either 'k' or 'l'\n" +
+                "  [k] : The k to search for for k-anonymity and l-diversity\n" +
+                "  [l] : The l to search for if using l-diversity\n");
             return;
         }
 
