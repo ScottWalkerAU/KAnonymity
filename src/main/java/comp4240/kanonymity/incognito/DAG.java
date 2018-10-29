@@ -79,7 +79,7 @@ public class DAG {
             index++;
         }
 
-        System.out.println("\rFinished Generating all combinations!");
+        System.out.println("\rFinished Generating the directed acyclic graph (DAG) node connections! In total generated " + counter + "/" + totalCombinations + " necessary combinations.");
     }
 
     /**
@@ -107,12 +107,15 @@ public class DAG {
         GeneralisationResult best = null;
         List<DAGNode> toCheck = new LinkedList<>(hashedNodes.values());
 
-        int counter = 0;
+
+        int roundCounter = 0;   // This will count all the way up to the totalCombinations
+        int nodesChecked = 0;    // This will count every time a node has its fitness analysed
+        int meetConditions = 0; // This will count every time a valid generalisation is found
         long totalCombinations = kAnonymity.getDataset().getTaxonomyTreeCombinations();
         while (!toCheck.isEmpty()) {
-            counter++;
-            //System.out.print("\rSearching for the best generalisation: (" + counter + "/" + totalCombinations + ")\t" + (100.0 * counter / totalCombinations ) + "%" );
-            System.out.printf("\rSearching for the best generalisation: (%d/%d)\t%.4f%%", counter, totalCombinations, (100.0 * counter / totalCombinations));
+            roundCounter++;
+            System.out.printf("\rSearching for the best generalisation: (%d/%d)\t%.4f%%", roundCounter, totalCombinations, (100.0 * roundCounter / totalCombinations));
+
             int index = new Random().nextInt(toCheck.size());
             DAGNode node = toCheck.remove(index);
             // If we have already calculated the anonymity of the node, skip over it.
@@ -120,23 +123,25 @@ public class DAG {
                 continue;
             }
 
-            //Double fitness = node.getFitness(kAnonymity);
+            // TODO - Here it is checking if its valid
             Double fitness = node.getFitness(kAnonymity);
+            nodesChecked++;
             // Not anonymous. Add the children and keep checking
             if (fitness == null) {
                 node.setAnonymous(DAGNode.Anonymous.FALSE);
                 continue;
             }
 
+            // TODO - Here it is actually valid
+            meetConditions++;
             node.setAnonymous(DAGNode.Anonymous.TRUE);
-            //log.debug(node + ": Fitness: " + fitness);
 
             if (best == null || fitness > best.getFitness()) {
                 best = new GeneralisationResult(node, fitness);
             }
         }
 
-        System.out.println("\nFinished Searching for the best generalisation!\n");
+        System.out.println("\rFinished Searching for the best generalisation! In total checked " + nodesChecked + " generalisations and only " + meetConditions + "/" + totalCombinations + " met the conditions!\n");
         return best;
     }
 

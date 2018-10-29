@@ -92,11 +92,21 @@ public class Dataset {
     }
 
     private void setHeaderWidths(String[] values) {
-        headerWidths = new int[identifiers.size()];
+        if (headerWidths == null) {
+            headerWidths = new int[identifiers.size()];
+        }
         for (int i = 0; i < values.length; i++) {
             String value = values[i];
             headerWidths[i] = Math.max(headerWidths[i], value.length());
             headerWidths[i] = Math.max(headerWidths[i], 8);
+        }
+    }
+
+    private void setHeaderWidths(int header, String[] values) {
+        for (int i = 0; i < values.length; i++) {
+            String value = values[i];
+            headerWidths[header] = Math.max(headerWidths[header], value.length());
+            headerWidths[header] = Math.max(headerWidths[header], 8);
         }
     }
 
@@ -129,6 +139,10 @@ public class Dataset {
             if (headerIndex == -1) {
                 throw new IllegalArgumentException("The taxonomy tree with the header '" + header + "' is not found within the dataset.");
             }
+
+            // Update the widths of the columns used
+            setHeaderWidths(headerIndex, values);
+
             AttributeType attributeType = attributeTypes.get(headerIndex);
 
             // Depending on the attribute type call each respective function.
@@ -519,7 +533,7 @@ public class Dataset {
             }
         }
         this.filtered = null;
-        System.out.println("Suppressed " + suppressed + " rows!");
+        System.out.println("Suppressed " + suppressed + " records in the data set because they were identified as outliers!\n");
     }
 
     // -- Printers --
@@ -529,8 +543,7 @@ public class Dataset {
     }
 
     void displayDataset(int amount) {
-
-        StringBuilder builder = new StringBuilder("\nSome of the dataset\n");
+        StringBuilder builder = new StringBuilder("\nDisplaying the first '" + amount + "' of records in the data set.\n");
         for (int i = 0; i < headers.size(); i++) {
             AttributeType attributeType = attributeTypes.get(i);
             String format = "%-" + headerWidths[i] + "s ";
@@ -564,8 +577,7 @@ public class Dataset {
     }
 
     public void displayModifiedDataset(int amount) {
-
-        StringBuilder builder = new StringBuilder("The modified dataset\n");
+        StringBuilder builder = new StringBuilder("\nDisplaying the first '" + amount + "' of records of the modified data set.\n");
         for (int i = 0; i < headers.size(); i++) {
             AttributeType attributeType = attributeTypes.get(i);
             String format = "%-" + headerWidths[i] + "s ";

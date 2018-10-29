@@ -29,17 +29,17 @@ public class Statistics {
         }
 
         utilitySum /= generalisations.size();
-        System.out.println("The total utility of the dataset is " + (int)(utilitySum * 100) + "%\n");
+        System.out.println("The total utility of the data set is " + (int)(utilitySum * 100) + "%");
 //        builder.append("Total," + (int)(utilitySum * 100) + "\n");
 
-        try{
+        try {
             PrintWriter pw = new PrintWriter(new File("statistics.csv"));
             pw.write(builder.toString());
             pw.close();
-        }catch (FileNotFoundException e) {
+            System.out.println("(The utility for each attribute in the data set has been output successful to the file 'statisics.csv')\n");
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("output successful");
 
         return utilitySum;
     }
@@ -122,7 +122,7 @@ public class Statistics {
         // Output the stats
         System.out.println("Minimum Entropy for the data set is: " + minEntropy);
         System.out.println("Maximum Entropy for the data set is: " + maxEntropy);
-        System.out.printf("Average Entropy for the data set is: %.2f\n", avgEntropy);
+        System.out.printf("Average Entropy for the data set is: %.2f\n\n", avgEntropy);
     }
 
     String toCSV() {

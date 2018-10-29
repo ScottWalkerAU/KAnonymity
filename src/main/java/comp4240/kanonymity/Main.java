@@ -54,9 +54,9 @@ public class Main {
         }
 
         try {
-            String datasetPath = "data/" + args[0];
+            String datasetPath = args[0];
 
-            String taxonomyPath = "data/" + args[1];
+            String taxonomyPath = args[1];
             new Main(datasetPath, taxonomyPath).run(a, k, l);
         } catch (FileNotFoundException e) {
             log.error(e);
@@ -142,11 +142,11 @@ public class Main {
         }
 
         long startTime = System.currentTimeMillis();
-        dataset.suppressOutliers();
-
-        System.out.println("The number of combinations for the loaded taxonomy trees is " + dataset.getTaxonomyTreeCombinations() + " combinations");
+        System.out.println("\n### Starting to generalise the data set! ###\n");
 
         dataset.displayDataset(10);
+
+        dataset.suppressOutliers();
 
         KAnonymity algorithm;
         if (kAnonymitySelected) {
@@ -161,15 +161,18 @@ public class Main {
         // Anonymise the data set
         GeneralisationResult generalisation = algorithm.anonymise();
 
-        algorithm.printStats();
+
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         System.out.println("Elapsed Time: " + (elapsedTime / 1000.0) + " seconds");
 
-        if (generalisation != null) {
-            Statistics.getDatasetUtility(generalisation.getNode());
-            Statistics.getMinimumEquiverlenceClassEntropy(dataset);
+        if (generalisation == null) {
+            return;
         }
+
+        algorithm.printStats();
+        Statistics.getDatasetUtility(generalisation.getNode());
+        Statistics.getMinimumEquiverlenceClassEntropy(dataset);
 
         try {
             createCSV(dataset.modifiedToCSV(), "ModifiedDataset");

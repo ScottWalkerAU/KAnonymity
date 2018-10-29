@@ -27,12 +27,14 @@ public class KAnonymity {
     public GeneralisationResult anonymise() {
         DAG dag = new DAG(this);
         GeneralisationResult best = dag.getBestGeneralisation();
-        System.out.println("Best generalisation combo: " + best);
 
         if (best != null) {
+            System.out.println("Best generalisation combination: " + best);
             best.getNode().anonymise(this);
+            dataset.displayModifiedDataset(10);
+        } else {
+            System.out.println("There was no combination that satisfied the arguments given.");
         }
-        dataset.displayModifiedDataset(10);
 
         return best;
     }
