@@ -1,0 +1,64 @@
+Workclass,*,Unemployed,Government,Non-Government
+Workclass,Unemployed,Without-pay,Never-worked
+Workclass,Government,Local-gov,State-gov,Federal-gov
+Workclass,Non-Government,Private,Self-emp-not-inc,Self-emp-inc
+
+Education,*,Primary education,Secondary education,Higher education
+
+Education,Primary education,Primary School
+Education,Secondary education,High School
+Education,Higher education,Undergraduate,Graduate,Professional Education
+
+Education,Primary School,Preschool,1st-4th,5th-6th
+Education,High School,7th-8th,9th,10th,11th,12th,HS-grad
+
+Education,Undergraduate,Some-college,Bachelors
+Education,Graduate,Masters,Doctorate
+Education,Professional Education,Prof-school,Assoc-acdm,Assoc-voc
+
+Occupation,*,Technical,Nontechnical,Other
+Occupation,Technical,Tech-support,Craft-repair,Prof-specialty,Machine-op-inspct
+Occupation,Nontechnical,Sales,Exec-managerial,Handlers-cleaners
+Occupation,Other,Other-service,Adm-clerical,Farming-fishing,Transport-moving,Priv-house-serv,Protective-serv,Armed-Forces
+
+Marital Status,*,Spouse present,Spouse not present
+
+Marital Status,Spouse present,Married-civ-spouse,Married-AF-spouse
+Marital Status,Spouse not present,Divorced,Never-married,Separated,Widowed,Married-spouse-absent
+ 
+Relationship,*,Unmarried,Married
+
+Relationship,Married,Wife,Husband
+Relationship,Unmarried,Not-in-family,Other-relative,Own-child,Never-married
+ 
+Race,*,White,Black,Asian-Pac-Islander,Amer-Indian-Eskimo,Other
+
+Sex,*,Male,Female
+
+Native Country,*,Africa,Asia,Europa,North America,South America
+Native Country,Africa,United-States
+Native Country,Asia,Cambodia,England,Puerto-Rico,Canada,Germany,Outlying-US(Guam-USVI-etc),India,Japan,Greece,South,China
+Native Country,Europa,Cuba,Iran,Honduras,Philippines,Italy,Poland,Jamaica,Vietnam,Mexico,Portugal,Ireland,France
+Native Country,North America,Dominican-Republic,Laos,Ecuador,Taiwan,Haiti,Columbia,Hungary,Guatemala,Nicaragua,Scotland,Thailand,Yugoslavia
+Native Country,South America,El-Salvador,Trinadad&Tobago,Peru,Hong,Holand-Netherlands
+
+Salary,*,>50K,<=50K
+
+Age,[*..*],[1..20],[21..40],[41..60],[61..80],[81..100]
+
+Age,[1..20],[1..10],[11..20]
+Age,[21..40],[21..30],[31..40]
+Age,[41..60],[41..50],[51..60]
+Age,[61..80],[61..70],[71..80]
+Age,[81..100],[81..90],[91..100]
+
+Age,[1..10],[1..5],[6..10]
+Age,[11..20],[11..15],[16..20]
+Age,[21..30],[21..25],[26..30]
+Age,[31..40],[31..35],[36..40]
+Age,[41..50],[41..45],[46..50]
+Age,[51..60],[51..55],[56..60]
+Age,[61..70],[61..65],[66..70]
+Age,[71..80],[71..75],[76..80]
+Age,[81..90],[81..85],[86..90]
+Age,[91..100],[91..95],[96..100]

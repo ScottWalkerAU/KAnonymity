@@ -1,0 +1,14 @@
+QID,QID,QID,QID,QID,QID,QID,QID,QID,SENSITIVE
+Numeric,String,String,String,String,String,String,String,String,String
+Age,Workclass,Education,Occupation,Marital Status,Relationship,Race,Sex,Native Country,Salary
+39, State-gov, Bachelors, Adm-clerical, Never-married, Never-married, White, Male, United-States, <=50K
+50, Self-emp-not-inc, Bachelors, Exec-managerial, Married-civ-spouse, Husband, White, Male, United-States, <=50K
+38, Private, HS-grad, Handlers-cleaners, Divorced, Never-married, White, Male, United-States, <=50K
+53, Private, 11th, Handlers-cleaners, Married-civ-spouse, Husband, Black, Male, United-States, <=50K
+28, Private, Bachelors, Prof-specialty, Married-civ-spouse, Wife, Black, Female, Cuba, <=50K
+37, Private, Masters, Exec-managerial, Married-civ-spouse, Wife, White, Female, United-States, <=50K
+49, Private, 9th, Other-service, Married-spouse-absent, Never-married, Black, Female, Jamaica, <=50K
+52, Self-emp-not-inc, HS-grad, Exec-managerial, Married-civ-spouse, Husband, White, Male, United-States, >50K
+31, Private, Masters, Prof-specialty, Never-married, Never-married, White, Female, United-States, >50K
+42, Private, Bachelors, Exec-managerial, Married-civ-spouse, Husband, White, Male, United-States, >50K
+37, Private, Some-college, Exec-managerial, Married-civ-spouse, Husband, Black, Male, United-States, >50K

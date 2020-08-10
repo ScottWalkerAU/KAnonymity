@@ -32,4 +32,6 @@ dependency-reduced-pom.xml
 
 # Our own
 data/
-*.csv
+EquivalenceClasses.csv
+ModifiedDataset.csv
+statistics.csv
